@@ -1,0 +1,10 @@
+D:\WindowProject\TCPServer\TCPServer\bin\Debug\TCPServer.exe.config
+D:\WindowProject\TCPServer\TCPServer\bin\Debug\TCPServer.exe
+D:\WindowProject\TCPServer\TCPServer\bin\Debug\TCPServer.pdb
+D:\WindowProject\TCPServer\TCPServer\obj\Debug\TCPServer.csprojResolveAssemblyReference.cache
+D:\WindowProject\TCPServer\TCPServer\obj\Debug\TCPServer.Form1.resources
+D:\WindowProject\TCPServer\TCPServer\obj\Debug\TCPServer.Properties.Resources.resources
+D:\WindowProject\TCPServer\TCPServer\obj\Debug\TCPServer.csproj.GenerateResource.Cache
+D:\WindowProject\TCPServer\TCPServer\obj\Debug\TCPServer.exe
+D:\WindowProject\TCPServer\TCPServer\obj\Debug\TCPServer.pdb
+D:\WindowProject\TCPServer\TCPServer\bin\Debug\MySql.Data.dll
