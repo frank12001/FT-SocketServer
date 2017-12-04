@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using TCPServer.playar.Rooms.Operator;
 using TCPServer.ClientInstance;
 using TCPServer.ClientInstance.Packet;
 using startOnline;
 using startOnline.DataBase;
 using startOnline.playar.Rooms;
+
 
 namespace TCPServer
 {
@@ -36,12 +38,8 @@ namespace TCPServer
 
         #endregion
 
-        #region 原 Application 變數
-        public Dictionary<string, Room> Rooms;
-
-
-
-        #endregion
+        public Operator RoomOperator { get { return roomOperator; } }
+        private Operator roomOperator;
 
         public Form1()
         {
@@ -54,9 +52,8 @@ namespace TCPServer
 
         protected void Setup()
         {
-            Rooms = new Dictionary<string, Room>();
 
-
+            roomOperator = new Operator(this);
             printLine(" Server 開機");
             printLine("Setup Finish");
 
@@ -65,40 +62,7 @@ namespace TCPServer
         #region Room Function
         public Room Room_Create(PlayarPeer peer, string serialId, RoomTypes roomType)
         {
-            lock ("RoomOperator")
-            {
-                Room room;
-                //DisplayMessageBox(serialId);
-                string qrcode = DataBase.Operator.GetQRCode(serialId);//GetQRCode(serialId);
-                PrintLine(qrcode);
-                string id = qrcode;
-                if (Room_IsRoomExist(id) || qrcode == null) //檢查有沒有相同 id 的房間
-                    return null;
-                PrintLine("2 - 3");
-                switch (roomType)
-                {
-                    case RoomTypes.Base:
-                        room = new Room(serialId, peer, id, this);
-                        // Console 
-                        printLine("基本房 + 1");
-                        break;
-                    case RoomTypes.Exhibition:
-                        room = new ExhibitionRoom(serialId, peer, id, this);
-                        // Console 
-                        printLine("擴增房 + 1");
-                        break;
-                    default: //默認創建 base 房 
-                        room = new Room(serialId, peer, id, this);
-                        // Console 
-                        printLine("基本房 + 1");
-                        break;
-                }
-
-                this.Rooms.Add(room.RoomIndexInApplication, room);
-                // Console 
-                printLine("房間總數 + 1");
-                return room;
-            }
+            return RoomOperator.Room_Create(peer, serialId, roomType);
         }
         /// <summary>
         /// 創建房間 (從既有的房間創建)
@@ -108,37 +72,7 @@ namespace TCPServer
         /// <returns>新房間</returns>
         public Room Room_Create(Room source, RoomTypes roomType)
         {
-            lock ("RoomOperator")
-            {
-                if (Rooms.ContainsKey(source.RoomIndexInApplication))
-                {
-                    room_Remove(source.RoomIndexInApplication);
-                }
-                Room room;
-                switch (roomType)
-                {
-                    case RoomTypes.Base:
-                        room = new Room(source, this);
-                        // Console 
-                        printLine("基本房 + 1");
-                        break;
-                    case RoomTypes.Exhibition:
-                        room = new ExhibitionRoom(source, this);
-                        // Console 
-                        printLine("擴增房 + 1");
-                        break;
-                    default: //默認創建 base 房 
-                        room = new Room(source, this);
-                        // Console 
-                        printLine("基本房 + 1");
-                        break;
-                }
-                //DisplayMessageBox("現在房間列表 長度 = " + Rooms.Count);
-                this.Rooms.Add(room.RoomIndexInApplication, room);
-                // Console 
-                printLine("房間總數 + 1");
-                return room;
-            }
+            return RoomOperator.Room_Create(source,roomType);
         }
         /// <summary>
         /// join assign room 
@@ -149,60 +83,15 @@ namespace TCPServer
         /// <returns>if not sucess return null</returns>
         public Room Room_Join(string roomIndexInApplication, PlayarPeer peer, out byte playid)
         {
-            lock ("RoomOperator")
-            {
-                Room room;
-                if (!this.Rooms.TryGetValue(roomIndexInApplication, out room)) //if the room not exist 
-                {
-                    foreach (KeyValuePair<string, Room> rooms in Rooms)
-                    {
-                        //DisplayMessageBox(rooms.Key.ToString() + " now guid = " + roomIndexInApplication.ToString());
-                    }
-                    playid = 0;
-                    return null;
-                }
-                if (room.Room_Join(peer, out playid))
-                    return room;
-                else
-                    return null;
-            }
+            return RoomOperator.Room_Join(roomIndexInApplication, peer,out playid);
         }
         public void Room_Remove(string index)  //給其他人的移除功能
         {
-            //給其他人的要 lock
-            lock ("RoomOperator")
-            {
-                if (Room_IsRoomExist(index))
-                {
-                    //Console
-                    Room room;
-                    Rooms.TryGetValue(index, out room);
-
-                    printLine("基本房 - 1");
-                    printLine("房間總數 - 1");
-
-                    Rooms.Remove(index);
-                }
-            }
-        }
-        private void room_Remove(string index) //區隔這個 class 呼叫的移除功能
-        {                                    //和給其他程式呼叫的移除功能
-            //給自己的不 lock
-            if (Room_IsRoomExist(index))
-            {
-                //Console
-                Room room;
-                Rooms.TryGetValue(index, out room);
-
-                printLine("基本房 - 1");
-                printLine("房間總數 - 1");
-
-                Rooms.Remove(index);
-            }
+            RoomOperator.Room_Remove(index);
         }
         public bool Room_IsRoomExist(string roomIndexInApplication)
         {
-            return this.Rooms.ContainsKey(roomIndexInApplication);
+            return RoomOperator.Room_IsRoomExist(roomIndexInApplication);
         }
         /// <summary>
         /// 回傳房間總數
@@ -210,7 +99,7 @@ namespace TCPServer
         /// <returns></returns>
         public int GetRoomsCount()
         {
-            return this.Rooms.Count;
+            return RoomOperator.Rooms.Count;
         }
 
         #endregion

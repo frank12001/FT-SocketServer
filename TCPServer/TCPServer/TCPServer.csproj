@@ -75,7 +75,12 @@
     <Compile Include="Parameters.cs" />
     <Compile Include="playar\Common\Timer.cs" />
     <Compile Include="playar\playarPeer.cs" />
+    <Compile Include="playar\PokerPeer.cs" />
     <Compile Include="playar\Rooms\ExhibitionRoom.cs" />
+    <Compile Include="playar\Rooms\Operator\Base\Operator.cs" />
+    <Compile Include="playar\Rooms\Operator\Queue.cs" />
+    <Compile Include="playar\Rooms\PokerGamingRoom.cs" />
+    <Compile Include="playar\Rooms\QueueRoom.cs" />
     <Compile Include="playar\Rooms\Room.cs" />
     <Compile Include="playar\Rooms\RoomTypes.cs" />
     <Compile Include="Program.cs" />

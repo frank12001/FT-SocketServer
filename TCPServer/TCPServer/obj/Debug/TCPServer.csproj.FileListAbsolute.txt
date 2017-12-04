@@ -8,3 +8,14 @@ D:\WindowProject\TCPServer\TCPServer\obj\Debug\TCPServer.csproj.GenerateResource
 D:\WindowProject\TCPServer\TCPServer\obj\Debug\TCPServer.exe
 D:\WindowProject\TCPServer\TCPServer\obj\Debug\TCPServer.pdb
 D:\WindowProject\TCPServer\TCPServer\bin\Debug\MySql.Data.dll
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.csprojResolveAssemblyReference.cache
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.Form1.resources
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.Properties.Resources.resources
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.csproj.GenerateResource.Cache
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.csproj.CoreCompileInputs.cache
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.exe
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.pdb
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\bin\Debug\TCPServer.exe.config
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\bin\Debug\TCPServer.exe
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\bin\Debug\TCPServer.pdb
+D:\GitHubTest\Socket-Server\TCPServer\TCPServer\bin\Debug\MySql.Data.dll

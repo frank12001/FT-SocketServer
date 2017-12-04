@@ -28,6 +28,10 @@ public class Test2 : MonoBehaviour {
         {
             //connect._gaming.ChangeType(Playar.PhotonServer.Operator.RoomTypes.MathGame);
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            connect._room.CreateRoom("yaya", Playar.PhotonServer.Operator.RoomTypes.Base);
+        }
         //mobile
         if (Input.GetKeyDown(KeyCode.X))
         {

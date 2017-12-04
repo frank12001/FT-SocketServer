@@ -1,15 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows.Forms;
-using System.IO.Compression;
-using System.IO;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Threading;
-using PhotonServerConnect.Packet;
 using TCPServer.ClientInstance;
 using TCPServer;
 using System.Net.Sockets;
@@ -152,7 +142,9 @@ namespace startOnline
                                 _server.PrintLine("嘗試創房 SN = " + customName);
                                 //依照傳進來的 RoomType 創建房間
                                 playar.Rooms.RoomTypes roomType = (playar.Rooms.RoomTypes)byte.Parse(operationRequest.Parameters[2].ToString());
+                                _server.PrintLine("1");
                                 this.room = _server.Room_Create(this, customName, roomType);
+                                _server.PrintLine("2");
                                 if (this.room == null) // false
                                     issucess = false;
                                 else
