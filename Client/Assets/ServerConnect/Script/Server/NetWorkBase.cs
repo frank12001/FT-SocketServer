@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Net;
+using System.Net.Mail;
 using System.Net.Sockets;
 using TCPServer.ClientInstance.Packet;
 
@@ -30,6 +31,9 @@ namespace Playar.PhotonServer
         /// </summary>
         private static EventData OnEvent_EventData = null;
 
+        private SmallPacketSender smallPacketSender=null;
+
+
         /// <summary>
         /// 需要放在 Update 中一直執行的功能
         /// </summary>
@@ -42,6 +46,11 @@ namespace Playar.PhotonServer
                     OnEvent(OnEvent_EventData);
                     OnEvent_EventData = null;
                 }
+            }
+            
+            if (smallPacketSender != null)
+            {
+                smallPacketSender.Update();
             }
         }
 
@@ -166,6 +175,8 @@ namespace Playar.PhotonServer
                 mTcpClient.ReceiveTimeout = 10000;
                 Debug.Log("Available = " + mTcpClient.Available);
                 tcpc.GetStream().BeginRead(mRx, 0, mRx.Length, onCompleteReadFromServerStream, tcpc);
+                this.smallPacketSender = new SmallPacketSender (Deliver,2);
+                smallPacketSender.StartSend();
                 OnStatusChanged(StatusCode.Connect);
             }
             catch (Exception exc)
@@ -196,10 +207,23 @@ namespace Playar.PhotonServer
                 }
                 //解包成我定義的封包
                 IPacket packet = DisSerializate(mRx);
-                //轉換為 EventData 並回傳
-                EventData eventData = new EventData(packet.OperationCode, new Dictionary<byte, object>(packet.Parameters)) { ForTest = packet.ForTest };
-                //將資料存入全域暫存區
-                OnEvent_EventData = eventData;
+
+                if (!this.smallPacketSender.Ignore(packet))
+                {
+
+                    //轉換為 EventData 並回傳
+                    EventData eventData =
+                        new EventData(packet.OperationCode, new Dictionary<byte, object>(packet.Parameters))
+                        {
+                            ForTest = packet.ForTest
+                        };
+                    //將資料存入全域暫存區
+                    OnEvent_EventData = eventData;
+                }
+                else
+                {
+                    Debug.Log("SP Packet In");
+                }
                 //重新給予暫存一個大小
                 mRx = new byte[InputBufferSize];
                 tcpc.ReceiveBufferSize = (int)InputBufferSize;
@@ -209,7 +233,7 @@ namespace Playar.PhotonServer
             }
             catch (Exception exc)
             {
-                Debug.LogError(exc.Message);
+                Debug.Log(exc.Message);
             }
         }
         /// <summary>
@@ -241,5 +265,55 @@ namespace Playar.PhotonServer
             return (IPacket)Playar.PhotonServer.Serializate.ToObject(source);
         }
 
+    }
+
+    public class SmallPacketSender
+    {
+        private bool StartTimer = true;
+
+        private float Timer = 0, MaxTimer = 2;
+        private bool canSend = false;
+
+        private Action<byte, Dictionary<byte, object>> Deliver;
+
+        public SmallPacketSender(Action<byte, Dictionary<byte, object>> deliver, float sendInterval)
+        {
+            this.Deliver = deliver;
+            this.MaxTimer = sendInterval;
+        }
+
+        public void Update()
+        {
+            if (StartTimer && canSend)
+            {
+                if (Timer >= MaxTimer)
+                {
+                    Dictionary<byte, object> packet = new Dictionary<byte, object>()
+                    {
+                        { (byte)0,200 }, //switch code 維持長連線封包
+                        { (byte)1,0 }, 
+                        { (byte)2,1 }
+                    };
+                    Deliver(200, packet);
+                    Timer = 0;
+                }
+                Timer += Time.deltaTime;
+            }
+        }
+
+        public bool Ignore(IPacket packet)
+        {
+            return packet.OperationCode.Equals(200);
+        }
+
+        public void StartSend()
+        {
+            canSend = true;
+        }
+
+        public void StopSend()
+        {
+            canSend = false;
+        }
     }
 }

@@ -64,7 +64,7 @@ public class Test2 : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            connect._room.JoinRoom("11111111-1111-1111-1111-111111111111");
+            connect._room.JoinRoom("Test");
         }
         if (Input.GetKeyDown(KeyCode.S))
         {

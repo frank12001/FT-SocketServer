@@ -260,6 +260,11 @@ namespace startOnline
                     case 5:
                         _server.PrintLine(DateTime.Now + " - " + this.ToString() + ": " + operationRequest.ForTest);
                         break;
+                    case 200:
+                        _server.PrintLine("Case 200 On");
+                        SendEvent(200, operationRequest.Parameters);
+                        break;
+                            
                 }
             }
             catch (Exception e)

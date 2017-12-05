@@ -16,7 +16,7 @@ namespace TCPServer.playar.Rooms.Operator
         }
         public Room QueueJoin(PlayarPeer peer, string serialId)
         {
-
+            return null;
         }
     }
 }

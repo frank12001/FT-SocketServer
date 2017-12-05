@@ -19,3 +19,15 @@ D:\GitHubTest\Socket-Server\TCPServer\TCPServer\bin\Debug\TCPServer.exe.config
 D:\GitHubTest\Socket-Server\TCPServer\TCPServer\bin\Debug\TCPServer.exe
 D:\GitHubTest\Socket-Server\TCPServer\TCPServer\bin\Debug\TCPServer.pdb
 D:\GitHubTest\Socket-Server\TCPServer\TCPServer\bin\Debug\MySql.Data.dll
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.csprojResolveAssemblyReference.cache
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.Form1.resources
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.Properties.Resources.resources
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.csproj.GenerateResource.Cache
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.csproj.CoreCompileInputs.cache
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\bin\Debug\TCPServer.exe.config
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\bin\Debug\TCPServer.exe
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\bin\Debug\TCPServer.pdb
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\bin\Debug\MySql.Data.dll
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\bin\Debug\MySql.Data.xml
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.exe
+C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.pdb

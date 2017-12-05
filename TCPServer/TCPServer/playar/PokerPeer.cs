@@ -56,7 +56,7 @@ namespace startOnline
                                 //依照傳進來的 RoomType 創建房間
                                 playar.Rooms.RoomTypes roomType = (playar.Rooms.RoomTypes)byte.Parse(operationRequest.Parameters[2].ToString());
                                 _server.PrintLine("1");
-                                this.room = _server.Room_Create(this, customName, roomType);
+                                //this.room = _server.Room_Create(this, customName, roomType);
                                 _server.PrintLine("2");
                                 if (this.room == null) // false
                                     issucess = false;
@@ -69,7 +69,7 @@ namespace startOnline
                                 //DisplayMessageBox("some join room");
                                 string targetRoom = Serializate.ToObject((byte[])operationRequest.Parameters[1]).ToString();
                                 _server.PrintLine("嘗試加入房間 目標房間 = " + targetRoom);
-                                this.room = _server.Room_Join(targetRoom, this, out this.playeridInRoom);
+                                //this.room = _server.Room_Join(targetRoom, this, out this.playeridInRoom);
 
                                 if (this.room == null) // false
                                     issucess = false;

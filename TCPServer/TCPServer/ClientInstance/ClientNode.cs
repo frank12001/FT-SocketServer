@@ -70,7 +70,8 @@ namespace TCPServer.ClientInstance
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                application.PrintLine(exc.Message);
+                //MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -111,7 +112,8 @@ namespace TCPServer.ClientInstance
                     //輸入長度為 0 ，代表斷線了
                     if (nCountReadBytes == 0)//this happens when the client is disconnected
                     {
-                        MessageBox.Show("Client disconnected.");
+                        //MessageBox.Show("Client disconnected.");
+                        application.PrintLine("Client disconnected.");
                         application.MlClientSockets.Remove(cn);
                         application.LbClients.Items.Remove(cn.ToString());
                         OnDisconnect();
