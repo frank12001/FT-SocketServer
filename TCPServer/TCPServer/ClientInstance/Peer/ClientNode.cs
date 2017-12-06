@@ -8,6 +8,9 @@ using System.Windows.Forms;
 
 namespace TCPServer.ClientInstance
 {
+    /// <summary>
+    /// 網路基本功能
+    /// </summary>
     public class ClientNode : IEquatable<string> , IManagedPeer , ITCPClientCallBack
     {
         public TcpClient tclient;

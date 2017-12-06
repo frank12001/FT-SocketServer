@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="IApplication.cs" />
     <Compile Include="Log\Log.cs" />
+    <Compile Include="Peer\PeerBase.cs" />
     <Compile Include="playar\Packet\Fish4DCube.cs" />
     <Compile Include="playar\Packet\Mobile.cs" />
     <Compile Include="playar\Packet\ServerBase.cs" />

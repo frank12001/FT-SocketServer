@@ -60,20 +60,6 @@ namespace TCPServer
         }
 
         #region Room Function
-        public Room Room_Create(PlayarPeer peer, string serialId, RoomTypes roomType)
-        {
-            return RoomOperator.Room_Create(peer, serialId, roomType);
-        }
-        /// <summary>
-        /// 創建房間 (從既有的房間創建)
-        /// </summary>
-        /// <param name="source">既有的房間</param>
-        /// <param name="roomType">新房的種類</param>
-        /// <returns>新房間</returns>
-        public Room Room_Create(Room source, RoomTypes roomType)
-        {
-            return RoomOperator.Room_Create(source,roomType);
-        }
         /// <summary>
         /// join assign room 
         /// </summary>

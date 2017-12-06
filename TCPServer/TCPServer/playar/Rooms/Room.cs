@@ -25,7 +25,7 @@ namespace startOnline
         /// <summary>
         /// players in this room. Index = 0 => Room owner
         /// </summary>
-        public Dictionary<byte, PlayarPeer> players;
+        public Dictionary<byte, PeerBase> players;
         /// <summary>
         /// Room Index In Application
         /// </summary>
@@ -45,12 +45,12 @@ namespace startOnline
         #endregion
 
         #region 建構子
-        public Room(string customName, PlayarPeer ownerPeer, string roomIndexInApplication, Form1 applicationPointer)
+        public Room(string customName, PeerBase ownerPeer, string roomIndexInApplication, Form1 applicationPointer)
         {
             applicationPointer.PrintLine("Create Room");
 
             this.RoomName = customName;
-            players = new Dictionary<byte, PlayarPeer>() { { Ownerid, ownerPeer } };
+            players = new Dictionary<byte, PeerBase>() { { Ownerid, ownerPeer } };
             this.RoomIndexInApplication = roomIndexInApplication;
             this._server = applicationPointer;
             this.Type = getRoomType();
@@ -85,8 +85,8 @@ namespace startOnline
         {
             //DisplayMessageBox("r 1");
             this.RoomName = room.RoomName;
-            this.players = new Dictionary<byte, PlayarPeer>();
-            foreach (KeyValuePair<byte, PlayarPeer> player in room.players)
+            this.players = new Dictionary<byte, PeerBase>();
+            foreach (KeyValuePair<byte, PeerBase> player in room.players)
             {
                 this.players.Add(player.Key, player.Value);
                 player.Value.room = this; //重設所有 peer 中的 room                
@@ -205,7 +205,7 @@ namespace startOnline
         /// <param name="image"></param>
         public void BroadcastPacket(Dictionary<byte, object> packet)
         {
-            foreach (KeyValuePair<byte, PlayarPeer> player in this.players)
+            foreach (KeyValuePair<byte, PeerBase> player in this.players)
             {
                 player.Value.SendEvent((byte)OperationCode.Gaming, packet);
             }
@@ -217,7 +217,7 @@ namespace startOnline
         /// <param name="id"></param>
         public void BroadcastPacket(Dictionary<byte, object> packet, byte id)
         {
-            foreach (KeyValuePair<byte, PlayarPeer> player in this.players)
+            foreach (KeyValuePair<byte, PeerBase> player in this.players)
             {
                 if (player.Key != id)
                     player.Value.SendEvent((byte)OperationCode.Gaming, packet);
@@ -231,7 +231,7 @@ namespace startOnline
         /// <param name="id"></param>
         public void BroadcastPacket(OperationCode eventcode, Dictionary<byte, object> packet, byte id)
         {
-            foreach (KeyValuePair<byte, PlayarPeer> player in this.players)
+            foreach (KeyValuePair<byte, PeerBase> player in this.players)
             {
                 if (player.Key != id)
                     player.Value.SendEvent((byte)eventcode, packet);
@@ -244,7 +244,7 @@ namespace startOnline
         /// <param name="image"></param>
         public void BroadcastPacket(OperationCode eventcode, Dictionary<byte, object> packet)
         {
-            foreach (KeyValuePair<byte, PlayarPeer> player in this.players)
+            foreach (KeyValuePair<byte, PeerBase> player in this.players)
             {
                 player.Value.SendEvent((byte)eventcode, packet);
             }
@@ -257,7 +257,7 @@ namespace startOnline
         /// <param name="id"></param>
         public void SendToAssignPlayer(Dictionary<byte, object> packet, byte id)
         {
-            PlayarPeer targetPlayer;
+            PeerBase targetPlayer;
             if (this.players.TryGetValue(id, out targetPlayer))
                 targetPlayer.SendEvent((byte)OperationCode.Gaming, packet);
         }
@@ -269,7 +269,7 @@ namespace startOnline
         /// <param name="id"></param>
         public void SendToAssignPlayer(OperationCode operatorCode,Dictionary<byte, object> packet, byte id)
         {
-            PlayarPeer targetPlayer;
+            PeerBase targetPlayer;
             if (this.players.TryGetValue(id, out targetPlayer))
                 targetPlayer.SendEvent((byte)operatorCode, packet);
         }
@@ -312,7 +312,7 @@ namespace startOnline
         /// <param name="peer"> me peer </param>
         /// <param name="playId">return my playerid in this room</param>
         /// <returns>sucess or not</returns>
-        public bool Room_Join(PlayarPeer peer, out byte playId)
+        public bool Room_Join(PeerBase peer, out byte playId)
         {
             byte? id = GetAbleId();
 
@@ -397,7 +397,7 @@ namespace startOnline
             #endregion
 
             //跟其他玩家說他被踢了
-            foreach (KeyValuePair<byte, PlayarPeer> player in this.players)
+            foreach (KeyValuePair<byte, PeerBase> player in this.players)
             {
                 player.Value.RoomWasKicked();
             }
@@ -425,7 +425,7 @@ namespace startOnline
             }
             #endregion
 
-            _server.Room_Create(this, type);
+            _server.RoomOperator.Room_Create(this, type);
         }
         /// <summary>
         /// 回傳玩家數量
@@ -444,7 +444,7 @@ namespace startOnline
         /// <param name="message"></param>
         public void SendMessageToAllClient(string message)
         {
-            foreach (KeyValuePair<byte, PlayarPeer> peer in players)
+            foreach (KeyValuePair<byte, PeerBase> peer in players)
             {
                 peer.Value.SendServerLog(message);
             }
