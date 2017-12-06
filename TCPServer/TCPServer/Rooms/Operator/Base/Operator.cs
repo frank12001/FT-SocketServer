@@ -12,7 +12,7 @@ namespace TCPServer.playar.Rooms.Operator
     public class Operator
     {
         public Dictionary<string, Room> Rooms;
-        private Form1 server;
+        protected Form1 server;
         public Operator(Form1 form1)
         {
             this.server = form1;

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
 using System.Collections.Generic;
+using Playar.PhotonServer.Operator;
 
 namespace Playar.PhotonServer
 {
@@ -18,6 +19,7 @@ namespace Playar.PhotonServer
         public Operator._Room _room;
         public Operator._Gaming _gaming;
         public Operator._System _system;
+        public Operator._Queue _queue;
 
         GameNetWorkService gameService;
         
@@ -28,6 +30,7 @@ namespace Playar.PhotonServer
             _room = new Operator._Room(gameService);
             _gaming = new Operator._Gaming(gameService);
             _system = new Operator._System(gameService);
+            _queue = new Operator._Queue(gameService);
 
             gameService.Address = ServerIP + ":" + "23000";
             //gameService.Address = ServerIP + ":" + "4530";

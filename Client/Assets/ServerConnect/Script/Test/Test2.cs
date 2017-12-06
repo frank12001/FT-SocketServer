@@ -16,6 +16,7 @@ public class Test2 : MonoBehaviour {
 
         connect._gaming.ReceiveCustomPacket += ServerCallBack;
         connect._system.ReceiveRoomsCount += GetRoomsCount;
+        connect._queue.ReceiveJoinQueue += b => { Debug.Log("Join Queue Result = " + b); };
     }
 	
 	// Update is called once per frame
@@ -30,7 +31,8 @@ public class Test2 : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            connect._room.CreateRoom("yaya", Playar.PhotonServer.Operator.RoomTypes.Base);
+            //connect._room.CreateRoom("yaya", Playar.PhotonServer.Operator.RoomTypes.Base);
+            connect._queue.JoinQueue();
         }
         //mobile
         if (Input.GetKeyDown(KeyCode.X))
@@ -71,6 +73,17 @@ public class Test2 : MonoBehaviour {
             connect._gaming.BroadcastCustomPacket_EveryOne(new TestPacket(5, false));
         }
     }
+
+    public void ConnectToServer()
+    {
+        connect._system.ConnectToServer();
+    }
+
+    public void JoinQueueRoom()
+    {
+        connect._queue.JoinQueue();
+    }
+
     public void GetRoomsCount(byte? b)
     {
         Debug.Log("房間總數為 = " + b);

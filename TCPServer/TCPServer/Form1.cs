@@ -54,7 +54,7 @@ namespace TCPServer
         protected void Setup()
         {
 
-            roomOperator = new Operator(this);
+            roomOperator = new Queue(this);
             printLine(" Server 開機");
             printLine("Setup Finish");
 

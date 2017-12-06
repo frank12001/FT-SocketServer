@@ -312,7 +312,7 @@ namespace startOnline
         /// <param name="peer"> me peer </param>
         /// <param name="playId">return my playerid in this room</param>
         /// <returns>sucess or not</returns>
-        public bool Room_Join(PeerBase peer, out byte playId)
+        public virtual bool Room_Join(PeerBase peer, out byte playId)
         {
             byte? id = GetAbleId();
 
@@ -473,16 +473,17 @@ namespace startOnline
             //取得 class 的名字字串，再用此判斷
             #region Get Type
             Type type = this.GetType();
-            string class_Name = type.Name;
-            switch (class_Name)
-            {
-                case "Room":
-                    result = RoomTypes.Base;
-                    break;
-                default:
-                    result = RoomTypes.Base;
-                    break;
-            }
+            //string class_Name = type.Name;
+            //switch (class_Name)
+            //{
+            //    case "Room":
+            //        result = RoomTypes.Base;
+            //        break;
+            //    default:
+            //        result = RoomTypes.Base;
+            //        break;
+            //}
+            result = (RoomTypes)Enum.Parse(typeof(RoomTypes), type.Name);
 
             #endregion
             return result;

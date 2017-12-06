@@ -21,7 +21,7 @@ namespace Playar.PhotonServer
         {}
         #region OnEvent 
         public delegate void ReceiveDictionaryHandler(Dictionary<byte, object> packet);
-        public event ReceiveDictionaryHandler MemberEvent , RoomEvent ,  GamingEvent, SystemEvent;
+        public event ReceiveDictionaryHandler MemberEvent , RoomEvent ,  GamingEvent, SystemEvent,QueueEvent;
         /// <summary>
         /// 在主執行續執行的處理
         /// </summary>
@@ -44,6 +44,9 @@ namespace Playar.PhotonServer
                     break;
                 case 5:
                     Debug.Log("EventData ForTest = " + eventData.ForTest);
+                    break;
+                case 6: //排隊
+                    QueueEvent(eventData.Parameters);
                     break;
             }
         }

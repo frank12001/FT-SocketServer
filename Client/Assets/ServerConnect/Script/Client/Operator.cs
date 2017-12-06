@@ -14,6 +14,7 @@ namespace Playar.PhotonServer.Operator
         Room = 1,
         Gaming = 2,
         System = 3,
+        Queue = 6,
     }
     //基底 class
     public abstract class NetWorkBase : ISendMessage, IServerCallBack
@@ -648,6 +649,53 @@ namespace Playar.PhotonServer.Operator
             this.time += (float)timer.Interval;
         }
         #endregion 
+    }
+
+    //系統
+    public class _Queue : NetWorkBase
+    {
+        public event ReceiveBoolHandler ReceiveJoinQueue;
+        public _Queue(GameNetWorkService gameService) : base(gameService)
+        {
+            this.operationCode = OperationCode.Queue;
+            this.gameService.QueueEvent += ServerCallBack;
+        }
+        #region 傳送遊戲封包 (主動)
+        /// <summary>
+        /// 開始計算新的 Ping
+        /// </summary>
+        /// <param name="assign_packet">平時用的封包大小。有正確的平寬需求，才有更準的Ping</param>
+        public void JoinQueue()
+        {
+            Dictionary<byte, object> packet = new Dictionary<byte, object>
+            {
+                {(byte)0,(byte)1 },
+            };
+            gameService.Deliver((byte)this.operationCode, packet);
+        }
+        #endregion                
+        #region Receive Server CallBack (被動呼叫)
+        public override void ServerCallBack(Dictionary<byte, object> server_packet)
+        {
+            byte switchCode = byte.Parse(server_packet[0].ToString());
+            switch (switchCode)
+            {
+                case 1: 
+                    Receive_JoinQueue(server_packet);
+                    break;
+            }
+        }
+        #region Server CallBack 各項處理縮排
+        private void Receive_JoinQueue(Dictionary<byte, object> server_packet)
+        {            
+            if (ReceiveJoinQueue != null)
+            {
+                ReceiveJoinQueue(bool.Parse(server_packet[1].ToString()));
+            }
+        }
+        #endregion 
+        #endregion
+        
     }
 
     public enum RoomTypes : byte

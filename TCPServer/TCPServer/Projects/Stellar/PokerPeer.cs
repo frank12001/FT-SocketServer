@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using startOnline;
 using startOnline.playar.Rooms;
 using TCPServer.ClientInstance.Packet;
 using TCPServer.Math;
+using TCPServer.playar.Rooms.Operator;
 
 namespace TCPServer.Projects.Stellar
 {
@@ -138,6 +140,32 @@ namespace TCPServer.Projects.Stellar
                     case 5:
                         _server.PrintLine(DateTime.Now + " - " + this.ToString() + ": " + operationRequest.ForTest);
                         break;
+
+                    #region Queue
+                    case 6:
+                        byte switchcode_6 = byte.Parse(operationRequest.Parameters[0].ToString());
+                        switch (switchcode_6)
+                        {
+                            case 1: //Join Queue
+                                bool isjoin = false;
+                                if (_server.RoomOperator is Queue queue)
+                                {
+                                    Queue roomOperator = queue;
+                                    this.room = roomOperator.QueueJoin(this, new Guid().ToString(), out playeridInRoom);
+                                    isjoin = true;
+                                }
+                                packet = new Dictionary<byte, object>()
+                                {
+                                    {(byte) 0, 1},
+                                    {(byte) 1, isjoin},
+                                };
+                                SendEvent(6, packet);
+                                break;
+                                
+                        }
+                        break;
+                    #endregion
+
                     case 200:
                         _server.PrintLine("Case 200 On");
                         SendEvent(200, operationRequest.Parameters);
