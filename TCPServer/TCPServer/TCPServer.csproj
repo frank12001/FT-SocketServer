@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientInstance\ClientNode.cs" />
+    <Compile Include="ClientInstance\Peer\ClientNode.cs" />
     <Compile Include="ClientInstance\Interface\Input\ITCPClientCallBack.cs" />
     <Compile Include="ClientInstance\Interface\Output\IManagedPeer.cs" />
     <Compile Include="ClientInstance\Packet\EventData.cs" />
@@ -68,22 +68,22 @@
     </Compile>
     <Compile Include="IApplication.cs" />
     <Compile Include="Log\Log.cs" />
-    <Compile Include="Peer\PeerBase.cs" />
-    <Compile Include="playar\Packet\Fish4DCube.cs" />
-    <Compile Include="playar\Packet\Mobile.cs" />
-    <Compile Include="playar\Packet\ServerBase.cs" />
-    <Compile Include="playar\Packet\TV.cs" />
+    <Compile Include="ClientInstance\Peer\PeerBase.cs" />
+    <Compile Include="Projects\playar\Packet\Fish4DCube.cs" />
+    <Compile Include="Projects\playar\Packet\Mobile.cs" />
+    <Compile Include="Projects\playar\Packet\ServerBase.cs" />
+    <Compile Include="Projects\playar\Packet\TV.cs" />
     <Compile Include="Parameters.cs" />
-    <Compile Include="playar\Common\Timer.cs" />
-    <Compile Include="playar\playarPeer.cs" />
-    <Compile Include="playar\PokerPeer.cs" />
-    <Compile Include="playar\Rooms\ExhibitionRoom.cs" />
-    <Compile Include="playar\Rooms\Operator\Base\Operator.cs" />
-    <Compile Include="playar\Rooms\Operator\Queue.cs" />
-    <Compile Include="playar\Rooms\PokerGamingRoom.cs" />
-    <Compile Include="playar\Rooms\QueueRoom.cs" />
-    <Compile Include="playar\Rooms\Room.cs" />
-    <Compile Include="playar\Rooms\RoomTypes.cs" />
+    <Compile Include="Projects\playar\Common\Timer.cs" />
+    <Compile Include="Projects\playar\playarPeer.cs" />
+    <Compile Include="Projects\Stellar\PokerPeer.cs" />
+    <Compile Include="Rooms\ExhibitionRoom.cs" />
+    <Compile Include="Rooms\Operator\Base\Operator.cs" />
+    <Compile Include="Rooms\Operator\Queue.cs" />
+    <Compile Include="Rooms\PokerGamingRoom.cs" />
+    <Compile Include="Rooms\QueueRoom.cs" />
+    <Compile Include="Rooms\Room.cs" />
+    <Compile Include="Rooms\RoomTypes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Math\Serializate.cs" />

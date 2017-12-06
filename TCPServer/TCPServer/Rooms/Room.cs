@@ -402,7 +402,7 @@ namespace startOnline
                 player.Value.RoomWasKicked();
             }
 
-            _server.Room_Remove(this.RoomIndexInApplication);
+            _server.RoomOperator.Room_Remove(this.RoomIndexInApplication);
         }
         /// <summary>
         /// 換遊戲房間

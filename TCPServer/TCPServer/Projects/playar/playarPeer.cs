@@ -209,7 +209,7 @@ namespace startOnline
                                 Dictionary<byte, object> packet_system_2 = new Dictionary<byte, object>()
                             {
                                 { (byte)0,(byte)2 }, //switch code
-                                { (byte)1,(int)_server.GetRoomsCount()},
+                                { (byte)1,(int)_server.RoomOperator.GetRoomsCount()},
                             };
                                 SendEvent((byte)3, packet_system_2);
                                 break;

@@ -9,6 +9,7 @@ using TCPServer.ClientInstance.Packet;
 using startOnline;
 using startOnline.DataBase;
 using startOnline.playar.Rooms;
+using TCPServer.Projects.Stellar;
 
 
 namespace TCPServer
@@ -58,38 +59,6 @@ namespace TCPServer
             printLine("Setup Finish");
 
         }
-
-        #region Room Function
-        /// <summary>
-        /// join assign room 
-        /// </summary>
-        /// <param name="roomIndexInApplication">the room's guid</param>
-        /// <param name="peer">Joiner's peer</param>
-        /// <param name="playid">return playid if join sucess</param>
-        /// <returns>if not sucess return null</returns>
-        public Room Room_Join(string roomIndexInApplication, PlayarPeer peer, out byte playid)
-        {
-            return RoomOperator.Room_Join(roomIndexInApplication, peer,out playid);
-        }
-        public void Room_Remove(string index)  //給其他人的移除功能
-        {
-            RoomOperator.Room_Remove(index);
-        }
-        public bool Room_IsRoomExist(string roomIndexInApplication)
-        {
-            return RoomOperator.Room_IsRoomExist(roomIndexInApplication);
-        }
-        /// <summary>
-        /// 回傳房間總數
-        /// </summary>
-        /// <returns></returns>
-        public int GetRoomsCount()
-        {
-            return RoomOperator.Rooms.Count;
-        }
-
-        #endregion
-
 
         IPAddress findMyIPV4Address()
         {
@@ -169,8 +138,10 @@ namespace TCPServer
                 //實力化 ClientNode ，傳入 連線進來的 TcpClient 
                 //cNode = new ClientNode(tclient, new byte[InputBufferSize],
                 //                        new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(),this);
-                cNode = new PlayarPeer(this,tclient, new byte[InputBufferSize],
-                                        new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(),this);
+                //cNode = new PlayarPeer(this,tclient, new byte[InputBufferSize],
+                //                        new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(),this);
+                cNode = new PokerPeer(this, tclient, new byte[InputBufferSize],
+                    new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(), this);
 
                 //開啟 TcpClient 的輸入串流
                 tclient.ReceiveBufferSize = (int)InputBufferSize;

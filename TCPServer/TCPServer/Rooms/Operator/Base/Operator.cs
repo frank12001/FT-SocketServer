@@ -19,7 +19,7 @@ namespace TCPServer.playar.Rooms.Operator
             this.Rooms = new Dictionary<string, Room>();
         }
         #region Room Function
-        public virtual Room Room_Create(PlayarPeer peer, string serialId, RoomTypes roomType)
+        public virtual Room Room_Create(PeerBase peer, string serialId, RoomTypes roomType)
         {
             lock ("RoomOperator")
             {
@@ -103,7 +103,7 @@ namespace TCPServer.playar.Rooms.Operator
         /// <param name="peer">Joiner's peer</param>
         /// <param name="playid">return playid if join sucess</param>
         /// <returns>if not sucess return null</returns>
-        public virtual Room Room_Join(string roomIndexInApplication, PlayarPeer peer, out byte playid)
+        public virtual Room Room_Join(string roomIndexInApplication,PeerBase peer, out byte playid)
         {
             lock ("RoomOperator")
             {

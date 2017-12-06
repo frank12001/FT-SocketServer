@@ -34,7 +34,7 @@ namespace startOnline
         
 
         #region 建構子
-        public ExhibitionRoom(string customName, PlayarPeer ownerPeer, string roomIndexInApplication,Form1 applicationPointer) : base(customName,ownerPeer,roomIndexInApplication,applicationPointer)
+        public ExhibitionRoom(string customName, PeerBase ownerPeer, string roomIndexInApplication,Form1 applicationPointer) : base(customName,ownerPeer,roomIndexInApplication,applicationPointer)
         {           
             //向資料庫取得公司資訊
             companyInfo = DataBase.DataBase.Operator.GetCompanyInfo(this.RoomIndexInApplication);
