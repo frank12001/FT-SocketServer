@@ -6,12 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Stellar.Poker;
+using TCPServer.Projects.Stellar;
 
 namespace TCPServer.playar.Rooms
 {
     public class PokerGamingRoom : Room
     {
         public List<PlayerInfo> PlayerInfos = null;
+        public PokerGamingRoom(string customName,PokerPeer ownerPeer, string roomIndexInApplication, Form1 applicationPointer) : base(customName, ownerPeer, roomIndexInApplication,applicationPointer)
+        {
+            _server.printLine("In Poker Gaming Room");
+            PlayerInfos = new List<PlayerInfo>(queueRoom.PlayerInfos);
+            PokerGamingRoomStart poker = new PokerGamingRoomStart(PlayerInfos.ToArray());
+            Dictionary<byte, object> packet = new Dictionary<byte, object>()
+            {
+                {0,3},
+                {1,TCPServer.Math.Serializate.ToByteArray(poker) },
+            };
+            BroadcastPacket(packet);
+        }
         public PokerGamingRoom(QueueRoom queueRoom,Form1 form1) : base(queueRoom,form1)
         {
             _server.printLine("In Poker Gaming Room");
