@@ -497,5 +497,6 @@ namespace startOnline
         Room = 1,
         Gaming = 2,
         System = 3,
+        Queue = 6,
     }
 }

@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using startOnline.playar.Rooms;
+using Stellar.Poker;
 using TCPServer.playar.Rooms.Operator;
+using PlayAR.Common;
 
 namespace TCPServer.playar.Rooms
 {
@@ -16,10 +18,17 @@ namespace TCPServer.playar.Rooms
         private byte waitHowMuchPeople = 0;
         private bool hasChangeRoom = false;
 
+        private int mPlayerInfoCount = 0;
+        public List<PlayerInfo> PlayerInfos = null;
+
+        private PlayAR.Common.Timer changeRoom = new PlayAR.Common.Timer(){ startTimer = false, nowTimer = 0.0f, max_Timer = 5.0f };
+
         public QueueRoom(string customName, PeerBase ownerPeer, string roomIndexInApplication, Form1 applicationPointer,
             byte waitHowMuchPeople) : base(customName, ownerPeer, roomIndexInApplication, applicationPointer)
         {
             this.waitHowMuchPeople = waitHowMuchPeople;
+            this.PlayerInfos = new List<PlayerInfo>();
+            this.mPlayerInfoCount = PlayerInfos.Count;
             _server.printLine("QueueRoom is create");
         }
 
@@ -30,6 +39,20 @@ namespace TCPServer.playar.Rooms
             base.mainThread(sender, e);
             //Log.Log.ToTxt("timer interal = " + (timer_interal * 0.001));
             //seamanController.Update(timer_interal * 0.001f); //以註解
+
+            //如 PlayerInfos 的數量有變動
+            if (mPlayerInfoCount != PlayerInfos.Count)
+            {
+                mPlayerInfoCount = PlayerInfos.Count;
+                var array = PlayerInfos.ToArray();
+                Dictionary<byte, object> packet = new Dictionary<byte, object>()
+                {
+                    {0,3},
+                    {1,TCPServer.Math.Serializate.ToByteArray(array) },
+                };
+                BroadcastPacket(packet);
+            }
+            //
             if (players.Count.Equals(waitHowMuchPeople) && !hasChangeRoom)
             {
                 //轉換房間成，遊戲防

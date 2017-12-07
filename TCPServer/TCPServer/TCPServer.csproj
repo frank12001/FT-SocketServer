@@ -76,6 +76,7 @@
     <Compile Include="Parameters.cs" />
     <Compile Include="Projects\playar\Common\Timer.cs" />
     <Compile Include="Projects\playar\playarPeer.cs" />
+    <Compile Include="Projects\Stellar\Packet\Packet.cs" />
     <Compile Include="Projects\Stellar\PokerPeer.cs" />
     <Compile Include="Rooms\ExhibitionRoom.cs" />
     <Compile Include="Rooms\Operator\Base\Operator.cs" />

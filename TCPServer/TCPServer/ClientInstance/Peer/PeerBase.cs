@@ -80,7 +80,6 @@ namespace startOnline
             SendEvent(eventData);
         }
         #endregion
-
     }
 }
 

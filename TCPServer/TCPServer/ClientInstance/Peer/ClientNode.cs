@@ -65,7 +65,7 @@ namespace TCPServer.ClientInstance
                         //cn.Tx = Encoding.ASCII.GetBytes(eventData.ForTest);
                         cn.Tx = Serializate(eventData);
                         //MessageBox.Show("Send byte Array.length = " + cn.Tx.Length);
-                        application.PrintLine("Send byte Array.length = " + cn.Tx.Length);
+                        //application.PrintLine("Send byte Array.length = " + cn.Tx.Length);
                         //從暫存區把資料寫出，給對應到此 TCPClient 的 Client 端
                         cn.tclient.GetStream().BeginWrite(cn.Tx, 0, cn.Tx.Length, cn.onCompleteWriteToClientStream, cn.tclient);
                     }

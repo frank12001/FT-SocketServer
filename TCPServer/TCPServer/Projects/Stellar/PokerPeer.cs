@@ -7,8 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using startOnline;
 using startOnline.playar.Rooms;
+using Stellar.Poker;
 using TCPServer.ClientInstance.Packet;
 using TCPServer.Math;
+using TCPServer.playar.Rooms;
 using TCPServer.playar.Rooms.Operator;
 
 namespace TCPServer.Projects.Stellar
@@ -161,16 +163,39 @@ namespace TCPServer.Projects.Stellar
                                 };
                                 SendEvent(6, packet);
                                 break;
+                            case 2://Join With PlayerInfo
+                                PlayerInfo info =
+                                    (PlayerInfo) Serializate.ToObject((byte[]) operationRequest.Parameters[1]);
+                                Console.WriteLine(info);
+                                isjoin = false;
+                                if (_server.RoomOperator is Queue queue2)
+                                {
+                                    Queue roomOperator = queue2;
+                                    this.room = roomOperator.QueueJoin(this, new Guid().ToString(), out playeridInRoom);
+                                    var queueRoom = this.room as QueueRoom;
+                                    if (queueRoom != null)
+                                    {
+                                        info.PlayerIdInRoom = playeridInRoom;
+                                        queueRoom.PlayerInfos.Add(info);
+                                    }
+                                    isjoin = true;
+                                }
+                                packet = new Dictionary<byte, object>()
+                                {
+                                    {(byte) 0, 1},
+                                    {(byte) 1, isjoin},
+                                };
+                                SendEvent(6, packet);
+                                break;
                                 
                         }
                         break;
                     #endregion
 
                     case 200:
-                        _server.PrintLine("Case 200 On");
+                        //_server.PrintLine("Case 200 On");
                         SendEvent(200, operationRequest.Parameters);
                         break;
-
                 }
             }
             catch (Exception e)
