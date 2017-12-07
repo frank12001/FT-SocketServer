@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Playar.PhotonServer;
+using FTServer;
 using TVEducation.ServerClientSwap;
 using TVEducation.TVBoxSwap;
 using System;
@@ -27,11 +27,11 @@ public class Test2 : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            //connect._gaming.ChangeType(Playar.PhotonServer.Operator.RoomTypes.MathGame);
+            //connect._gaming.ChangeType(FTServer.Operator.RoomTypes.MathGame);
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            //connect._room.CreateRoom("yaya", Playar.PhotonServer.Operator.RoomTypes.Base);
+            //connect._room.CreateRoom("yaya", FTServer.Operator.RoomTypes.Base);
             connect._queue.JoinQueue();
         }
         //mobile

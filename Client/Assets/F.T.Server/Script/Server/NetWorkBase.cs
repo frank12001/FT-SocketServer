@@ -6,7 +6,7 @@ using System.Net.Mail;
 using System.Net.Sockets;
 using TCPServer.ClientInstance.Packet;
 
-namespace Playar.PhotonServer
+namespace FTServer
 {
     public abstract class NetWorkBase 
     {
@@ -258,11 +258,11 @@ namespace Playar.PhotonServer
 
         protected byte[] Serializate(IPacket packet)
         {
-            return Playar.PhotonServer.Serializate.ToByteArray(packet);
+            return FTServer.Serializate.ToByteArray(packet);
         }
         protected IPacket DisSerializate(byte[] source)
         {
-            return (IPacket)Playar.PhotonServer.Serializate.ToObject(source);
+            return (IPacket)FTServer.Serializate.ToObject(source);
         }
 
     }

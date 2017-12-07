@@ -78,21 +78,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ServerConnect\Script\Client\Connect.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Client\Operator.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Packet\CustomConnectPhotonFish.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Packet\Packet\EventData.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Packet\Packet\IPacket.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Packet\Packet\OperationRequest.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Packet\Packet\TestPacket.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Packet\ServerBase.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Packet\ServerClientSwap.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Packet\TVBoxSwap.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Server\GameNetWorkService.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Server\NetWorkBase.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Server\Serializate.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Test\Test2.cs" />
-    <Compile Include="Assets\ServerConnect\Script\Test\TestPacket.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Client\Connect.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Client\Operator.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Packet\Base\EventData.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Packet\Base\IPacket.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Packet\Base\OperationRequest.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Packet\Base\TestPacket.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Packet\CustomConnectPhotonFish.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Packet\ServerBase.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Packet\ServerClientSwap.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Packet\TVBoxSwap.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Server\GameNetWorkService.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Server\NetWorkBase.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Server\Serializate.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Test\Test2.cs" />
+    <Compile Include="Assets\F.T.Server\Script\Test\TestPacket.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

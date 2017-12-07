@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/ServerConnect/Scene/Test1.unity
+- path: Assets/F.T.Server/Scene/Test1.unity
   isLoaded: 1
   isActive: 1

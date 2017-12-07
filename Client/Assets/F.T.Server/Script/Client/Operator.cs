@@ -3,7 +3,7 @@ using System;
 using System.Timers;
 using System.Collections.Generic;
 
-namespace Playar.PhotonServer.Operator
+namespace FTServer.Operator
 {
     /// <summary>
     /// 發送時的 Operation Code

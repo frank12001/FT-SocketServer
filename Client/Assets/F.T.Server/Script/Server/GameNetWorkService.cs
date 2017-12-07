@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using TCPServer.ClientInstance.Packet;
 
-namespace Playar.PhotonServer
+namespace FTServer
 {
     public class GameNetWorkService : NetWorkBase
     {

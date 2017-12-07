@@ -3,9 +3,9 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
 using System.Collections.Generic;
-using Playar.PhotonServer.Operator;
+using FTServer.Operator;
 
-namespace Playar.PhotonServer
+namespace FTServer
 {
     public class Connect : MonoBehaviour
     {
