@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/F.T.Server/Scene/Test1.unity
+- path: Assets/CQIGames/Stellar/PokerGameConnecter/Scene/PokerGameConnecter.unity
   isLoaded: 1
   isActive: 1

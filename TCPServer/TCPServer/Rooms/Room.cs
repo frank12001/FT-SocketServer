@@ -78,6 +78,51 @@ namespace startOnline
             #endregion
         }
         /// <summary>
+        /// 無房主，
+        /// </summary>
+        /// <param name="customName"></param>
+        /// <param name="players"></param>
+        /// <param name="roomIndexInApplication"></param>
+        /// <param name="applicationPointer"></param>
+        public Room(string customName, PeerBase[] joinPlayers, string roomIndexInApplication, Form1 applicationPointer)
+        {
+            applicationPointer.PrintLine("Create Room");
+
+            this.RoomName = customName;
+            players = new Dictionary<byte, PeerBase>() { { Ownerid, joinPlayers[0] } };
+            for (byte i = 1; i < joinPlayers.Length; i++)
+            {
+                players.Add(i,joinPlayers[i]);
+                players[i].playeridInRoom = i;
+                players[i].room = this;
+            }
+            this.RoomIndexInApplication = roomIndexInApplication;
+            this._server = applicationPointer;
+            this.Type = getRoomType();
+
+            #region 開啟遊戲主線程
+            // Create a timer with a two second interval.
+            timer = new System.Timers.Timer(timer_interal);
+            // Hook up the Elapsed event for the timer. 
+            timer.Elapsed += mainThread;
+            timer.AutoReset = true;
+            timer.Enabled = true;
+            #endregion
+
+            #region Console
+            try
+            {
+                //Console
+                applicationPointer.PrintLine("BaseRoomPlayer_Total = " + (uint)players.Count);
+                applicationPointer.PrintLine("RoomPlayer_Total = " + (uint)players.Count);
+            }
+            catch (Exception e)
+            {
+                applicationPointer.PrintLine(" Room建構子裡的 Console 錯誤  Error = " + e.Message);
+            }
+            #endregion
+        }
+        /// <summary>
         /// 透過 room 建構另一個 room
         /// </summary>
         /// <param name="room"></param>

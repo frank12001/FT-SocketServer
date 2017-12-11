@@ -654,7 +654,7 @@ namespace FTServer.Operator
     //系統
     public class _Queue : NetWorkBase
     {
-        public event ReceiveBoolHandler ReceiveJoinQueue;
+        public event Action<bool, Stellar.Poker.PlayerInfo[]> ReceiveJoinQueue;
         public _Queue(GameNetWorkService gameService) : base(gameService)
         {
             this.operationCode = OperationCode.Queue;
@@ -662,9 +662,8 @@ namespace FTServer.Operator
         }
         #region 傳送遊戲封包 (主動)
         /// <summary>
-        /// 開始計算新的 Ping
+        /// 加入排隊
         /// </summary>
-        /// <param name="assign_packet">平時用的封包大小。有正確的平寬需求，才有更準的Ping</param>
         public void JoinQueue()
         {
             Dictionary<byte, object> packet = new Dictionary<byte, object>
@@ -673,7 +672,20 @@ namespace FTServer.Operator
             };
             gameService.Deliver((byte)this.operationCode, packet);
         }
-        #endregion                
+        /// <summary>
+        /// 加入排隊
+        /// </summary>
+        /// <param name="custom_packet">加入排隊時，初始化封包</param>
+        public void JoinQueue(object custom_packet)
+        {
+            Dictionary<byte, object> packet = new Dictionary<byte, object>
+            {
+                {(byte)0,(byte)2 },
+                { (byte)1,Serializate.ToByteArray(custom_packet) }
+            };
+            gameService.Deliver((byte)this.operationCode, packet);
+        }
+        #endregion
         #region Receive Server CallBack (被動呼叫)
         public override void ServerCallBack(Dictionary<byte, object> server_packet)
         {
@@ -690,7 +702,9 @@ namespace FTServer.Operator
         {            
             if (ReceiveJoinQueue != null)
             {
-                ReceiveJoinQueue(bool.Parse(server_packet[1].ToString()));
+                bool success = bool.Parse(server_packet[1].ToString());
+                object custom_class = Serializate.ToObject((byte[])server_packet[2]);
+                ReceiveJoinQueue(success, (Stellar.Poker.PlayerInfo[])custom_class);
             }
         }
         #endregion 
@@ -705,6 +719,14 @@ namespace FTServer.Operator
         /// 展場用
         /// </summary>
         Exhibition,
+        /// <summary>
+        /// 排隊房，排完自動轉入， PokerGamingRoom
+        /// </summary>
+        QueueRoom,
+        /// <summary>
+        /// Stellar Poker Gaming Room
+        /// </summary>
+        PokerGamingRoom,
     }
 
     interface ISendMessage

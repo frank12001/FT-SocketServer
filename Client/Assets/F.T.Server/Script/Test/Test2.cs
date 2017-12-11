@@ -16,7 +16,7 @@ public class Test2 : MonoBehaviour {
 
         connect._gaming.ReceiveCustomPacket += ServerCallBack;
         connect._system.ReceiveRoomsCount += GetRoomsCount;
-        connect._queue.ReceiveJoinQueue += b => { Debug.Log("Join Queue Result = " + b); };
+        connect._queue.ReceiveJoinQueue += (success,b) => { Debug.Log("Join Queue Result = " + b); };
     }
 	
 	// Update is called once per frame

@@ -222,7 +222,7 @@ namespace FTServer
                 }
                 else
                 {
-                    Debug.Log("SP Packet In");
+                    //Debug.Log("SP Packet In");
                 }
                 //重新給予暫存一個大小
                 mRx = new byte[InputBufferSize];

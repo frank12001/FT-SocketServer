@@ -1,25 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using startOnline;
 using startOnline.playar.Rooms;
-using Stellar.Poker;
-using TCPServer.ClientInstance.Packet;
 using TCPServer.Math;
-using TCPServer.playar.Rooms;
-using TCPServer.playar.Rooms.Operator;
+using TCPServer.ClientInstance.Packet;
+using Stellar.Poker;
+
 
 namespace TCPServer.Projects.Stellar
 {
     public class PokerPeer : PeerBase
     {
+        /// <summary>
+        /// 是否在排隊中
+        /// </summary>
+        public bool _Queueing = false;
+        /// <summary>
+        /// 排隊處理器
+        /// </summary>
+        private PokerQueueOperator _RoomOperator = null;
+        /// <summary>
+        /// 該 Peer 的 Uid
+        /// </summary>
+        public Guid _Guid { get; private set; }
         public PokerPeer(Form1 app, TcpClient _tclient, byte[] _tx, byte[] _rx, string _str, IApplication applicationInterface) : base(app, _tclient, _tx, _rx, _str, applicationInterface)
         {
+            _Guid = Guid.NewGuid();
+        }
 
+        ~PokerPeer()
+        {
+            if (_Queueing)
+            {
+                //如果再排隊要移出
+                _RoomOperator.RemoveQueuingPeer(_Guid.ToString());
+                _Queueing = false;
+            }
+        }
+
+        public override void OnDisconnect()
+        {
+            if (_Queueing)
+            {
+                //如果再排隊要移出
+                _RoomOperator.RemoveQueuingPeer(_Guid.ToString());
+                _Queueing = false;
+            }
         }
 
         private byte exeCode = 0;
@@ -143,56 +170,33 @@ namespace TCPServer.Projects.Stellar
                         _server.PrintLine(DateTime.Now + " - " + this.ToString() + ": " + operationRequest.ForTest);
                         break;
 
-                    #region Queue
+                    #region 6 : Queue
                     case 6:
                         byte switchcode_6 = byte.Parse(operationRequest.Parameters[0].ToString());
                         switch (switchcode_6)
                         {
                             case 1: //Join Queue
-                                bool isjoin = false;
-                                if (_server.RoomOperator is Queue queue)
-                                {
-                                    Queue roomOperator = queue;
-                                    this.room = roomOperator.QueueJoin(this, new Guid().ToString(), out playeridInRoom);
-                                    isjoin = true;
-                                }
-                                packet = new Dictionary<byte, object>()
-                                {
-                                    {(byte) 0, 1},
-                                    {(byte) 1, isjoin},
-                                };
-                                SendEvent(6, packet);
                                 break;
                             case 2://Join With PlayerInfo
                                 PlayerInfo info =
                                     (PlayerInfo) Serializate.ToObject((byte[]) operationRequest.Parameters[1]);
-                                Console.WriteLine(info);
-                                isjoin = false;
-                                if (_server.RoomOperator is Queue queue2)
+                                if (_server.RoomOperator is PokerQueueOperator queue)
                                 {
-                                    Queue roomOperator = queue2;
-                                    this.room = roomOperator.QueueJoin(this, new Guid().ToString(), out playeridInRoom);
-                                    var queueRoom = this.room as QueueRoom;
-                                    if (queueRoom != null)
-                                    {
-                                        info.PlayerIdInRoom = playeridInRoom;
-                                        queueRoom.PlayerInfos.Add(info);
-                                    }
-                                    isjoin = true;
+                                    this._RoomOperator = queue;
+                                    this.room = this._RoomOperator.QueueJoin(new PokerQueueOperator.PokerQueuePlayerInfo()
+                                        {
+                                            _PlayerInfo = info,
+                                            _PokerPeer = this
+                                        }
+                                    );
+                                    _Queueing = true;
                                 }
-                                packet = new Dictionary<byte, object>()
-                                {
-                                    {(byte) 0, 1},
-                                    {(byte) 1, isjoin},
-                                };
-                                SendEvent(6, packet);
-                                break;
-                                
+                                break;                                
                         }
                         break;
                     #endregion
 
-                    case 200:
+                    case 200: //不斷發送封包
                         //_server.PrintLine("Case 200 On");
                         SendEvent(200, operationRequest.Parameters);
                         break;

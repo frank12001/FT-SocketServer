@@ -78,11 +78,10 @@
     <Compile Include="Projects\playar\playarPeer.cs" />
     <Compile Include="Projects\Stellar\Packet\Packet.cs" />
     <Compile Include="Projects\Stellar\PokerPeer.cs" />
+    <Compile Include="Projects\Stellar\PokerQueueOperator.cs" />
     <Compile Include="Rooms\ExhibitionRoom.cs" />
     <Compile Include="Rooms\Operator\Base\Operator.cs" />
-    <Compile Include="Rooms\Operator\Queue.cs" />
     <Compile Include="Rooms\PokerGamingRoom.cs" />
-    <Compile Include="Rooms\QueueRoom.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\RoomTypes.cs" />
     <Compile Include="Program.cs" />

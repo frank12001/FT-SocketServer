@@ -54,7 +54,7 @@ namespace TCPServer
         protected void Setup()
         {
 
-            roomOperator = new Queue(this);
+            roomOperator = new PokerQueueOperator(this);
             printLine(" Server 開機");
             printLine("Setup Finish");
 
@@ -108,7 +108,7 @@ namespace TCPServer
                 return;
             }
                                         //IPAddress.Any
-            mTCPListener = new TcpListener(ipaddr, nPort);
+            mTCPListener = new TcpListener(IPAddress.Any, nPort);
 
             mTCPListener.Start();
 
