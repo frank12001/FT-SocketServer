@@ -22,6 +22,12 @@ namespace Stellar.Poker
         public event Action<bool, PlayerInfo[]> QueueJoinIn;
         public event Action<PokerGamingRoomStart> PokerGamingRoomStart;
         public event Action<GamingLicensing> GamingLicensing;
+        /// <summary>
+        /// 換卡要求的回傳 。 (有可能會失敗)
+        /// </summary>
+        public event Action<ChangableCard> ChangableCard;
+
+
 
         // Use this for initialization
         void Start()
@@ -64,6 +70,20 @@ namespace Stellar.Poker
                 if (changableCard != null)
                 {
                     Debug.Log(changableCard);
+                }
+
+                //SendAllChangableCard
+                var sendAllChangableCard = packet as SendAllChangableCard;
+                if (sendAllChangableCard != null)
+                {
+                    Debug.Log(sendAllChangableCard);
+                }
+
+                //GameResult
+                var gameResult = packet as GameResult;
+                if (gameResult != null)
+                {
+                    Debug.Log(gameResult);
                 }
             };
             connect._gaming.ReceiveRoomType += type =>

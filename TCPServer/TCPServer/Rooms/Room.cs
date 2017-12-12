@@ -89,6 +89,9 @@ namespace startOnline
             applicationPointer.PrintLine("Create Room");
 
             this.RoomName = customName;
+            //房主特別拉出來給值，並 Add 進 Dictionary
+            joinPlayers[0].playeridInRoom = Ownerid;
+            joinPlayers[0].room = this;
             players = new Dictionary<byte, PeerBase>() { { Ownerid, joinPlayers[0] } };
             for (byte i = 1; i < joinPlayers.Length; i++)
             {

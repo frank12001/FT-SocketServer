@@ -2,8 +2,6 @@
 using startOnline;
 using System.Collections.Generic;
 using System.Timers;
-using System.Windows.Forms.VisualStyles;
-using TVEducation.ServerClientSwap;
 
 namespace TCPServer.Projects.Stellar
 {   
@@ -92,12 +90,12 @@ namespace TCPServer.Projects.Stellar
                                 DestopCards = DesktopCard.ToArray(),
                                 PlayerId = @base.Key
                             };
-                            Dictionary<byte,object> packet = new Dictionary<byte, object>()
+                            Dictionary<byte,object> packet1 = new Dictionary<byte, object>()
                             {
                                 {(byte)0,3},
                                 {(byte)1,Math.Serializate.ToByteArray(licensing)}
                             };
-                            SendToAssignPlayer(packet,@base.Key);
+                            SendToAssignPlayer(packet1,@base.Key);
                         }
 
                         //進入下個狀態，預計先等 5 秒
@@ -114,13 +112,80 @@ namespace TCPServer.Projects.Stellar
                     }
                     break;
                 case 3:
+                    //將換牌堆的排送給所有人，並等待 5 秒鐘 //WaitChangeCard
+                    SendAllChangableCard sendAllChangableCard = new SendAllChangableCard()
+                    {
+                        cards = WaitChangeCard.ToArray()
+                    };
+                    Dictionary<byte, object> packet3 = new Dictionary<byte, object>()
+                    {
+                           {(byte)0,3},
+                           {(byte)1,Math.Serializate.ToByteArray(sendAllChangableCard)}
+                    };
+                    for (byte i = 0; i < ChangeCardPlayersIndex.Count; i++)
+                    {
+                        SendToAssignPlayer(packet3, ChangeCardPlayersIndex[i]);
+                    }
+                    //進入下個狀態，預計先等 5 秒
+                    _logicTimer.Set(true, 0, 5);
+                    GameState = 4;
+                    break;
+                case 4:
+                    _logicTimer.nowTimer += (timer_interal / 1000);
+                    if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
+                    {
+                        //計算誰贏誰輸
+                        //使用 playerGamingInfo[index].Value.OwnedCard
+                        //和 DesktopCard 算出每位玩家的總分，並比較誰最贏
+                        byte winnerIndex = WhoWin();
+
+                        Card[][] card = new Card[playerGamingInfo.Count][];
+                        for (byte i = 0; i < playerGamingInfo.Count; i++)
+                        {
+                            PlayerGamingInfo info = playerGamingInfo[i];
+                            card[i] = info.OwnedCards.ToArray();
+                        }
+                        //將勝負結果和所有的卡傳到 Client
+                        GameResult gameResult = new GameResult()
+                        {
+                            WinnerId = winnerIndex,
+                            card = card
+                        };
+
+                        Dictionary<byte, object> packet4 = new Dictionary<byte, object>()
+                        {
+                           {(byte)0,3},
+                           {(byte)1,Math.Serializate.ToByteArray(gameResult)}
+                        };
+                        for (byte i = 0; i < playerGamingInfo.Count; i++)
+                        {
+                            SendToAssignPlayer(packet4, i);
+                        }
+
+                        _logicTimer.Set(true, 0, 5);
+                        GameState = 5;
+                    }
+                    break;
+                case 5:
+                    _logicTimer.nowTimer += (timer_interal / 1000);
+                    if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
+                    {
+                        //Exit Poker Room
+                        _logicTimer.Set(true, 0, 5);
+                        GameState = 6;
+                    }
+                    break;
+                case 6: //
 
                     break;
                     
             }
         }
 
-
+        private byte WhoWin()
+        {
+            return 0;
+        }
         public override void GamingProcess(byte playerId, Dictionary<byte, object> packet)
         {
             byte switchcode_1 = byte.Parse(packet[0].ToString()); //switch code
@@ -148,6 +213,8 @@ namespace TCPServer.Projects.Stellar
                     }
                     break;
                 #endregion
+
+                #region case 1 接收換牌請求  GameState 2
                 case 1: //接收換牌請求
                     ChangableCard changableCard = new ChangableCard();
                     changableCard.IsChange = false;
@@ -173,9 +240,17 @@ namespace TCPServer.Projects.Stellar
                         {(byte)1,Math.Serializate.ToByteArray(changableCard) },
                     };
 
-                    SendToAssignPlayer(resPacket, playerId);
+                       SendToAssignPlayer(resPacket, playerId);
                     break;
-                        
+                #endregion
+                #region case 2 GameState 4
+                case 2:
+                    if (GameState.Equals(4))
+                    {
+                        //接收想拿哪張牌
+                    }
+                    break;
+                    #endregion
             }
         }
 

@@ -395,10 +395,10 @@ namespace FTServer.Operator
             gameService.Deliver((byte)this.operationCode, packet);
         }
         /// <summary>
-        /// 發送客製化封包給，在遊戲房中的所有人。除了自己
+        /// 發送給 Sever
         /// </summary>
         /// <param name="custom_packet"></param>
-        public void BroadcastPacket_Server(Dictionary<byte,object> custom_packet)
+        public void SendToServer(Dictionary<byte,object> custom_packet)
         {
             gameService.Deliver((byte)this.operationCode, custom_packet);
         }
@@ -654,7 +654,7 @@ namespace FTServer.Operator
     //系統
     public class _Queue : NetWorkBase
     {
-        public event Action<bool, Stellar.Poker.PlayerInfo[]> ReceiveJoinQueue;
+        public event Action<bool, TCPServer.Projects.Stellar.PlayerInfo[]> ReceiveJoinQueue;
         public _Queue(GameNetWorkService gameService) : base(gameService)
         {
             this.operationCode = OperationCode.Queue;
@@ -704,7 +704,7 @@ namespace FTServer.Operator
             {
                 bool success = bool.Parse(server_packet[1].ToString());
                 object custom_class = Serializate.ToObject((byte[])server_packet[2]);
-                ReceiveJoinQueue(success, (Stellar.Poker.PlayerInfo[])custom_class);
+                ReceiveJoinQueue(success, (TCPServer.Projects.Stellar.PlayerInfo[])custom_class);
             }
         }
         #endregion 

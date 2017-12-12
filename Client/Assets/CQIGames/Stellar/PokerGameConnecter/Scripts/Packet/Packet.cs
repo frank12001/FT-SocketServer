@@ -36,7 +36,6 @@ namespace TCPServer.Projects.Stellar
             this.PlayerInfos = playerInfos;
         }
     }
-
     [Serializable]
     public class GamingLicensing
     {
@@ -63,7 +62,6 @@ namespace TCPServer.Projects.Stellar
             return result;
         }
     }
-
     [Serializable]
     public struct Card
     {
@@ -90,5 +88,16 @@ namespace TCPServer.Projects.Stellar
     {
         public byte CardIndex;
         public bool IsChange;
+    }
+    [Serializable]
+    public class SendAllChangableCard
+    {
+        public Card[] cards;
+    }
+    [Serializable]
+    public class GameResult
+    {
+        public Card[][] card;
+        public byte WinnerId;
     }
 }
