@@ -4,13 +4,12 @@ using startOnline;
 using startOnline.playar.Rooms;
 using TCPServer.playar.Rooms;
 using TCPServer.playar.Rooms.Operator;
-using Stellar.Poker;
 
 namespace TCPServer.Projects.Stellar
 {
     public class PokerQueueOperator : Operator
     {
-        public const byte HowMuchPlayersJoinRoom = 10;
+        public const byte HowMuchPlayersJoinRoom = 2;
         public Dictionary<string, Dictionary<string, PokerQueuePlayerInfo>> _Queue;
         public Dictionary<string, PokerGamingRoom> _PokerGamingRoom;
         public PokerQueueOperator(Form1 form1) : base(form1)
@@ -48,6 +47,7 @@ namespace TCPServer.Projects.Stellar
                     {
                         playerInfos.Add(player.Value._PlayerInfo);
                         peerBase.Add(player.Value._PokerPeer);
+                        player.Value._PokerPeer._Queueing = false;
                     }
                     room = new PokerGamingRoom(playerInfos, "PokerGamingRoom", peerBase.ToArray(), Guid.NewGuid().ToString(), server);
                     // Console 

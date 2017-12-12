@@ -5,7 +5,6 @@ using startOnline;
 using startOnline.playar.Rooms;
 using TCPServer.Math;
 using TCPServer.ClientInstance.Packet;
-using Stellar.Poker;
 
 
 namespace TCPServer.Projects.Stellar

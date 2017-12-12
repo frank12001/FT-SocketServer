@@ -81,7 +81,7 @@
     <Compile Include="Projects\Stellar\PokerQueueOperator.cs" />
     <Compile Include="Rooms\ExhibitionRoom.cs" />
     <Compile Include="Rooms\Operator\Base\Operator.cs" />
-    <Compile Include="Rooms\PokerGamingRoom.cs" />
+    <Compile Include="Projects\Stellar\PokerGamingRoom.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\RoomTypes.cs" />
     <Compile Include="Program.cs" />

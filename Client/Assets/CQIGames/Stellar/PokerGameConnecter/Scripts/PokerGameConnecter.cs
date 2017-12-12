@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FTServer;
 using FTServer.Operator;
+using TCPServer.Projects.Stellar;
 
 namespace Stellar.Poker
 {
@@ -16,13 +17,16 @@ namespace Stellar.Poker
         }
         private bool isConnect = false;
 
+        private bool InPokerGamingRoom = false;
+        private GamingLicensing PlayerGamingInfo;
         public event Action<bool, PlayerInfo[]> QueueJoinIn;
         public event Action<PokerGamingRoomStart> PokerGamingRoomStart;
+        public event Action<GamingLicensing> GamingLicensing;
 
         // Use this for initialization
         void Start()
         {
-            connect = GameObject.FindObjectOfType<Connect>();
+            connect = GetComponent<Connect>();
             if(QueueJoinIn != null)
                 connect._queue.ReceiveJoinQueue += QueueJoinIn;
             connect._queue.ReceiveJoinQueue += (success,b) => { Debug.Log("Join Queue Result = " + b); };
@@ -38,10 +42,28 @@ namespace Stellar.Poker
                 if (pokerGamingRoomStart != null)
                 {
                     Debug.Log(pokerGamingRoomStart);
+                    InPokerGamingRoom = true;
                     if (PokerGamingRoomStart != null)
                     {
                         PokerGamingRoomStart(pokerGamingRoomStart);
                     }                    
+                }
+
+                var gamingLicensing = packet as GamingLicensing;
+                if (gamingLicensing != null)
+                {
+                    Debug.Log(gamingLicensing);
+                    this.PlayerGamingInfo = gamingLicensing.Clone();
+                    if (GamingLicensing != null)
+                    {
+                        GamingLicensing(gamingLicensing);
+                    }
+                }
+
+                var changableCard = packet as ChangableCard;
+                if (changableCard != null)
+                {
+                    Debug.Log(changableCard);
                 }
             };
             connect._gaming.ReceiveRoomType += type =>
@@ -69,6 +91,40 @@ namespace Stellar.Poker
             }
         }
 
+        /// <summary>
+        /// 交換卡片
+        /// </summary>
+        /// <param name="card">要換的卡片</param>
+        /// <returns>如果還沒有手牌 return false</returns>
+        public bool ChangeCard(Card card)
+        {
+            bool result = false; //此功能有無執行成功
+            if (PlayerGamingInfo!= null)
+            {
+                return result;
+            }
+            byte cardIndex = 255;
+            for (byte i = 0; i < PlayerGamingInfo.OwnedCards.Length; i++)
+            {
+                if (card.Value.Equals(card.Value))
+                {
+                    cardIndex = i;
+                    break;
+                }
+            }
+            if (cardIndex.Equals(255))
+                return result;
+            //SendToServer
+            Dictionary<byte,object> packet = new Dictionary<byte, object>()
+            {
+                {(byte)0,1 },
+                {(byte)2,cardIndex }
+            };
+            connect._gaming.SendToServer(packet);
+            result = true;
+            return result;
+        }
+
         #region Test Function
 
 
@@ -76,6 +132,22 @@ namespace Stellar.Poker
         {
             PlayerInfo info = new PlayerInfo("YaYa",100,"0","1","2","3");
             StartQueue(info);
+        }
+
+        /// <summary>
+        /// 交換卡片 (測試)
+        /// </summary>
+        /// <returns>如果還沒有手牌 return false</returns>
+        public void TestChangeCard()
+        {
+            //SendToServer
+            byte cardIndex = 1;
+            Dictionary<byte, object> packet = new Dictionary<byte, object>()
+            {
+                {(byte)0,1 },
+                {(byte)1,cardIndex }
+            };
+            connect._gaming.SendToServer(packet);
         }
         #endregion
 
