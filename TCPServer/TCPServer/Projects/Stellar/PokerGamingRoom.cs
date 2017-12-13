@@ -12,6 +12,7 @@ namespace TCPServer.Projects.Stellar
     {
         private const byte PlayerHoldCardNumber = 4;
         private const byte DesktopCardNumber = 4;
+        private const byte BettingCount = 3;
 
         private PlayAR.Common.Timer _logicTimer = new PlayAR.Common.Timer() { startTimer = false, nowTimer = 0.0f , max_Timer = 0.0f};
         private byte GameState = 0;
@@ -20,21 +21,21 @@ namespace TCPServer.Projects.Stellar
         private List<Card> WaitChangeCard = new List<Card>();
         private List<byte> ChangeCardPlayersIndex = new List<byte>();
 
-        private string[] isLoseTemp = new string[4];
+        private string[] hasMoneyTemp = new string[4];
 
         private Dictionary<byte, PlayerGamingInfo> playerGamingInfo = new Dictionary<byte, PlayerGamingInfo>();
 
-        private struct PlayerGamingInfo
+        private class PlayerGamingInfo
         {
             public List<Card> OwnedCards;
             public int TotalMoney;
             public int CostMoney;
             public bool IsLose;
-            public PlayerGamingInfo(List<Card> ownedCards,bool isLose)
+            public PlayerGamingInfo(List<Card> ownedCards,bool isLose,int totalMoney,int costMoney)
             {
                 OwnedCards = ownedCards;
-                TotalMoney = 0;
-                CostMoney = 0;
+                TotalMoney = totalMoney;
+                CostMoney = costMoney;
                 IsLose = isLose;
             }
         }
@@ -51,59 +52,18 @@ namespace TCPServer.Projects.Stellar
             _server.printLine("In Poker Gaming Room");
             PlayerInfos = new List<PlayerInfo>(playerInfos);
 
+            //Release
             //List<string> userids = new List<string>();
             //for (byte i = 0; i < PlayerInfos.Count; i++)
             //{
             //    userids.Add(PlayerInfos[i].FirebaseUserId);
             //}
+            //Test
             List<string> userids = new List<string>(new string[] { "-L07-epS6L6ApPWZcojd", "-L07KMKucuGHBTXOWMMs" });
 
-            GameStart(PlayerInfos[0].ChipMultiple, userids.ToArray());
+            PeerStake = PlayerInfos[0].ChipMultiple;
+            GameStart(PeerStake* BettingCount, userids.ToArray());
 
-        }
-
-        private async void GameStart(int monryCount,string[] useridStrings)
-        {
-            string result = await AccessFirebaseServerCheckMoneyAsync(monryCount, useridStrings);
-            result = result.Substring(1, result.Length - 2);
-            _server.printLine("result " + result);
-            char[] delimiterChars = { ',' };
-            string[] words = result.Split(delimiterChars);
-            isLoseTemp = words;
-
-            PokerGamingRoomStart poker = new PokerGamingRoomStart(PlayerInfos.ToArray());
-            Dictionary<byte, object> packet = new Dictionary<byte, object>()
-            {
-                {0,3},
-                {1,TCPServer.Math.Serializate.ToByteArray(poker) },
-            };
-            BroadcastPacket(packet);
-
-            TotalCard = GetAllCard();
-            //5 秒後進入下個遊戲狀態
-            _logicTimer.Set(true, 0, 5);
-            GameState = 1;
-        }
-
-        private async Task<string> AccessFirebaseServerCheckMoneyAsync(int moneyCount,string[] useridStrings)
-        {
-            string json = "";
-            for (int i = 0; i < useridStrings.Length; i++)
-            {
-                json += "," +useridStrings[i];
-            }
-            json = json.Substring(1, json.Length-1);
-            //json = "[" + json + "]";
-            _server.printLine("json " + json);
-
-            HttpClient client = new HttpClient();
-            string url = string.Format("https://us-central1-stellar-38931.cloudfunctions.net/PokerServer?parameter1=CheckUserMoney&parameter2={0}&parameter3={1}", moneyCount.ToString(), json);           
-
-            Task<string> getStringTask = client.GetStringAsync(url);
-                                                     
-            string urlContents = await getStringTask;
-            _server.printLine("res " + urlContents);
-            return urlContents;
         }
 
         ~PokerGamingRoom()
@@ -115,6 +75,12 @@ namespace TCPServer.Projects.Stellar
         {
             switch (GameState)
             {
+                #region 0 建構子 初始化 ing
+                case 0: 
+                    //這時還在初始化，完成後 GameState => 1
+                    break;
+                #endregion
+                #region  1 確認玩家進房，發給玩家和桌面牌，並傳送
                 case 1:
                     _logicTimer.nowTimer += (timer_interal/1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
@@ -124,8 +90,10 @@ namespace TCPServer.Projects.Stellar
                         playerGamingInfo = new Dictionary<byte, PlayerGamingInfo>();
                         foreach (KeyValuePair<byte, PeerBase> @base in players)
                         {
-                            List<Card> ownedCard = GetRandomCard(ref TotalCard, PlayerHoldCardNumber);                           
-                            PlayerGamingInfo gamingInfo = new PlayerGamingInfo(ownedCard,bool.Parse(isLoseTemp[@base.Key]));
+                            List<Card> ownedCard = GetRandomCard(ref TotalCard, PlayerHoldCardNumber);
+                            bool isLose = !bool.Parse(hasMoneyTemp[@base.Key]);
+                            int totalMoney = (!isLose) ? PeerStake * (BettingCount-1) : 0;                            
+                            PlayerGamingInfo gamingInfo = new PlayerGamingInfo(ownedCard, isLose, totalMoney, PeerStake);
                             playerGamingInfo.Add(@base.Key, gamingInfo);
                         }
                         //建立 DesktopCard
@@ -153,15 +121,35 @@ namespace TCPServer.Projects.Stellar
                         GameState = 2;
                     }
                     break;
-                    
-                case 2: //等待傳送要換哪張牌
+                #endregion
+                #region 2 等待下注
+                case 2: //等待下注
+                    if (_logicTimer.nowTimer.Equals(0))
+                    {
+                        SendBettingState(new BettingState(2,true));
+                    }
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
                     {
+                        SetIsBetting(2);
+                        //檢查如果全部棄注 ? 
+                        //傳送給所有人下注結束
+                        SendBettingState(new BettingState(2, false));
+                        _logicTimer.Set(true, 0, 5);
                         GameState = 3;
                     }
                     break;
-                case 3:
+                #endregion 
+                #region 
+                case 3: //等待傳送要換哪張牌
+                    _logicTimer.nowTimer += (timer_interal / 1000);
+                    if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
+                    {
+                        GameState = 4;
+                    }
+                    break;
+                #endregion 
+                case 4:
                     //將換牌堆的排送給所有人，並等待 5 秒鐘 //WaitChangeCard
                     SendAllChangableCard sendAllChangableCard = new SendAllChangableCard()
                     {
@@ -178,9 +166,28 @@ namespace TCPServer.Projects.Stellar
                     }
                     //進入下個狀態，預計先等 5 秒
                     _logicTimer.Set(true, 0, 5);
-                    GameState = 4;
+                    GameState = 5;
                     break;
-                case 4:
+                #region 5 等待 第三次加注
+                case 5: //第三次加注
+                    if (_logicTimer.nowTimer.Equals(0))
+                    {
+                        SendBettingState(new BettingState(3, true));
+                    }
+                    _logicTimer.nowTimer += (timer_interal / 1000);
+                    if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
+                    {
+
+                        SetIsBetting(3);
+                        //傳送給所有人下注結束
+                        SendBettingState(new BettingState(3, false));
+
+                        _logicTimer.Set(true, 0, 5);
+                        GameState = 6;
+                    }
+                    break;
+                #endregion 
+                case 6:
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
                     {
@@ -213,37 +220,59 @@ namespace TCPServer.Projects.Stellar
                         }
 
                         _logicTimer.Set(true, 0, 5);
-                        GameState = 5;
+                        GameState = 7;
                     }
                     break;
-                case 5:
+                case 7:
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
                     {
                         //Exit Poker Room
                         _logicTimer.Set(true, 0, 5);
-                        GameState = 6;
+                        GameState = 8;
                     }
                     break;
-                case 6: //
+                case 8: //
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
                     {
                         //Exit Poker Room
                         Room_Disband();
-                        GameState = 7;
+                        GameState = 9;
                     }
-                    break;
-                    
+                    break;                    
             }
         }
 
-
-
-        private byte WhoWin()
+        /// <summary>
+        /// 傳送給所有人 可以 or 不行 下注
+        /// </summary>
+        /// <param name="startBetting"></param>
+        private void SendBettingState(BettingState bettingState)
         {
-            return 0;
+            //傳送給所有人說，開始下注
+            Dictionary<byte, object> packet = new Dictionary<byte, object>()
+            {
+                  {(byte)0,3 }, //switch Code , Server Call Back
+                  {(byte)1,Math.Serializate.ToByteArray(bettingState) },
+            };
+            BroadcastPacket(packet);
         }
+
+        /// <summary>
+        /// 設定有無下注
+        /// </summary>
+        /// <param name="bettingNumber"></param>
+        private void SetIsBetting(byte bettingNumber)
+        {
+            //檢查誰沒有下注
+            foreach (KeyValuePair<byte, PlayerGamingInfo> info in playerGamingInfo)
+            {
+                if (!info.Value.IsLose)
+                    info.Value.IsLose = (!info.Value.IsLose && !info.Value.CostMoney.Equals(PeerStake * bettingNumber));
+            }
+        }
+
         public override void GamingProcess(byte playerId, Dictionary<byte, object> packet)
         {
             byte switchcode_1 = byte.Parse(packet[0].ToString()); //switch code
@@ -271,12 +300,32 @@ namespace TCPServer.Projects.Stellar
                     }
                     break;
                 #endregion
-
                 #region case 1 接收換牌請求  GameState 2
                 case 1: //接收換牌請求
+                    UseMoney useMoney = new UseMoney(false);
+                    if (GameState.Equals(2) || GameState.Equals(5))
+                    {
+                        if (!playerGamingInfo[playerId].IsLose)
+                        {
+                            useMoney.Success = true;
+                            playerGamingInfo[playerId].TotalMoney -= PeerStake;
+                            playerGamingInfo[playerId].CostMoney += PeerStake;
+                        }
+                    }
+                    Dictionary<byte, object> resPacket = new Dictionary<byte, object>()
+                    {
+                        {(byte)0,3 },
+                        {(byte)1,Math.Serializate.ToByteArray(useMoney) },
+                    };
+
+                    SendToAssignPlayer(resPacket, playerId);
+                    break;
+                #endregion
+                #region case 1 接收換牌請求  GameState 2
+                case 2: //接收換牌請求
                     ChangableCard changableCard = new ChangableCard();
                     changableCard.IsChange = false;
-                    if (GameState.Equals(2))
+                    if (GameState.Equals(3))
                     {
                         if (!ChangeCardPlayersIndex.Contains(playerId))
                         {
@@ -292,7 +341,7 @@ namespace TCPServer.Projects.Stellar
                             changableCard.IsChange = true;
                         }
                     }
-                    Dictionary<byte,object> resPacket = new Dictionary<byte, object>()
+                    resPacket = new Dictionary<byte, object>()
                     {
                         {(byte)0,3 },
                         {(byte)1,Math.Serializate.ToByteArray(changableCard) },
@@ -302,7 +351,7 @@ namespace TCPServer.Projects.Stellar
                     break;
                 #endregion
                 #region case 2 GameState 4
-                case 2:
+                case 3:
                     if (GameState.Equals(4))
                     {
                         //接收想拿哪張牌
@@ -310,6 +359,34 @@ namespace TCPServer.Projects.Stellar
                     break;
                     #endregion
             }
+        }
+
+        /// <summary>
+        /// 遊戲開始的設定 (去 Firebase 進行資料確認)
+        /// </summary>
+        /// <param name="monryCount">確認鑽石數量</param>
+        /// <param name="useridStrings">玩家們的 id</param>
+        private async void GameStart(int monryCount, string[] useridStrings)
+        {
+            string result = await AccessFirebaseServerCheckMoneyAsync(monryCount, useridStrings);
+            result = result.Substring(1, result.Length - 2);
+            _server.printLine("result " + result);
+            char[] delimiterChars = { ',' };
+            string[] words = result.Split(delimiterChars);
+            hasMoneyTemp = words;
+
+            PokerGamingRoomStart poker = new PokerGamingRoomStart(PlayerInfos.ToArray());
+            Dictionary<byte, object> packet = new Dictionary<byte, object>()
+            {
+                {0,3},
+                {1,TCPServer.Math.Serializate.ToByteArray(poker) },
+            };
+            BroadcastPacket(packet);
+
+            TotalCard = GetAllCard();
+            //5 秒後進入下個遊戲狀態
+            _logicTimer.Set(true, 0, 5);
+            GameState = 1;
         }
 
         /// <summary>
@@ -349,6 +426,56 @@ namespace TCPServer.Projects.Stellar
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 去 Firebase Server 確認，多位 user 的鑽石夠不夠玩
+        /// </summary>
+        /// <param name="moneyCount">確認的鑽石數量</param>
+        /// <param name="useridStrings">玩家們的 id </param>
+        /// <returns>回傳字串為 [true,true,false] ..傳入幾位玩家救回傳幾位玩家的鑽石夠不夠</returns>
+        private async Task<string> AccessFirebaseServerCheckMoneyAsync(int moneyCount, string[] useridStrings)
+        {
+            string json = "";
+            for (int i = 0; i < useridStrings.Length; i++)
+            {
+                json += "," + useridStrings[i];
+            }
+            json = json.Substring(1, json.Length - 1);
+            //json = "[" + json + "]";
+            _server.printLine("json " + json);
+
+            HttpClient client = new HttpClient();
+            string url = string.Format("https://us-central1-stellar-38931.cloudfunctions.net/PokerServer?parameter1=CheckUserMoney&parameter2={0}&parameter3={1}", moneyCount.ToString(), json);
+
+            Task<string> getStringTask = client.GetStringAsync(url);
+
+            string urlContents = "";
+            try
+            {
+                urlContents = await getStringTask;
+            }
+            catch (Exception e)
+            {
+                json = "";
+                for (int i = 0; i < useridStrings.Length; i++)
+                {
+                    json += "," + useridStrings[i];
+                }
+                json = json.Substring(1, json.Length - 1);
+                json = "[" + json + "]";
+            }
+            _server.printLine("res " + urlContents);
+            return urlContents;
+        }
+
+        /// <summary>
+        /// 誰贏這場遊戲
+        /// </summary>
+        /// <returns>贏家的 id in Room</returns>
+        private byte WhoWin()
+        {
+            return 0;
         }
     }
 }

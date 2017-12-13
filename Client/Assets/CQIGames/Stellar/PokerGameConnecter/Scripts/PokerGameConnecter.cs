@@ -23,11 +23,12 @@ namespace Stellar.Poker
         public event Action<PokerGamingRoomStart> PokerGamingRoomStart;
         public event Action<GamingLicensing> GamingLicensing;
         /// <summary>
-        /// 換卡要求的回傳 。 (有可能會失敗)
+        /// 換卡要求的回傳 。 (有可能會換牌失敗)
         /// </summary>
         public event Action<ChangableCard> ChangableCard;
 
-
+        public event Action<BettingState> CanBetting;
+        public event Action<UseMoney> BettingRes;
 
         // Use this for initialization
         void Start()
@@ -63,6 +64,27 @@ namespace Stellar.Poker
                     if (GamingLicensing != null)
                     {
                         GamingLicensing(gamingLicensing);
+                    }
+                }
+
+                var bettingState = packet as BettingState;
+                if (bettingState != null)
+                {
+                    Debug.Log(bettingState);
+                    Debug.Log("Betting State = " + bettingState.CanBetting);
+                    if (CanBetting != null)
+                    {
+                        CanBetting(bettingState);
+                    }
+                }
+
+                var useMoney = packet as UseMoney;
+                if (useMoney != null)
+                {
+                    Debug.Log(useMoney);
+                    if (BettingRes != null)
+                    {
+                        BettingRes(useMoney);
                     }
                 }
 
@@ -137,12 +159,26 @@ namespace Stellar.Poker
             //SendToServer
             Dictionary<byte,object> packet = new Dictionary<byte, object>()
             {
-                {(byte)0,1 },
+                {(byte)0,2 },
                 {(byte)2,cardIndex }
             };
             connect._gaming.SendToServer(packet);
             result = true;
             return result;
+        }
+
+        /// <summary>
+        /// 下注
+        /// </summary>
+        public void Betting()
+        {
+            //SendToServer
+            Dictionary<byte, object> packet = new Dictionary<byte, object>()
+            {
+                {(byte)0,1 },
+                {(byte)1,Serializate.ToByteArray(new UseMoney(false)) }
+            };
+            connect._gaming.SendToServer(packet);
         }
 
         #region Test Function

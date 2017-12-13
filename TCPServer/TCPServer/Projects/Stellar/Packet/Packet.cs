@@ -72,6 +72,26 @@ namespace TCPServer.Projects.Stellar
         }
     }
     [Serializable]
+    public class BettingState
+    {
+        public bool CanBetting;
+        public byte BettingNumber;
+        public BettingState(byte bettingNumber, bool canBetting)
+        {
+            this.BettingNumber = bettingNumber;
+            this.CanBetting = canBetting;
+        }
+    }
+    [Serializable]
+    public class UseMoney
+    {
+        public bool Success;
+        public UseMoney(bool success)
+        {
+            this.Success = success;
+        }
+    }
+    [Serializable]
     public struct Card
     {
         [Serializable]

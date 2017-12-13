@@ -9,7 +9,7 @@ namespace TCPServer.Projects.Stellar
 {
     public class PokerQueueOperator : Operator
     {
-        public const byte HowMuchPlayersJoinRoom = 1;
+        public const byte HowMuchPlayersJoinRoom = 2;
         public Dictionary<string, Dictionary<string, PokerQueuePlayerInfo>> _Queue;
         //public Dictionary<string, PokerGamingRoom> _PokerGamingRoom;
         public PokerQueueOperator(Form1 form1) : base(form1)
