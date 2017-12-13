@@ -50,6 +50,7 @@ namespace startOnline
         {
             if (this.room != null)
                 this.room = null;
+            this.playeridInRoom = 0;
             //Send Message
             //要發新的包
             Dictionary<byte, object> packet = new Dictionary<byte, object>

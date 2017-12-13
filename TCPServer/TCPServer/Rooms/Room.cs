@@ -328,7 +328,7 @@ namespace startOnline
         /// Exit this room
         /// </summary>
         /// <param name="playarindex"></param>
-        public void Room_Exit(byte playarindex)
+        public virtual void Room_Exit(byte playarindex)
         {
             if (playarindex == Ownerid) //if the exit person is owner
             {

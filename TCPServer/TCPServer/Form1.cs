@@ -6,9 +6,6 @@ using System.Net.Sockets;
 using TCPServer.playar.Rooms.Operator;
 using TCPServer.ClientInstance;
 using TCPServer.ClientInstance.Packet;
-using startOnline;
-using startOnline.DataBase;
-using startOnline.playar.Rooms;
 using TCPServer.Projects.Stellar;
 
 
@@ -107,7 +104,7 @@ namespace TCPServer
                 MessageBox.Show("Invalid IP address supplied.");
                 return;
             }
-                                        //IPAddress.Any
+                                 //IPAddress.Any //ipaddr
             mTCPListener = new TcpListener(IPAddress.Any, nPort);
 
             mTCPListener.Start();

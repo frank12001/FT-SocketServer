@@ -9,9 +9,9 @@ namespace TCPServer.Projects.Stellar
 {
     public class PokerQueueOperator : Operator
     {
-        public const byte HowMuchPlayersJoinRoom = 2;
+        public const byte HowMuchPlayersJoinRoom = 1;
         public Dictionary<string, Dictionary<string, PokerQueuePlayerInfo>> _Queue;
-        public Dictionary<string, PokerGamingRoom> _PokerGamingRoom;
+        //public Dictionary<string, PokerGamingRoom> _PokerGamingRoom;
         public PokerQueueOperator(Form1 form1) : base(form1)
         {
             _Queue = new Dictionary<string, Dictionary<string, PokerQueuePlayerInfo>>();
@@ -105,6 +105,27 @@ namespace TCPServer.Projects.Stellar
                 } 
             }
         }
+
+        //public override void Room_Remove(string index)
+        //{
+        //    //給自己的不 lock
+        //    if (Room_IsRoomExist(index))
+        //    {
+        //        //Console
+        //        PokerGamingRoom room;
+        //        _PokerGamingRoom.TryGetValue(index, out room);
+
+        //        server.printLine("基本房 - 1");
+        //        server.printLine("房間總數 - 1");
+
+        //        _PokerGamingRoom.Remove(index);
+        //    }
+        //}
+
+        //public override bool Room_IsRoomExist(string roomIndexInApplication)
+        //{
+        //    return _PokerGamingRoom.ContainsKey(roomIndexInApplication);
+        //}
     }
 }
 
