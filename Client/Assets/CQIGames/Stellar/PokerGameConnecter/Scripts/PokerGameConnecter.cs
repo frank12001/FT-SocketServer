@@ -150,7 +150,7 @@ namespace Stellar.Poker
 
         public void JoinQueueRoom()
         {
-            PlayerInfo info = new PlayerInfo("YaYa",100,"0","1","2","3");
+            PlayerInfo info = new PlayerInfo("YaYa",100,"0","1","2","3","12312");
             StartQueue(info);
         }
 

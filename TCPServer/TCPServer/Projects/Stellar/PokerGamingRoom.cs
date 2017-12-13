@@ -1,6 +1,8 @@
 ﻿using System;
 using startOnline;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -18,6 +20,8 @@ namespace TCPServer.Projects.Stellar
         private List<Card> WaitChangeCard = new List<Card>();
         private List<byte> ChangeCardPlayersIndex = new List<byte>();
 
+        private string[] isLoseTemp = new string[4];
+
         private Dictionary<byte, PlayerGamingInfo> playerGamingInfo = new Dictionary<byte, PlayerGamingInfo>();
 
         private struct PlayerGamingInfo
@@ -26,12 +30,12 @@ namespace TCPServer.Projects.Stellar
             public int TotalMoney;
             public int CostMoney;
             public bool IsLose;
-            public PlayerGamingInfo(List<Card> ownedCards)
+            public PlayerGamingInfo(List<Card> ownedCards,bool isLose)
             {
                 OwnedCards = ownedCards;
                 TotalMoney = 0;
                 CostMoney = 0;
-                IsLose = false;
+                IsLose = isLose;
             }
         }
         
@@ -46,10 +50,27 @@ namespace TCPServer.Projects.Stellar
         {
             _server.printLine("In Poker Gaming Room");
             PlayerInfos = new List<PlayerInfo>(playerInfos);
-            //foreach (PokerPeer peer in joinPlayers)
+
+            //List<string> userids = new List<string>();
+            //for (byte i = 0; i < PlayerInfos.Count; i++)
             //{
-            //    peer._Queueing = false; //結束排隊
+            //    userids.Add(PlayerInfos[i].FirebaseUserId);
             //}
+            List<string> userids = new List<string>(new string[] { "-L07-epS6L6ApPWZcojd", "-L07KMKucuGHBTXOWMMs" });
+
+            GameStart(PlayerInfos[0].ChipMultiple, userids.ToArray());
+
+        }
+
+        private async void GameStart(int monryCount,string[] useridStrings)
+        {
+            string result = await AccessFirebaseServerCheckMoneyAsync(monryCount, useridStrings);
+            result = result.Substring(1, result.Length - 2);
+            _server.printLine("result " + result);
+            char[] delimiterChars = { ',' };
+            string[] words = result.Split(delimiterChars);
+            isLoseTemp = words;
+
             PokerGamingRoomStart poker = new PokerGamingRoomStart(PlayerInfos.ToArray());
             Dictionary<byte, object> packet = new Dictionary<byte, object>()
             {
@@ -60,33 +81,30 @@ namespace TCPServer.Projects.Stellar
 
             TotalCard = GetAllCard();
             //5 秒後進入下個遊戲狀態
-            _logicTimer.Set(true,0,5);
+            _logicTimer.Set(true, 0, 5);
             GameState = 1;
         }
 
-        //async Task<int> AccessTheWebAsync()
-        //{
-        //    // You need to add a reference to System.Net.Http to declare client.
-        //    HttpClient client = new HttpClient();
+        private async Task<string> AccessFirebaseServerCheckMoneyAsync(int moneyCount,string[] useridStrings)
+        {
+            string json = "";
+            for (int i = 0; i < useridStrings.Length; i++)
+            {
+                json += "," +useridStrings[i];
+            }
+            json = json.Substring(1, json.Length-1);
+            //json = "[" + json + "]";
+            _server.printLine("json " + json);
 
-        //    // GetStringAsync returns a Task<string>. That means that when you await the 
-        //    // task you'll get a string (urlContents).
-        //    Task<string> getStringTask = client.GetStringAsync("http://msdn.microsoft.com");
+            HttpClient client = new HttpClient();
+            string url = string.Format("https://us-central1-stellar-38931.cloudfunctions.net/PokerServer?parameter1=CheckUserMoney&parameter2={0}&parameter3={1}", moneyCount.ToString(), json);           
 
-        //    // You can do work here that doesn't rely on the string from GetStringAsync.
-        //    DoIndependentWork();
-
-        //    // The await operator suspends AccessTheWebAsync. 
-        //    //  - AccessTheWebAsync can't continue until getStringTask is complete. 
-        //    //  - Meanwhile, control returns to the caller of AccessTheWebAsync. 
-        //    //  - Control resumes here when getStringTask is complete.  
-        //    //  - The await operator then retrieves the string result from getStringTask. 
-        //    string urlContents = await getStringTask;
-
-        //    // The return statement specifies an integer result. 
-        //    // Any methods that are awaiting AccessTheWebAsync retrieve the length value. 
-        //    return urlContents.Length;
-        //}
+            Task<string> getStringTask = client.GetStringAsync(url);
+                                                     
+            string urlContents = await getStringTask;
+            _server.printLine("res " + urlContents);
+            return urlContents;
+        }
 
         ~PokerGamingRoom()
         {
@@ -107,7 +125,7 @@ namespace TCPServer.Projects.Stellar
                         foreach (KeyValuePair<byte, PeerBase> @base in players)
                         {
                             List<Card> ownedCard = GetRandomCard(ref TotalCard, PlayerHoldCardNumber);                           
-                            PlayerGamingInfo gamingInfo = new PlayerGamingInfo(ownedCard);
+                            PlayerGamingInfo gamingInfo = new PlayerGamingInfo(ownedCard,bool.Parse(isLoseTemp[@base.Key]));
                             playerGamingInfo.Add(@base.Key, gamingInfo);
                         }
                         //建立 DesktopCard

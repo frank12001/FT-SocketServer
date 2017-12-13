@@ -11,9 +11,10 @@ namespace TCPServer.Projects.Stellar
         public string PlayerName, StellarId, StellarAvatar1PartId, StellarAvatar2PartId, StellarAvatar3PartId;
         public int ChipMultiple;
         public byte PlayerIdInRoom;
+        public string FirebaseUserId;
 
         public PlayerInfo(string playerName, int chipMultiple, string stellarId, string avatar1PartId, string avatar2PartId,
-            string avatar3PartId)
+            string avatar3PartId, string firebaseuserId)
         {
             this.PlayerName = playerName;
             this.ChipMultiple = chipMultiple;
@@ -22,6 +23,14 @@ namespace TCPServer.Projects.Stellar
             this.StellarAvatar2PartId = avatar2PartId;
             this.StellarAvatar3PartId = avatar3PartId;
             this.PlayerIdInRoom = 0;
+            FirebaseUserId = firebaseuserId;
+        }
+
+        public PlayerInfo Clone(string firebaseuserId)
+        {
+            PlayerInfo result = new PlayerInfo(this.PlayerName, this.ChipMultiple, this.StellarId, this.StellarAvatar1PartId,
+                this.StellarAvatar2PartId, this.StellarAvatar3PartId, firebaseuserId);
+            return result;
         }
     }
     /// <summary>
