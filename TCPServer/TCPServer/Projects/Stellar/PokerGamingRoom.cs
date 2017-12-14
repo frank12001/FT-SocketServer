@@ -2,7 +2,6 @@
 using startOnline;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -52,19 +51,14 @@ namespace TCPServer.Projects.Stellar
             _server.printLine("In Poker Gaming Room");
             PlayerInfos = new List<PlayerInfo>(playerInfos);
 
-            //Release
-            //List<string> userids = new List<string>();
-            //for (byte i = 0; i < PlayerInfos.Count; i++)
-            //{
-            //    userids.Add(PlayerInfos[i].FirebaseUserId);
-            //}
-            //Test
-            List<string> userids = new List<string>(new string[] { "-L07-epS6L6ApPWZcojd", "-L07KMKucuGHBTXOWMMs" });
+            List<string> userids = GetUserIds(PlayerInfos);
 
             PeerStake = PlayerInfos[0].ChipMultiple;
             GameStart(PeerStake* BettingCount, userids.ToArray());
 
         }
+
+        
 
         ~PokerGamingRoom()
         {
@@ -140,7 +134,7 @@ namespace TCPServer.Projects.Stellar
                     }
                     break;
                 #endregion 
-                #region 
+                #region 3 等待傳送要換哪張牌
                 case 3: //等待傳送要換哪張牌
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
@@ -148,7 +142,8 @@ namespace TCPServer.Projects.Stellar
                         GameState = 4;
                     }
                     break;
-                #endregion 
+                #endregion
+                #region 4 將換牌堆的排送給所有人，並等待 5 秒鐘 //WaitChangeCard
                 case 4:
                     //將換牌堆的排送給所有人，並等待 5 秒鐘 //WaitChangeCard
                     SendAllChangableCard sendAllChangableCard = new SendAllChangableCard()
@@ -168,6 +163,7 @@ namespace TCPServer.Projects.Stellar
                     _logicTimer.Set(true, 0, 5);
                     GameState = 5;
                     break;
+                #endregion 
                 #region 5 等待 第三次加注
                 case 5: //第三次加注
                     if (_logicTimer.nowTimer.Equals(0))
@@ -186,7 +182,8 @@ namespace TCPServer.Projects.Stellar
                         GameState = 6;
                     }
                     break;
-                #endregion 
+                #endregion
+                #region 6 計算誰贏誰輸 ，並將結果和所有的牌傳到所有 Client
                 case 6:
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
@@ -219,10 +216,32 @@ namespace TCPServer.Projects.Stellar
                             SendToAssignPlayer(packet4, i);
                         }
 
+                        //將錢設回去
+                        List<string> userids = GetUserIds(PlayerInfos);
+                        int totalCost = 0;
+                        foreach (KeyValuePair<byte, PlayerGamingInfo> info in playerGamingInfo)
+                        {
+                            totalCost += info.Value.CostMoney;
+                        }
+                        string result = "";
+                        foreach (KeyValuePair<byte, PlayerGamingInfo> info in playerGamingInfo)
+                        {
+                            int money = 0;
+                            if (winnerIndex.Equals(info.Key))
+                                money = totalCost;
+                            money += info.Value.TotalMoney;
+                            result += userids[info.Key] + ">" + money + ",";
+                        }
+                        result = result.Substring(0, result.Length - 1);
+                        _server.printLine("result string");
+                        _server.printLine(result);
+                        //將此字串傳到 firebase server
+                        AddMoney(result);
                         _logicTimer.Set(true, 0, 5);
                         GameState = 7;
                     }
                     break;
+                #endregion 
                 case 7:
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
@@ -300,8 +319,8 @@ namespace TCPServer.Projects.Stellar
                     }
                     break;
                 #endregion
-                #region case 1 接收換牌請求  GameState 2
-                case 1: //接收換牌請求
+                #region case 1 接收下注請求  GameState 2
+                case 1: //接收下注請求
                     UseMoney useMoney = new UseMoney(false);
                     if (GameState.Equals(2) || GameState.Equals(5))
                     {
@@ -433,7 +452,7 @@ namespace TCPServer.Projects.Stellar
         /// </summary>
         /// <param name="moneyCount">確認的鑽石數量</param>
         /// <param name="useridStrings">玩家們的 id </param>
-        /// <returns>回傳字串為 [true,true,false] ..傳入幾位玩家救回傳幾位玩家的鑽石夠不夠</returns>
+        /// <returns>回傳字串為 [true,true,false] ..傳入幾位玩家就回傳幾位玩家的鑽石夠不夠</returns>
         private async Task<string> AccessFirebaseServerCheckMoneyAsync(int moneyCount, string[] useridStrings)
         {
             string json = "";
@@ -469,6 +488,37 @@ namespace TCPServer.Projects.Stellar
             return urlContents;
         }
 
+        private async void AddMoney(string parameter)
+        {
+            await AccessFirebaseServerAddMoneyAsync(parameter);
+        }
+
+        /// <summary>
+        /// 去 Firebase Server 確認，多位 user 的鑽石夠不夠玩
+        /// </summary>
+        /// <param name="moneyCount">確認的鑽石數量</param>
+        /// <param name="useridStrings">玩家們的 id </param>
+        /// <returns>回傳字串為 [true,true,false] ..傳入幾位玩家就回傳幾位玩家的鑽石夠不夠</returns>
+        private async Task<string> AccessFirebaseServerAddMoneyAsync(string parameter)
+        {
+
+            HttpClient client = new HttpClient();
+            string url = string.Format("https://us-central1-stellar-38931.cloudfunctions.net/PokerServer?parameter1=AddMoney&parameter2={0}", parameter);
+            _server.printLine("url " + url);
+            try
+            {
+                Task<string> getStringTask = client.GetStringAsync(url);
+            }
+            catch (Exception e)
+            {
+                _server.printLine("Res Error " + e.Message);
+                throw;
+            }
+
+            string urlContents = "";
+            _server.printLine("res " + urlContents);
+            return urlContents;
+        }
         /// <summary>
         /// 誰贏這場遊戲
         /// </summary>
@@ -476,6 +526,24 @@ namespace TCPServer.Projects.Stellar
         private byte WhoWin()
         {
             return 0;
+        }
+
+        /// <summary>
+        /// 將該 List<PlayerInfo> 的 userids 拉出來做成 List ，目前使用測式版
+        /// </summary>
+        /// <param name="infos"></param>
+        /// <returns></returns>
+        private List<string> GetUserIds(List<PlayerInfo> infos)
+        {
+            //Release
+            List<string> userids = new List<string>();
+            for (byte i = 0; i < PlayerInfos.Count; i++)
+            {
+                userids.Add(PlayerInfos[i].FirebaseUserId);
+            }
+            //Test
+            //List<string> userids = new List<string>(new string[] { "-L07-epS6L6ApPWZcojd", "-L07KMKucuGHBTXOWMMs" });
+            return userids;
         }
     }
 }

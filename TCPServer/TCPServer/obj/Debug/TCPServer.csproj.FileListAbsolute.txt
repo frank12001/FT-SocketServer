@@ -29,5 +29,4 @@ C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\bin\Debug\MySq
 C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\bin\Debug\MySql.Data.xml
 C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.exe
 C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.pdb
-C:\Users\Frank\Documents\GitHub\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.csprojResolveAssemblyReference.cache
 D:\GitHubTest\Socket-Server\TCPServer\TCPServer\obj\Debug\TCPServer.csprojResolveAssemblyReference.cache

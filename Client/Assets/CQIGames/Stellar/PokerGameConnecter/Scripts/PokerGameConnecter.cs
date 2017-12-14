@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FTServer;
 using FTServer.Operator;
+using Stellar.Server;
 using TCPServer.Projects.Stellar;
 
 namespace Stellar.Poker
@@ -129,6 +130,7 @@ namespace Stellar.Poker
         {
             if (isConnect)
             {
+                PlayerInfo info = playerInfo.Clone(Core.GetUserId());
                 connect._queue.JoinQueue(playerInfo);
             }
         }
@@ -186,7 +188,7 @@ namespace Stellar.Poker
 
         public void JoinQueueRoom()
         {
-            PlayerInfo info = new PlayerInfo("YaYa",100,"0","1","2","3","12312");
+            PlayerInfo info = new PlayerInfo("YaYa",100,"0","1","2","3",Core.GetUserId());
             StartQueue(info);
         }
 
@@ -200,7 +202,7 @@ namespace Stellar.Poker
             byte cardIndex = 1;
             Dictionary<byte, object> packet = new Dictionary<byte, object>()
             {
-                {(byte)0,1 },
+                {(byte)0,2 },
                 {(byte)1,cardIndex }
             };
             connect._gaming.SendToServer(packet);
