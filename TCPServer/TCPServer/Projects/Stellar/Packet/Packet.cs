@@ -2,6 +2,12 @@
 
 namespace TCPServer.Projects.Stellar
 {
+    [Serializable]
+    public abstract class Gaming
+    {
+        public float _Time = 0.0f;
+    }
+
     /// <summary>
     /// 開始排隊時，傳入的資料
     /// </summary>
@@ -46,16 +52,16 @@ namespace TCPServer.Projects.Stellar
         }
     }
     [Serializable]
-    public class GamingLicensing
+    public class GamingDeal : Gaming
     {
         public Card[] OwnedCards;
         public Card[] DestopCards;
 
         public byte PlayerId;
 
-        public GamingLicensing Clone()
+        public GamingDeal Clone()
         {
-            GamingLicensing result = new GamingLicensing();
+            GamingDeal result = new GamingDeal();
             result.OwnedCards = new Card[OwnedCards.Length];
             result.DestopCards = new Card[DestopCards.Length];
 
@@ -72,10 +78,10 @@ namespace TCPServer.Projects.Stellar
         }
     }
     [Serializable]
-    public class BettingState
+    public class BettingState : Gaming
     {
         public bool CanBetting;
-        public byte BettingNumber;
+        public byte BettingNumber;        
         public BettingState(byte bettingNumber, bool canBetting)
         {
             this.BettingNumber = bettingNumber;
@@ -118,13 +124,28 @@ namespace TCPServer.Projects.Stellar
         public byte CardIndex;
         public bool IsChange;
     }
+
     [Serializable]
-    public class SendAllChangableCard
+    public class SendAllChangableCard : Gaming
     {
         public Card[] cards;
     }
+
     [Serializable]
-    public class GameResult
+    public class GetTargetCard
+    {
+        public bool Success;
+        public Card card;
+    }
+
+    [Serializable]
+    public class PlayerCardAfterChange : Gaming
+    {
+        public Card[] Cards;
+    }
+
+    [Serializable]
+    public class GameResult : Gaming
     {
         public Card[][] card;
         public byte WinnerId;

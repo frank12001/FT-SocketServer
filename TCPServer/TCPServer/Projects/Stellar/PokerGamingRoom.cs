@@ -13,6 +13,7 @@ namespace TCPServer.Projects.Stellar
         private const byte DesktopCardNumber = 4;
         private const byte BettingCount = 3;
 
+        private float TotalGamingTime = 0.0f;
         private PlayAR.Common.Timer _logicTimer = new PlayAR.Common.Timer() { startTimer = false, nowTimer = 0.0f , max_Timer = 0.0f};
         private byte GameState = 0;
         private List<Card> TotalCard = new List<Card>();
@@ -57,9 +58,7 @@ namespace TCPServer.Projects.Stellar
             GameStart(PeerStake* BettingCount, userids.ToArray());
 
         }
-
-        
-
+       
         ~PokerGamingRoom()
         {
             _server.PrintLine(" PokerGamingRoom 解構子被呼叫 ");
@@ -67,6 +66,7 @@ namespace TCPServer.Projects.Stellar
 
         public override void mainThread(object sender, ElapsedEventArgs e)
         {
+            TotalGamingTime += (timer_interal / 1000);
             switch (GameState)
             {
                 #region 0 建構子 初始化 ing
@@ -96,11 +96,12 @@ namespace TCPServer.Projects.Stellar
                         //將 手牌&桌牌 ， Send 給 User
                         foreach (KeyValuePair<byte, PeerBase> @base in players)
                         {
-                            GamingLicensing licensing = new GamingLicensing()
+                            GamingDeal licensing = new GamingDeal()
                             {
                                 OwnedCards = playerGamingInfo[@base.Key].OwnedCards.ToArray(),
                                 DestopCards = DesktopCard.ToArray(),
-                                PlayerId = @base.Key
+                                PlayerId = @base.Key,
+                                _Time = TotalGamingTime
                             };
                             Dictionary<byte,object> packet1 = new Dictionary<byte, object>()
                             {
@@ -120,7 +121,7 @@ namespace TCPServer.Projects.Stellar
                 case 2: //等待下注
                     if (_logicTimer.nowTimer.Equals(0))
                     {
-                        SendBettingState(new BettingState(2,true));
+                        SendBettingState(new BettingState(2,true){ _Time = TotalGamingTime });
                     }
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
@@ -128,7 +129,7 @@ namespace TCPServer.Projects.Stellar
                         SetIsBetting(2);
                         //檢查如果全部棄注 ? 
                         //傳送給所有人下注結束
-                        SendBettingState(new BettingState(2, false));
+                        SendBettingState(new BettingState(2, false) { _Time = TotalGamingTime });
                         _logicTimer.Set(true, 0, 5);
                         GameState = 3;
                     }
@@ -148,7 +149,8 @@ namespace TCPServer.Projects.Stellar
                     //將換牌堆的排送給所有人，並等待 5 秒鐘 //WaitChangeCard
                     SendAllChangableCard sendAllChangableCard = new SendAllChangableCard()
                     {
-                        cards = WaitChangeCard.ToArray()
+                        cards = WaitChangeCard.ToArray(),
+                        _Time = TotalGamingTime
                     };
                     Dictionary<byte, object> packet3 = new Dictionary<byte, object>()
                     {
@@ -163,12 +165,40 @@ namespace TCPServer.Projects.Stellar
                     _logicTimer.Set(true, 0, 5);
                     GameState = 5;
                     break;
-                #endregion 
-                #region 5 等待 第三次加注
-                case 5: //第三次加注
+                #endregion
+                #region 5 等待 誰要拿哪張牌
+                case 5: //等待 誰要拿哪張牌
+                    _logicTimer.nowTimer += (timer_interal / 1000);
+                    if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
+                    {                        
+                        //將拿完牌後的結果回傳
+                        foreach (KeyValuePair<byte, PlayerGamingInfo> info in playerGamingInfo)
+                        {
+                            if (!info.Value.OwnedCards.Count.Equals(PlayerHoldCardNumber) && WaitChangeCard.Count > 0)
+                            {   //如果拿牌堆還有牌，將他補給沒拿的人
+                                Card card = WaitChangeCard[0];
+                                WaitChangeCard.Remove(card);
+                                info.Value.OwnedCards.Add(card);
+                            }
+                            PlayerCardAfterChange newCards = new PlayerCardAfterChange(){ Cards = info.Value.OwnedCards.ToArray(),_Time = TotalGamingTime};
+                            Dictionary<byte, object> packet5 = new Dictionary<byte, object>()
+                            {
+                                {(byte)0,3},
+                                {(byte)1,Math.Serializate.ToByteArray(newCards)}
+                            };
+                            SendToAssignPlayer(packet5, info.Key);
+                        }
+
+                        _logicTimer.Set(true, 0, 5);
+                        GameState = 6;
+                    }
+                    break;
+                #endregion
+                #region 6 等待 第三次加注
+                case 6: //第三次加注
                     if (_logicTimer.nowTimer.Equals(0))
                     {
-                        SendBettingState(new BettingState(3, true));
+                        SendBettingState(new BettingState(3, true){_Time = TotalGamingTime});
                     }
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
@@ -176,15 +206,15 @@ namespace TCPServer.Projects.Stellar
 
                         SetIsBetting(3);
                         //傳送給所有人下注結束
-                        SendBettingState(new BettingState(3, false));
+                        SendBettingState(new BettingState(3, false){_Time = TotalGamingTime});
 
                         _logicTimer.Set(true, 0, 5);
-                        GameState = 6;
+                        GameState = 7;
                     }
                     break;
                 #endregion
-                #region 6 計算誰贏誰輸 ，並將結果和所有的牌傳到所有 Client
-                case 6:
+                #region 7 計算誰贏誰輸 ，並將結果和所有的牌傳到所有 Client
+                case 7:
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
                     {
@@ -203,7 +233,8 @@ namespace TCPServer.Projects.Stellar
                         GameResult gameResult = new GameResult()
                         {
                             WinnerId = winnerIndex,
-                            card = card
+                            card = card,
+                            _Time = TotalGamingTime
                         };
 
                         Dictionary<byte, object> packet4 = new Dictionary<byte, object>()
@@ -238,59 +269,32 @@ namespace TCPServer.Projects.Stellar
                         //將此字串傳到 firebase server
                         AddMoney(result);
                         _logicTimer.Set(true, 0, 5);
-                        GameState = 7;
+                        GameState = 8;
                     }
                     break;
                 #endregion 
-                case 7:
+                case 8:
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
                     {
                         //Exit Poker Room
                         _logicTimer.Set(true, 0, 5);
-                        GameState = 8;
+                        GameState = 9;
                     }
                     break;
-                case 8: //
+                case 9: //
                     _logicTimer.nowTimer += (timer_interal / 1000);
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
                     {
                         //Exit Poker Room
                         Room_Disband();
-                        GameState = 9;
+                        GameState = 10;
                     }
                     break;                    
             }
         }
 
-        /// <summary>
-        /// 傳送給所有人 可以 or 不行 下注
-        /// </summary>
-        /// <param name="startBetting"></param>
-        private void SendBettingState(BettingState bettingState)
-        {
-            //傳送給所有人說，開始下注
-            Dictionary<byte, object> packet = new Dictionary<byte, object>()
-            {
-                  {(byte)0,3 }, //switch Code , Server Call Back
-                  {(byte)1,Math.Serializate.ToByteArray(bettingState) },
-            };
-            BroadcastPacket(packet);
-        }
 
-        /// <summary>
-        /// 設定有無下注
-        /// </summary>
-        /// <param name="bettingNumber"></param>
-        private void SetIsBetting(byte bettingNumber)
-        {
-            //檢查誰沒有下注
-            foreach (KeyValuePair<byte, PlayerGamingInfo> info in playerGamingInfo)
-            {
-                if (!info.Value.IsLose)
-                    info.Value.IsLose = (!info.Value.IsLose && !info.Value.CostMoney.Equals(PeerStake * bettingNumber));
-            }
-        }
 
         public override void GamingProcess(byte playerId, Dictionary<byte, object> packet)
         {
@@ -322,7 +326,7 @@ namespace TCPServer.Projects.Stellar
                 #region case 1 接收下注請求  GameState 2
                 case 1: //接收下注請求
                     UseMoney useMoney = new UseMoney(false);
-                    if (GameState.Equals(2) || GameState.Equals(5))
+                    if (GameState.Equals(2) || GameState.Equals(6))
                     {
                         if (!playerGamingInfo[playerId].IsLose)
                         {
@@ -340,7 +344,7 @@ namespace TCPServer.Projects.Stellar
                     SendToAssignPlayer(resPacket, playerId);
                     break;
                 #endregion
-                #region case 1 接收換牌請求  GameState 2
+                #region case 1 接收換牌請求  GameState 3
                 case 2: //接收換牌請求
                     ChangableCard changableCard = new ChangableCard();
                     changableCard.IsChange = false;
@@ -369,14 +373,58 @@ namespace TCPServer.Projects.Stellar
                        SendToAssignPlayer(resPacket, playerId);
                     break;
                 #endregion
-                #region case 2 GameState 4
+                #region case 3 接收拿牌請求 GameState 5
                 case 3:
-                    if (GameState.Equals(4))
+                    GetTargetCard resCard = new GetTargetCard(){ Success = false};
+                    Card targetCard = (Card)Math.Serializate.ToObject((byte[])packet[1]);
+                    if (GameState.Equals(5))
                     {
                         //接收想拿哪張牌
+                        if (WaitChangeCard.Contains((targetCard)) && playerGamingInfo[playerId].OwnedCards.Count < PlayerHoldCardNumber)
+                        {
+                            WaitChangeCard.Remove(targetCard);
+                            playerGamingInfo[playerId].OwnedCards.Add(targetCard);
+                        }
                     }
+                    resCard.card = targetCard;
+                    resPacket = new Dictionary<byte, object>()
+                    {
+                        {(byte)0,3 },
+                        {(byte)1,Math.Serializate.ToByteArray(resCard) },
+                    };
+
+                    SendToAssignPlayer(resPacket, playerId);
                     break;
                     #endregion
+            }
+        }
+
+        /// <summary>
+        /// 傳送給所有人 可以 or 不行 下注
+        /// </summary>
+        /// <param name="startBetting"></param>
+        private void SendBettingState(BettingState bettingState)
+        {
+            //傳送給所有人說，開始下注
+            Dictionary<byte, object> packet = new Dictionary<byte, object>()
+            {
+                {(byte)0,3 }, //switch Code , Server Call Back
+                {(byte)1,Math.Serializate.ToByteArray(bettingState) },
+            };
+            BroadcastPacket(packet);
+        }
+
+        /// <summary>
+        /// 設定有無下注
+        /// </summary>
+        /// <param name="bettingNumber"></param>
+        private void SetIsBetting(byte bettingNumber)
+        {
+            //檢查誰沒有下注
+            foreach (KeyValuePair<byte, PlayerGamingInfo> info in playerGamingInfo)
+            {
+                if (!info.Value.IsLose)
+                    info.Value.IsLose = (!info.Value.IsLose && !info.Value.CostMoney.Equals(PeerStake * bettingNumber));
             }
         }
 
