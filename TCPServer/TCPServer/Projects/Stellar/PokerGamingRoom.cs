@@ -261,7 +261,7 @@ namespace TCPServer.Projects.Stellar
                             if (winnerIndex.Equals(info.Key))
                                 money = totalCost;
                             money += info.Value.TotalMoney;
-                            result += userids[info.Key] + ">" + money + ",";
+                            result += userids[info.Key] + ">" + money+">"+ PeerStake + ",";
                         }
                         result = result.Substring(0, result.Length - 1);
                         _server.printLine("result string");

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using startOnline;
 using startOnline.playar.Rooms;
 using TCPServer.playar.Rooms;
@@ -69,7 +71,7 @@ namespace TCPServer.Projects.Stellar
                         playerInfo.Value.Send(playerInfos.ToArray());
                     }
                 }
-
+                SetQueueNumToFireBase(_Queue.Count.ToString());
                 return room;
             }
         }
@@ -105,6 +107,21 @@ namespace TCPServer.Projects.Stellar
                 } 
             }
         }
+
+        private void SetQueueNumToFireBase(string parameter)
+        {
+            HttpClient client = new HttpClient();
+            string url = string.Format("https://us-central1-stellar-38931.cloudfunctions.net/PokerServer?parameter1=SetQueueNum&parameter2={0}", parameter);
+            try
+            {
+                Task<string> getStringTask = client.GetStringAsync(url);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
 
         //public override void Room_Remove(string index)
         //{
