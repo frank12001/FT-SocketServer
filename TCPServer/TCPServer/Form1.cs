@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using TCPServer.playar.Rooms.Operator;
 using TCPServer.ClientInstance;
 using TCPServer.ClientInstance.Packet;
+using TCPServer.Projects.Palace;
 using TCPServer.Projects.Stellar;
 
 
@@ -50,11 +51,10 @@ namespace TCPServer
 
         protected void Setup()
         {
-
-            roomOperator = new PokerQueueOperator(this);
+            roomOperator = new Operator(this);
+            //roomOperator = new PokerQueueOperator(this);
             printLine(" Server 開機");
             printLine("Setup Finish");
-
         }
 
         IPAddress findMyIPV4Address()
@@ -84,7 +84,8 @@ namespace TCPServer
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message);
+                printLine(exc.Message);
+                //MessageBox.Show(exc.Message);
             }
 
             return ipv4Ret;
@@ -137,7 +138,9 @@ namespace TCPServer
                 //                        new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(),this);
                 //cNode = new PlayarPeer(this,tclient, new byte[InputBufferSize],
                 //                        new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(),this);
-                cNode = new PokerPeer(this, tclient, new byte[InputBufferSize],
+                //cNode = new PokerPeer(this, tclient, new byte[InputBufferSize],
+                //    new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(), this);
+                cNode = new PalacePeer(this, tclient, new byte[InputBufferSize],
                     new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(), this);
 
                 //開啟 TcpClient 的輸入串流
@@ -156,7 +159,8 @@ namespace TCPServer
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Errot", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                printLine(exc.Message);
+                //MessageBox.Show(exc.Message, "Errot", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

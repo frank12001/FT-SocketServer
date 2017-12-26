@@ -7,6 +7,7 @@ using startOnline.playar.Rooms;
 using TVEducation.ServerClientSwap;
 using TVEducation.TVBoxSwap;
 using TCPServer;
+using TCPServer.Projects.Palace.Packet;
 
 namespace startOnline
 {
@@ -184,6 +185,7 @@ namespace startOnline
 
         #region 遊戲邏輯處理
 
+        private float t = 0;
         #region 主遊戲流程
         /// <summary>
         /// 主執行續 
@@ -192,7 +194,22 @@ namespace startOnline
         /// <param name="e"></param>
         public virtual void mainThread(object sender, ElapsedEventArgs e)
         {
-
+            t += 30;
+            if (t > 100)
+            {
+                //PalaceTest2[] yaya = new PalaceTest2[1];
+                //for (int i = 0; i < yaya.Length; i++)
+                //{
+                //    yaya[i] = new PalaceTest2();
+                //}
+                Dictionary<byte, object> packet = new Dictionary<byte, object>()
+                {
+                    {(byte) 0, 3}, //switch code
+                    {(byte) 1, TCPServer.Math.Serializate.ToByteArray(new PalaceTest2())},
+                };
+                BroadcastPacket(packet);
+                t = 0;
+            }
         }
         #endregion
 
@@ -248,9 +265,9 @@ namespace startOnline
 
         #region Gaming Function - Base
         /// <summary>
-        /// Broadcast assign Image to everyone. (預設OperatorCode.Gaming)
+        /// Broadcast assign packet to everyone. (預設OperatorCode.Gaming)
         /// </summary>
-        /// <param name="image"></param>
+        /// <param name="packet"></param>
         public void BroadcastPacket(Dictionary<byte, object> packet)
         {
             foreach (KeyValuePair<byte, PeerBase> player in this.players)
@@ -458,8 +475,6 @@ namespace startOnline
         /// <param name="type"></param>
         public void Room_ChangeType(RoomTypes type)
         {
-            //DisplayMessageBox(type.ToString());
-
             #region Console
             try
             {
@@ -519,21 +534,8 @@ namespace startOnline
         {
             RoomTypes result;
             //取得 class 的名字字串，再用此判斷
-            #region Get Type
             Type type = this.GetType();
-            //string class_Name = type.Name;
-            //switch (class_Name)
-            //{
-            //    case "Room":
-            //        result = RoomTypes.Base;
-            //        break;
-            //    default:
-            //        result = RoomTypes.Base;
-            //        break;
-            //}
             result = (RoomTypes)Enum.Parse(typeof(RoomTypes), type.Name);
-
-            #endregion
             return result;
         }
 

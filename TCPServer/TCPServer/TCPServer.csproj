@@ -70,6 +70,8 @@
     <Compile Include="IApplication.cs" />
     <Compile Include="Log\Log.cs" />
     <Compile Include="ClientInstance\Peer\PeerBase.cs" />
+    <Compile Include="Projects\Palace\Packet\Packet.cs" />
+    <Compile Include="Projects\Palace\PalacePeer.cs" />
     <Compile Include="Projects\playar\Packet\Fish4DCube.cs" />
     <Compile Include="Projects\playar\Packet\Mobile.cs" />
     <Compile Include="Projects\playar\Packet\ServerBase.cs" />

@@ -24,34 +24,28 @@ namespace TCPServer.playar.Rooms.Operator
             lock ("RoomOperator")
             {
                 Room room;
-                //DisplayMessageBox(serialId);
-                //string qrcode = DataBase.Operator.GetQRCode(serialId);//GetQRCode(serialId);
-                string qrcode = "Test";
-                server.PrintLine(qrcode);
-                string id = qrcode;
-                if (Room_IsRoomExist(id) || qrcode == null) //檢查有沒有相同 id 的房間
+
+                //string id = Guid.NewGuid().ToString();
+                string id = "Test";
+                server.PrintLine(id);
+                if (Room_IsRoomExist(id)) //檢查有沒有相同 id 的房間
                     return null;
                 switch (roomType)
                 {
-                    case RoomTypes.Base:
+                    case RoomTypes.Room:
                         room = new Room(serialId, peer, id, server);
-                        // Console 
                         server.printLine("基本房 + 1");
                         break;
-                    case RoomTypes.Exhibition:
+                    case RoomTypes.ExhibitionRoom:
                         room = new ExhibitionRoom(serialId, peer, id, server);
-                        // Console 
                         server.printLine("擴增房 + 1");
                         break;
                     default: //默認創建 base 房 
                         room = new Room(serialId, peer, id, server);
-                        // Console 
                         server.printLine("基本房 + 1");
                         break;
                 }
-
                 this.Rooms.Add(room.RoomIndexInApplication, room);
-                // Console 
                 server.printLine("房間總數 + 1");
                 return room;
             }
@@ -73,12 +67,12 @@ namespace TCPServer.playar.Rooms.Operator
                 Room room;
                 switch (roomType)
                 {
-                    case RoomTypes.Base:
+                    case RoomTypes.Room:
                         room = new Room(source, server);
                         // Console 
                         server.printLine("基本房 + 1");
                         break;
-                    case RoomTypes.Exhibition:
+                    case RoomTypes.ExhibitionRoom:
                         room = new ExhibitionRoom(source, server);
                         // Console 
                         server.printLine("擴增房 + 1");
