@@ -179,13 +179,13 @@ namespace startOnline
         #region 解構子
         ~Room() //解構子
         {
-            
+            _server.PrintLine("Room 解構子被 呼叫");
         }
         #endregion
 
         #region 遊戲邏輯處理
 
-        private float t = 0;
+
         #region 主遊戲流程
         /// <summary>
         /// 主執行續 
@@ -194,22 +194,6 @@ namespace startOnline
         /// <param name="e"></param>
         public virtual void mainThread(object sender, ElapsedEventArgs e)
         {
-            t += 30;
-            if (t > 100)
-            {
-                //PalaceTest2[] yaya = new PalaceTest2[1];
-                //for (int i = 0; i < yaya.Length; i++)
-                //{
-                //    yaya[i] = new PalaceTest2();
-                //}
-                Dictionary<byte, object> packet = new Dictionary<byte, object>()
-                {
-                    {(byte) 0, 3}, //switch code
-                    {(byte) 1, TCPServer.Math.Serializate.ToByteArray(new PalaceTest2())},
-                };
-                BroadcastPacket(packet);
-                t = 0;
-            }
         }
         #endregion
 

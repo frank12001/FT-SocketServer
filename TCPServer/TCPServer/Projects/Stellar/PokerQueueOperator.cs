@@ -4,8 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using startOnline;
 using startOnline.playar.Rooms;
-using TCPServer.playar.Rooms;
-using TCPServer.playar.Rooms.Operator;
+using TCPServer.Rooms.Operator;
 
 namespace TCPServer.Projects.Stellar
 {

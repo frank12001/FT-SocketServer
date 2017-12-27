@@ -71,7 +71,9 @@
     <Compile Include="Log\Log.cs" />
     <Compile Include="ClientInstance\Peer\PeerBase.cs" />
     <Compile Include="Projects\Palace\Packet\Packet.cs" />
+    <Compile Include="Projects\Palace\PalaceGamingRoom.cs" />
     <Compile Include="Projects\Palace\PalacePeer.cs" />
+    <Compile Include="Projects\Palace\PalaceQueueOperator.cs" />
     <Compile Include="Projects\playar\Packet\Fish4DCube.cs" />
     <Compile Include="Projects\playar\Packet\Mobile.cs" />
     <Compile Include="Projects\playar\Packet\ServerBase.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Rooms\ExhibitionRoom.cs" />
     <Compile Include="Rooms\Operator\Base\Operator.cs" />
     <Compile Include="Projects\Stellar\PokerGamingRoom.cs" />
+    <Compile Include="Rooms\Operator\QueueOperator.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\RoomTypes.cs" />
     <Compile Include="Program.cs" />

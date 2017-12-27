@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
-using TCPServer.playar.Rooms.Operator;
 using TCPServer.ClientInstance;
 using TCPServer.ClientInstance.Packet;
 using TCPServer.Projects.Palace;
 using TCPServer.Projects.Stellar;
+using TCPServer.Rooms.Operator;
 
 
 namespace TCPServer
@@ -51,8 +51,9 @@ namespace TCPServer
 
         protected void Setup()
         {
-            roomOperator = new Operator(this);
+            //roomOperator = new Operator(this);
             //roomOperator = new PokerQueueOperator(this);
+            roomOperator = new PalaceQueueOperator(this);
             printLine(" Server 開機");
             printLine("Setup Finish");
         }

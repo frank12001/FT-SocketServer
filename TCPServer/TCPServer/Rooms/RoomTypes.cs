@@ -12,5 +12,9 @@ namespace startOnline.playar.Rooms
         /// Stellar Poker Gaming Room
         /// </summary>
         PokerGamingRoom,
+        /// <summary>
+        /// Palace Gaming Room
+        /// </summary>
+        PalaceGamingRoom
     }
 }

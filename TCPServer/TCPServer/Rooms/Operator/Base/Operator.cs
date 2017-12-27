@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TCPServer.playar.Rooms.Operator
+namespace TCPServer.Rooms.Operator
 {
     public class Operator
     {

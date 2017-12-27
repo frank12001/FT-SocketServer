@@ -5,6 +5,8 @@ using startOnline;
 using startOnline.playar.Rooms;
 using TCPServer.Math;
 using TCPServer.ClientInstance.Packet;
+using TCPServer.Projects.Palace.Packet;
+using TCPServer.Rooms.Operator;
 
 namespace TCPServer.Projects.Palace
 {
@@ -21,13 +23,19 @@ namespace TCPServer.Projects.Palace
 
         ~PalacePeer()
         {
+            _server.printLine("PalacePeer 解構子被呼叫");
         }
 
         public override void OnDisconnect()
         {
+            _server.PrintLine("觸發 OnDisConnect ");
+            base.OnDisconnect();
         }
 
         private byte exeCode = 0;
+        private PalaceQueueOperator _RoomOperator;
+        private bool _Queueing;
+
         public override void OnOperationRequest(OperationRequest operationRequest)
         {
             try
@@ -136,11 +144,30 @@ namespace TCPServer.Projects.Palace
                     case 5:
                         _server.PrintLine(DateTime.Now + " - " + this.ToString() + ": " + operationRequest.ForTest);
                         break;
-                    
-                    //case 200: //不斷發送封包
-                    //    //_server.PrintLine("Case 200 On");
-                    //    SendEvent(200, operationRequest.Parameters);
-                    //    break;
+                    #region 6 : Queue
+                    case 6:
+                        byte switchcode_6 = byte.Parse(operationRequest.Parameters[0].ToString());
+                        switch (switchcode_6)
+                        {
+                            case 2://Join With info
+                                if (_server.RoomOperator is PalaceQueueOperator queue)
+                                {
+                                    PalaceTest info =
+                                        (PalaceTest)Serializate.ToObject((byte[])operationRequest.Parameters[1]);
+                                    PalaceQueueInfo queueInfo = new PalaceQueueInfo() { Peer = this, Key = info.Key, Guid = _Guid.ToString() };
+                                    this._RoomOperator = queue;
+                                    this.room = this._RoomOperator.QueueJoin(queueInfo);
+                                    _Queueing = true;
+                                }
+                                break;
+                        }
+                        break;
+                    #endregion
+
+                    case 200: //不斷發送封包
+                        //_server.PrintLine("Case 200 On");
+                        SendEvent(200, operationRequest.Parameters);
+                        break;
                 }
             }
             catch (Exception e)
