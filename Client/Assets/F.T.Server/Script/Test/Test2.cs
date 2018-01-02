@@ -32,7 +32,7 @@ public class Test2 : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Q))
         {
             //connect._room.CreateRoom("yaya", FTServer.Operator.RoomTypes.Base);
-            connect._queue.JoinQueue();
+            //connect._queue.JoinQueue();
         }
         //mobile
         if (Input.GetKeyDown(KeyCode.X))
@@ -81,7 +81,7 @@ public class Test2 : MonoBehaviour {
 
     public void JoinQueueRoom()
     {
-        connect._queue.JoinQueue();
+        //connect._queue.JoinQueue();
     }
 
     public void GetRoomsCount(byte? b)

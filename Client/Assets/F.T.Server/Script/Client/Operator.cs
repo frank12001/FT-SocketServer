@@ -389,7 +389,7 @@ namespace FTServer.Operator
             Dictionary<byte, object> packet = new Dictionary<byte, object>()
             {
                 { (byte)0,0 }, //switch code 客製化封包
-                { (byte)1,2 }, //deliver code 傳送給誰 0 = 所有人 、 1 = 除了自己之外的所有人 、2 = 單傳給 Server
+                { (byte)1,3 }, //deliver code 傳送給誰 0 = 所有人 、 1 = 除了自己之外的所有人 、2 = RoomOwne、3 = 單傳給 Server
                 { (byte)2,Serializate.ToByteArray(custom_packet) }
             };
             gameService.Deliver((byte)this.operationCode, packet);
@@ -504,7 +504,7 @@ namespace FTServer.Operator
             this.gameService.ConnectFromServer += this.connect;
             this.gameService.DisconnectFromServer += this.disConnect;
 
-            setTimer(ref this.timer, 15);
+            setTimer(ref this.timer, 1);
         }
         #region 傳送遊戲封包 (主動)
         /// <summary>
@@ -654,24 +654,14 @@ namespace FTServer.Operator
     //系統
     public class _Queue : NetWorkBase
     {
-        public event Action<bool, TCPServer.Projects.Stellar.PlayerInfo[]> ReceiveJoinQueue;
+        public event Action<bool, object> ReceiveJoinQueue;
+        public event Action<bool> ReceiveExitQueue;
         public _Queue(GameNetWorkService gameService) : base(gameService)
         {
             this.operationCode = OperationCode.Queue;
             this.gameService.QueueEvent += ServerCallBack;
         }
         #region 傳送遊戲封包 (主動)
-        /// <summary>
-        /// 加入排隊
-        /// </summary>
-        public void JoinQueue()
-        {
-            Dictionary<byte, object> packet = new Dictionary<byte, object>
-            {
-                {(byte)0,(byte)1 },
-            };
-            gameService.Deliver((byte)this.operationCode, packet);
-        }
         /// <summary>
         /// 加入排隊
         /// </summary>
@@ -685,6 +675,18 @@ namespace FTServer.Operator
             };
             gameService.Deliver((byte)this.operationCode, packet);
         }
+        /// <summary>
+        /// 加入排隊
+        /// </summary>
+        /// <param name="custom_packet">加入排隊時，初始化封包</param>
+        public void ExitQueue()
+        {
+            Dictionary<byte, object> packet = new Dictionary<byte, object>
+            {
+                {(byte)0,(byte)3 },
+            };
+            gameService.Deliver((byte)this.operationCode, packet);
+        }
         #endregion
         #region Receive Server CallBack (被動呼叫)
         public override void ServerCallBack(Dictionary<byte, object> server_packet)
@@ -692,8 +694,11 @@ namespace FTServer.Operator
             byte switchCode = byte.Parse(server_packet[0].ToString());
             switch (switchCode)
             {
-                case 1: 
+                case 2:  //Join
                     Receive_JoinQueue(server_packet);
+                    break;
+                case 3: //Exit Queue
+                    Receive_ExitQueue(server_packet);
                     break;
             }
         }
@@ -704,29 +709,37 @@ namespace FTServer.Operator
             {
                 bool success = bool.Parse(server_packet[1].ToString());
                 object custom_class = Serializate.ToObject((byte[])server_packet[2]);
-                ReceiveJoinQueue(success, (TCPServer.Projects.Stellar.PlayerInfo[])custom_class);
+                ReceiveJoinQueue(success,custom_class);
             }
         }
-        #endregion 
+        private void Receive_ExitQueue(Dictionary<byte, object> server_packet)
+        {
+            if (ReceiveExitQueue != null)
+            {
+                bool success = bool.Parse(server_packet[1].ToString());
+                ReceiveExitQueue(success);
+            }
+        }
         #endregion
-        
+        #endregion
+
     }
 
     public enum RoomTypes : byte
     {
-        Base = 0,
+        Room = 0,
         /// <summary>
         /// 展場用
         /// </summary>
-        Exhibition,
-        /// <summary>
-        /// 排隊房，排完自動轉入， PokerGamingRoom
-        /// </summary>
-        QueueRoom,
+        ExhibitionRoom,
         /// <summary>
         /// Stellar Poker Gaming Room
         /// </summary>
         PokerGamingRoom,
+        /// <summary>
+        /// Palace Gaming Room
+        /// </summary>
+        PalaceGamingRoom
     }
 
     interface ISendMessage

@@ -25,7 +25,7 @@ namespace FTServer
         /// <summary>
         /// 接收封包暫存區大小 (單位 : byte)
         /// </summary>
-        private const uint InputBufferSize = 102400;
+        private const uint InputBufferSize = 4096;
         /// <summary>
         /// 全域封包暫存區 
         /// </summary>
@@ -48,10 +48,10 @@ namespace FTServer
                 }
             }
             
-            if (smallPacketSender != null)
-            {
-                smallPacketSender.Update();
-            }
+            //if (smallPacketSender != null)
+            //{
+            //    smallPacketSender.Update();
+            //}
         }
 
         /// <summary>
@@ -65,12 +65,12 @@ namespace FTServer
             //宣告一個傳送暫存
             byte[] tx;
             //將傳入的 code , dic , 傳換為我定義的封包
-            OperationRequest packet = new OperationRequest(code, new Dictionary<byte, object>(dic)) { ForTest = "yaya" };
+            OperationRequest packet = new OperationRequest(code, new Dictionary<byte, object>(dic)) {};
             try
             {
                 //將此封包，序列化並加入暫存區
                 tx = Serializate(packet);
-
+                Debug.Log("發送 : 封包長度 " + tx.Length);
                 if (mTcpClient != null)
                 {
                     if (mTcpClient.Client.Connected) //如果有連線
@@ -207,10 +207,8 @@ namespace FTServer
                 }
                 //解包成我定義的封包
                 IPacket packet = DisSerializate(mRx);
-
                 if (!this.smallPacketSender.Ignore(packet))
                 {
-
                     //轉換為 EventData 並回傳
                     EventData eventData =
                         new EventData(packet.OperationCode, new Dictionary<byte, object>(packet.Parameters))
@@ -229,12 +227,18 @@ namespace FTServer
                 tcpc.ReceiveBufferSize = (int)InputBufferSize;
                 //開始等待封包
                 tcpc.GetStream().BeginRead(mRx, 0, mRx.Length, onCompleteReadFromServerStream, tcpc);
-
             }
             catch (Exception exc)
             {
+                tcpc = (TcpClient)iar.AsyncState;
                 Debug.Log(exc.Message);
+                //重新給予暫存一個大小
+                mRx = new byte[InputBufferSize];
+                tcpc.ReceiveBufferSize = (int)InputBufferSize;
+                //開始等待封包
+                tcpc.GetStream().BeginRead(mRx, 0, mRx.Length, onCompleteReadFromServerStream, tcpc);
             }
+
         }
         /// <summary>
         /// 將資料成功寫出後的回呼

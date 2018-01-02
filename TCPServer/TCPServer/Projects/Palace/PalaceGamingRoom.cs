@@ -18,7 +18,6 @@ namespace TCPServer.Projects.Palace
         public PalaceGamingRoom(string customName, PalacePeer[] joinPlayers, string roomIndexInApplication, Form1 applicationPointer) : base(customName,joinPlayers,roomIndexInApplication,applicationPointer)
         {
             _server.printLine("In Palace Gaming Room");
-
         }
 
         ~PalaceGamingRoom()
@@ -111,7 +110,23 @@ namespace TCPServer.Projects.Palace
                     if (loadingSceneReady.Count.Equals(players.Count))
                         SendInitPacket();
                     break;
-
+                case 2: //同步資料
+                    packet[0] = 3;
+                    object oo = Math.Serializate.ToObject((byte[])packet[1]);
+                    if (oo is Cubes)
+                    {
+                        Cubes c = (Cubes)oo;
+                        packet = new Dictionary<byte, object>()
+                        {
+                             { (byte)0,3 }, //switch code 客製化封包                                   
+                             { (byte)1,Math.Serializate.ToByteArray(c) }
+                        };
+                    }
+                    _server.printLine("playerid = " + playerId);
+                    BroadcastPacket(packet, playerId);
+                    //BroadcastPacket(packet);
+                    //SendToAssignPlayer(packet, 1);
+                    break;
                 
             }
         }

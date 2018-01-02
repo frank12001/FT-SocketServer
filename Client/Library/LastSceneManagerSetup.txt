@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/CQIGames/Stellar/PokerGameConnecter/Scene/PokerGameConnecter.unity
+- path: Assets/CQIGames/PalaceWar/Server/Scene/Test.unity
   isLoaded: 1
   isActive: 1

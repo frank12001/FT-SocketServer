@@ -146,12 +146,19 @@ namespace TCPServer.ClientInstance
                 //MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 application.PrintLine("Error onCompleteReadFromTCPClientStream : " + ex.ToString());
 
-                lock (application.MlClientSockets)
-                {
-                    application.PrintLine("Client disconnected: " + cn.ToString());
-                    application.MlClientSockets.Remove(cn);
-                    application.LbClients.Items.Remove(cn.ToString());
-                }
+                //將此次傳訊息進來的 TcpClient 存起來
+                tcpc = (TcpClient)iar.AsyncState;
+                //重新給予緩存一個空間
+                cn.Rx = new byte[application.InputBufferSize];
+                //重新開始準備讀取
+                tcpc.GetStream().BeginRead(cn.Rx, 0, cn.Rx.Length, onCompleteReadFromTCPClientStream, tcpc);
+
+                //lock (application.MlClientSockets)
+                //{
+                //    application.PrintLine("Client disconnected: " + cn.ToString());
+                //    application.MlClientSockets.Remove(cn);
+                //    application.LbClients.Items.Remove(cn.ToString());
+                //}
             }
         }
 

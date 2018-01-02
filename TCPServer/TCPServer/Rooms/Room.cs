@@ -96,9 +96,9 @@ namespace startOnline
             players = new Dictionary<byte, PeerBase>() { { Ownerid, joinPlayers[0] } };
             for (byte i = 1; i < joinPlayers.Length; i++)
             {
+                joinPlayers[i].playeridInRoom = i;
+                joinPlayers[i].room = this;
                 players.Add(i,joinPlayers[i]);
-                players[i].playeridInRoom = i;
-                players[i].room = this;
             }
             this.RoomIndexInApplication = roomIndexInApplication;
             this._server = applicationPointer;
@@ -269,7 +269,10 @@ namespace startOnline
             foreach (KeyValuePair<byte, PeerBase> player in this.players)
             {
                 if (player.Key != id)
+                {
+                    _server.printLine(" player Key = "+player.Key);
                     player.Value.SendEvent((byte)OperationCode.Gaming, packet);
+                }
             }
         }
         /// <summary>

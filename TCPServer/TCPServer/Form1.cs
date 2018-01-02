@@ -24,7 +24,7 @@ namespace TCPServer
         /// <summary>
         /// 給予 ClientNode的 TcpClient，接收輸入串流陣列的大小
         /// </summary>
-        private const uint inputBufferSize = 102400;//88320;
+        private const uint inputBufferSize = 4096;//88320;
         public uint InputBufferSize { get { return inputBufferSize; } }
 
         #region 給 ClientNode 的介面接口
