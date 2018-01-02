@@ -143,7 +143,8 @@ namespace TCPServer.ClientInstance
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                application.PrintLine("Error onCompleteReadFromTCPClientStream : " + ex.ToString());
 
                 lock (application.MlClientSockets)
                 {
@@ -164,7 +165,8 @@ namespace TCPServer.ClientInstance
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                application.PrintLine("Error onCompleteWriteToClientStream : " + exc.Message);
             }
         }
 

@@ -80,5 +80,27 @@ namespace TCPServer.Rooms.Operator
                 return room;
             }
         }
+
+        /// <summary>
+        /// 離開排隊
+        /// </summary>
+        /// <param name="guid">該 Peer 的 Guid</param>
+        /// <returns></returns>
+        public bool ExitQueue(string guid)
+        {
+            foreach (KeyValuePair<string, List<BaseQueueInfo>> pair in _Queue)
+            {
+                for (int i = 0; i < pair.Value.Count; i++)
+                {
+                    if (pair.Value[i].Guid.Equals(guid))
+                    {
+                        pair.Value.Remove(pair.Value[i]);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }

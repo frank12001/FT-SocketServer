@@ -30,6 +30,18 @@ namespace TCPServer.Projects.Palace
         {
             _server.PrintLine("觸發 OnDisConnect ");
             base.OnDisconnect();
+
+            //如果再排隊
+            if (_Queueing)
+            {
+                if (_server.RoomOperator is PalaceQueueOperator queue3)
+                {
+                    queue3.ExitQueue(_Guid.ToString());
+                    _Queueing = false;
+                }
+            }
+            //如果在房間
+            room?.Room_Exit(this.playeridInRoom);
         }
 
         private byte exeCode = 0;
@@ -158,7 +170,33 @@ namespace TCPServer.Projects.Palace
                                     this._RoomOperator = queue;
                                     this.room = this._RoomOperator.QueueJoin(queueInfo);
                                     _Queueing = true;
+
+                                    packet = new Dictionary<byte, object>()
+                                    {
+                                        {(byte)0,2},
+                                        {(byte)1,_Queueing},
+                                        {(byte)2,Math.Serializate.ToByteArray(new object())}
+                                    };
+                                    SendEvent((byte)OperationCode.Queue, packet);
                                 }
+                                break;
+                            case 3: //Exit Queue
+                                bool success = false;
+                                if (_server.RoomOperator is PalaceQueueOperator queue3)
+                                {
+                                    if (_Queueing)
+                                    {
+                                        success = queue3.ExitQueue(_Guid.ToString());
+                                        this.room = null;
+                                        _Queueing = false;
+                                    }
+                                }
+                                packet = new Dictionary<byte, object>()
+                                {
+                                    {(byte)0,3},
+                                    {(byte)1,success }
+                                };
+                                SendEvent((byte)OperationCode.Queue, packet);
                                 break;
                         }
                         break;

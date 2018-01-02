@@ -172,7 +172,7 @@ namespace TCPServer
         public void printLine(string _strPrint)
         {
             if(load)
-            tbConsoleOutput.Invoke(new Action<string>(doInvoke), _strPrint);
+                tbConsoleOutput.Invoke(new Action<string>(doInvoke), _strPrint);
         }
 
         public void doInvoke(string _strPrint)
