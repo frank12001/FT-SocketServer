@@ -26,6 +26,10 @@ namespace TCPServer.Projects.Palace
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        private float t = 0;
+>>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
 =======
         private float t = 0;
 >>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
@@ -43,6 +47,7 @@ namespace TCPServer.Projects.Palace
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
             PalaceWar.GamingStart start = new PalaceWar.GamingStart()
@@ -52,6 +57,15 @@ namespace TCPServer.Projects.Palace
                 GamingTime = this.GamingTime
             };
 
+=======
+            PalaceWar.GamingStart start = new PalaceWar.GamingStart()
+            {
+                CardsFight = new[] { "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1" },
+                CardsCommander = new[] { "FC_1", "FC_1", "FC_1" },
+                GamingTime = this.GamingTime
+            };
+
+>>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
             //t += 30;
             //if (t > 1000)
             //{
@@ -62,6 +76,9 @@ namespace TCPServer.Projects.Palace
             //    };
             //    BroadcastPacket(packet);
             //}
+<<<<<<< HEAD
+>>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
+=======
 >>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
             GamingTime += timer_interal;
         }

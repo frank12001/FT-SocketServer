@@ -81,6 +81,9 @@ namespace TCPServer.ClientInstance
                         //application.PrintLine("Send byte Array.length = " + cn.Tx.Length);
                         //從暫存區把資料寫出，給對應到此 TCPClient 的 Client 端
                         cn.tclient.GetStream().BeginWrite(cn.Tx, 0, cn.Tx.Length, cn.onCompleteWriteToClientStream, cn.tclient);
+<<<<<<< HEAD
+>>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
+=======
 >>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
                     }
                 }
