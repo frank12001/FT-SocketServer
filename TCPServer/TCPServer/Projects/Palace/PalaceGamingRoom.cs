@@ -7,7 +7,7 @@ using System.Timers;
 using PalaceWar;
 using startOnline;
 using TCPServer.Projects.Stellar;
-using GamingStart = TCPServer.Projects.Palace.Packet.GamingStart;
+using LoadingNextScene = TCPServer.Projects.Palace.Packet.LoadingNextScene;
 
 namespace TCPServer.Projects.Palace
 {
@@ -25,14 +25,6 @@ namespace TCPServer.Projects.Palace
             _server.printLine("Release Palace Gaming Room");
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        private float t = 0;
->>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
-=======
-        private float t = 0;
->>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
         public override void mainThread(object sender, ElapsedEventArgs e)
         {
             if (!SendGameStart)
@@ -40,46 +32,11 @@ namespace TCPServer.Projects.Palace
                 Dictionary<byte, object> packet = new Dictionary<byte, object>()
                 {
                     {(byte)0,3 },
-                    {(byte)1,Math.Serializate.ToByteArray(new GamingStart()) },
+                    {(byte)1,Math.Serializate.ToByteArray(new LoadingNextScene()) },
                 };
                 BroadcastPacket(packet);
                 SendGameStart = true;
             }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-            PalaceWar.GamingStart start = new PalaceWar.GamingStart()
-            {
-                CardsFight = new[] { "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1" },
-                CardsCommander = new[] { "FC_1", "FC_1", "FC_1" },
-                GamingTime = this.GamingTime
-            };
-
-=======
-            PalaceWar.GamingStart start = new PalaceWar.GamingStart()
-            {
-                CardsFight = new[] { "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1" },
-                CardsCommander = new[] { "FC_1", "FC_1", "FC_1" },
-                GamingTime = this.GamingTime
-            };
-
->>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
-            //t += 30;
-            //if (t > 1000)
-            //{
-            //    Dictionary<byte, object> packet = new Dictionary<byte, object>()
-            //    {
-            //         {(byte) 0, 3}, //switch code
-            //         {(byte) 1, TCPServer.Math.Serializate.ToByteArray(new GamingTest())},
-            //    };
-            //    BroadcastPacket(packet);
-            //}
-<<<<<<< HEAD
->>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
-=======
->>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
             GamingTime += timer_interal;
         }
 

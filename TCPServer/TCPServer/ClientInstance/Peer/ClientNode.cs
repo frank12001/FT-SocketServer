@@ -56,7 +56,7 @@ namespace TCPServer.ClientInstance
             return strId;
         }
 
-        public void SendEvent(EventData eventData)
+        public async void SendEvent(EventData eventData)
         {
             //取出選定的 ClientNode
             ClientNode cn = this;
@@ -72,19 +72,12 @@ namespace TCPServer.ClientInstance
                     {
                         //將資料轉成 byte[] 
                         cn.Tx = Serializate(eventData);
-<<<<<<< HEAD
                         //從暫存區把資料寫出，給對應到此 TCPClient 的 Client 端                        
                         await cn.tclient.GetStream().WriteAsync(cn.Tx, 0, cn.Tx.Length);
-
-=======
                         //MessageBox.Show("Send byte Array.length = " + cn.Tx.Length);
                         //application.PrintLine("Send byte Array.length = " + cn.Tx.Length);
                         //從暫存區把資料寫出，給對應到此 TCPClient 的 Client 端
-                        cn.tclient.GetStream().BeginWrite(cn.Tx, 0, cn.Tx.Length, cn.onCompleteWriteToClientStream, cn.tclient);
-<<<<<<< HEAD
->>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
-=======
->>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
+                        //cn.tclient.GetStream().BeginWrite(cn.Tx, 0, cn.Tx.Length, cn.onCompleteWriteToClientStream, cn.tclient);
                     }
                 }
             }
