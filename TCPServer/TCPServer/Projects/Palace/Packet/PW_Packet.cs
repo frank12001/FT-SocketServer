@@ -93,7 +93,7 @@ namespace PalaceWar
     [Serializable]
     public class Character_PointData
     {
-        //  public int index;
+        public int index;
         //  public Character_Camp FightingCharacter_Friendly_Camp;
         public float[] Point;
         public float[] Rotate;
@@ -108,6 +108,15 @@ namespace PalaceWar
     public struct Cubes
     {
         public Cube[] Cube;
+    }
+
+    /// <summary>
+    /// 死亡回報
+    /// </summary>
+    [Serializable]
+    public class Character_Death
+    {
+        public int Character_Index;
     }
 }
 

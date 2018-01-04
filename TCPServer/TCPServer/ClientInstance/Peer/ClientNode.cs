@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
 using TCPServer.ClientInstance.Packet;
 using TCPServer.ClientInstance.Interface.Input;
@@ -29,6 +30,16 @@ namespace TCPServer.ClientInstance
             Rx = _rx;
             strId = _str;
             this.application = applicationInterface;
+
+            //while (true)
+            //{
+            //    NetworkStream stream = tcpClient.GetStream();
+            //    StreamReader reader = new StreamReader(stream);
+            //    byte[] buff = new byte[64];
+
+            //    int nRet = await stream.ReadAsync(buff, 0, buff.Length)
+            //    string receivedText = new string(buff);
+            //}
         }
 
         bool IEquatable<string>.Equals(string other)
@@ -47,8 +58,6 @@ namespace TCPServer.ClientInstance
 
         public async void SendEvent(EventData eventData)
         {
-            //確定要傳出的不是 null
-            //if (string.IsNullOrEmpty(eventData.ForTest)) return;
             //取出選定的 ClientNode
             ClientNode cn = this;
             //初始化 ClientNode 的傳送暫存空間
@@ -61,14 +70,10 @@ namespace TCPServer.ClientInstance
                     //如果現在 TCPClient 有連線
                     if (cn.tclient.Client.Connected)
                     {
-                        //將 tbPayload.Text 的值取出，轉成 byte[] 並放入暫存區
-                        //cn.Tx = Encoding.ASCII.GetBytes(eventData.ForTest);
+                        //將資料轉成 byte[] 
                         cn.Tx = Serializate(eventData);
-                        //MessageBox.Show("Send byte Array.length = " + cn.Tx.Length);
-                        //application.PrintLine("Send byte Array.length = " + cn.Tx.Length);
-                        //從暫存區把資料寫出，給對應到此 TCPClient 的 Client 端
-                        cn.tclient.GetStream().BeginWrite(cn.Tx, 0, cn.Tx.Length, cn.onCompleteWriteToClientStream, cn.tclient);
-                        //await cn.tclient.GetStream().WriteAsync(cn.Tx, 0, cn.Tx.Length);
+                        //從暫存區把資料寫出，給對應到此 TCPClient 的 Client 端                        
+                        await cn.tclient.GetStream().WriteAsync(cn.Tx, 0, cn.Tx.Length);
 
                     }
                 }
@@ -161,21 +166,6 @@ namespace TCPServer.ClientInstance
                 //    application.MlClientSockets.Remove(cn);
                 //    application.LbClients.Items.Remove(cn.ToString());
                 //}
-            }
-        }
-
-        public void onCompleteWriteToClientStream(IAsyncResult iar)
-        {
-            try
-            {
-                TcpClient tcpc = (TcpClient)iar.AsyncState;
-                //關掉寫出串流
-                tcpc.GetStream().EndWrite(iar);
-            }
-            catch (Exception exc)
-            {
-                //MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                application.PrintLine("Error onCompleteWriteToClientStream : " + exc.Message);
             }
         }
 

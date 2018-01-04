@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
@@ -92,7 +93,7 @@ namespace TCPServer
             return ipv4Ret;
         }
 
-        private void btnStartListening_Click(object sender, EventArgs e)
+        private async void btnStartListening_Click(object sender, EventArgs e)
         {
             IPAddress ipaddr;
             int nPort;
@@ -111,59 +112,27 @@ namespace TCPServer
 
             mTCPListener.Start();
 
-            mTCPListener.BeginAcceptTcpClient(onCompleteAcceptTcpClient, mTCPListener);
-
             printLine("start listening");
-        }
-        /// <summary>
-        /// 當接收到 Client 連線時呼叫
-        /// </summary>
-        /// <param name="iar"></param>
-        void onCompleteAcceptTcpClient(IAsyncResult iar)
-        {
-            TcpListener tcpl = (TcpListener)iar.AsyncState;
-            TcpClient tclient = null;
-            ClientNode cNode = null;
 
-            try
+            while (true)
             {
-                //將這次連線進來的 TcpClient 存起來
-                tclient = tcpl.EndAcceptTcpClient(iar); ;
-
-                printLine("Client Connected..");
-
-                //將這次  TcpClient 存入後就繼續監聽，是否有人連近來
-                tcpl.BeginAcceptTcpClient(onCompleteAcceptTcpClient, tcpl);
-                //實力化 ClientNode ，傳入 連線進來的 TcpClient 
-                //cNode = new ClientNode(tclient, new byte[InputBufferSize],
-                //                        new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(),this);
-                //cNode = new PlayarPeer(this,tclient, new byte[InputBufferSize],
-                //                        new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(),this);
-                //cNode = new PokerPeer(this, tclient, new byte[InputBufferSize],
-                //    new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(), this);
-                cNode = new PalacePeer(this, tclient, new byte[InputBufferSize],
-                    new byte[InputBufferSize], tclient.Client.RemoteEndPoint.ToString(), this);
+                //mTCPListener.BeginAcceptTcpClient(onCompleteAcceptTcpClient, mTCPListener);
+                TcpClient tcpc = await mTCPListener.AcceptTcpClientAsync();
+                ClientNode cNode = cNode = new PalacePeer(this, tcpc, new byte[InputBufferSize],
+                    new byte[InputBufferSize], tcpc.Client.RemoteEndPoint.ToString(), this);
 
                 //開啟 TcpClient 的輸入串流
-                tclient.ReceiveBufferSize = (int)InputBufferSize;
-                //tclient.SendBufferSize = (int)InputBufferSize;
-                tclient.GetStream().BeginRead(cNode.Rx, 0, cNode.Rx.Length, cNode.onCompleteReadFromTCPClientStream, tclient);
+                tcpc.ReceiveBufferSize = (int) InputBufferSize;
+                tcpc.GetStream().BeginRead(cNode.Rx, 0, cNode.Rx.Length, cNode.onCompleteReadFromTCPClientStream, tcpc);
 
-                //將 ClientNode 加入 List
-                lock (mlClientSocks)
-                {
-                    //使用此 TcpClient 製作 ClientNode 
-                    mlClientSocks.Add(cNode);
-                    //將 ClientNode 放到 畫面中顯示
-                    lbClients.Items.Add(cNode.ToString());
-                }
+                //使用此 TcpClient 製作 ClientNode 
+                mlClientSocks.Add(cNode);
+                //將 ClientNode 放到 畫面中顯示
+                lbClients.Items.Add(cNode.ToString());
+
             }
-            catch (Exception exc)
-            {
-                printLine(exc.Message);
-                //MessageBox.Show(exc.Message, "Errot", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+
+        }       
 
 
 

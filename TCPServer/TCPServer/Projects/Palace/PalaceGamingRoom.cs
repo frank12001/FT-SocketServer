@@ -32,6 +32,15 @@ namespace TCPServer.Projects.Palace
         public PalaceGamingRoom(string customName, PalacePeer[] joinPlayers, string roomIndexInApplication, Form1 applicationPointer) : base(customName,joinPlayers,roomIndexInApplication,applicationPointer)
         {
             _server.printLine("In Palace Gaming Room");
+        }
+
+        ~PalaceGamingRoom()
+        {
+            _server.printLine("Release Palace Gaming Room");
+        }
+
+        public override void mainThread(object sender, ElapsedEventArgs e)
+        {
             if (!SendGameStart)
             {
                 Dictionary<byte, object> packet = new Dictionary<byte, object>()
@@ -42,25 +51,6 @@ namespace TCPServer.Projects.Palace
                 BroadcastPacket(packet);
                 SendGameStart = true;
             }
-        }
-
-        ~PalaceGamingRoom()
-        {
-            _server.printLine("Release Palace Gaming Room");
-        }
-
-        public override void mainThread(object sender, ElapsedEventArgs e)
-        {
-            //if (!SendGameStart)
-            //{
-            //    Dictionary<byte, object> packet = new Dictionary<byte, object>()
-            //    {
-            //        {(byte)0,3 },
-            //        {(byte)1,Math.Serializate.ToByteArray(new LoadingNextScene()) },
-            //    };
-            //    BroadcastPacket(packet);
-            //    SendGameStart = true;
-            //}
 
 
             GamingTime += timer_interal;
