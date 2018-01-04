@@ -45,7 +45,7 @@ namespace TCPServer.ClientInstance
             return strId;
         }
 
-        public void SendEvent(EventData eventData)
+        public async void SendEvent(EventData eventData)
         {
             //確定要傳出的不是 null
             //if (string.IsNullOrEmpty(eventData.ForTest)) return;
@@ -68,6 +68,8 @@ namespace TCPServer.ClientInstance
                         //application.PrintLine("Send byte Array.length = " + cn.Tx.Length);
                         //從暫存區把資料寫出，給對應到此 TCPClient 的 Client 端
                         cn.tclient.GetStream().BeginWrite(cn.Tx, 0, cn.Tx.Length, cn.onCompleteWriteToClientStream, cn.tclient);
+                        //await cn.tclient.GetStream().WriteAsync(cn.Tx, 0, cn.Tx.Length);
+
                     }
                 }
             }

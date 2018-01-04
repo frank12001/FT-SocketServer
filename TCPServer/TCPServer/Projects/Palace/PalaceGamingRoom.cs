@@ -7,17 +7,41 @@ using System.Timers;
 using PalaceWar;
 using startOnline;
 using TCPServer.Projects.Stellar;
-using GamingStart = TCPServer.Projects.Palace.Packet.GamingStart;
+using LoadingNextScene = TCPServer.Projects.Palace.Packet.LoadingNextScene;
 
 namespace TCPServer.Projects.Palace
 {
     public class PalaceGamingRoom : Room
     {
+        #region 參數-遊戲中
+        /// <summary>
+        /// 已經 Loading Scene 好的人。用在剛開始，所有人都 Loading 完後才發送 GameStart
+        /// </summary>
+        private List<byte> loadingSceneReady = new List<byte>();
+        /// <summary>
+        /// 傳送過開始遊戲了嗎
+        /// </summary>
         private bool SendGameStart = false;
+        /// <summary>
+        /// 從此房間被創建時，持續累加
+        /// </summary>
         private float GamingTime = 0;
+
+
+        #endregion 
         public PalaceGamingRoom(string customName, PalacePeer[] joinPlayers, string roomIndexInApplication, Form1 applicationPointer) : base(customName,joinPlayers,roomIndexInApplication,applicationPointer)
         {
             _server.printLine("In Palace Gaming Room");
+            if (!SendGameStart)
+            {
+                Dictionary<byte, object> packet = new Dictionary<byte, object>()
+                {
+                    {(byte)0,3 },
+                    {(byte)1,Math.Serializate.ToByteArray(new LoadingNextScene()) },
+                };
+                BroadcastPacket(packet);
+                SendGameStart = true;
+            }
         }
 
         ~PalaceGamingRoom()
@@ -25,41 +49,24 @@ namespace TCPServer.Projects.Palace
             _server.printLine("Release Palace Gaming Room");
         }
 
-        private float t = 0;
         public override void mainThread(object sender, ElapsedEventArgs e)
         {
-            if (!SendGameStart)
-            {
-                Dictionary<byte, object> packet = new Dictionary<byte, object>()
-                {
-                    {(byte)0,3 },
-                    {(byte)1,Math.Serializate.ToByteArray(new GamingStart()) },
-                };
-                BroadcastPacket(packet);
-                SendGameStart = true;
-            }
-
-            PalaceWar.GamingStart start = new PalaceWar.GamingStart()
-            {
-                CardsFight = new[] { "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1" },
-                CardsCommander = new[] { "FC_1", "FC_1", "FC_1" },
-                GamingTime = this.GamingTime
-            };
-
-            //t += 30;
-            //if (t > 1000)
+            //if (!SendGameStart)
             //{
             //    Dictionary<byte, object> packet = new Dictionary<byte, object>()
             //    {
-            //         {(byte) 0, 3}, //switch code
-            //         {(byte) 1, TCPServer.Math.Serializate.ToByteArray(new GamingTest())},
+            //        {(byte)0,3 },
+            //        {(byte)1,Math.Serializate.ToByteArray(new LoadingNextScene()) },
             //    };
             //    BroadcastPacket(packet);
+            //    SendGameStart = true;
             //}
+
+
             GamingTime += timer_interal;
         }
 
-        private List<byte> loadingSceneReady = new List<byte>();
+
 
         public override void GamingProcess(byte playerId, Dictionary<byte, object> packet)
         {
@@ -110,22 +117,11 @@ namespace TCPServer.Projects.Palace
                     if (loadingSceneReady.Count.Equals(players.Count))
                         SendInitPacket();
                     break;
-                case 2: //同步資料
+                case 2: //同步怪物位置專用接口
                     packet[0] = 3;
-                    object oo = Math.Serializate.ToObject((byte[])packet[1]);
-                    if (oo is Cubes)
-                    {
-                        Cubes c = (Cubes)oo;
-                        packet = new Dictionary<byte, object>()
-                        {
-                             { (byte)0,3 }, //switch code 客製化封包                                   
-                             { (byte)1,Math.Serializate.ToByteArray(c) }
-                        };
-                    }
+                    //object oo = Math.Serializate.ToObject((byte[])packet[1]);
                     _server.printLine("playerid = " + playerId);
                     BroadcastPacket(packet, playerId);
-                    //BroadcastPacket(packet);
-                    //SendToAssignPlayer(packet, 1);
                     break;
                 
             }
