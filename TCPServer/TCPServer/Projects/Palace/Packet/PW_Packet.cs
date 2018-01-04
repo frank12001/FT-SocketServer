@@ -1,9 +1,17 @@
-﻿
-
-using System;
+﻿using System;
 
 namespace PalaceWar
 {
+    [Serializable]
+    public struct Cube
+    {
+        public float PosX, PosY, PosZ, RotX, RotY, RotZ;
+    }
+    [Serializable]
+    public struct Cubes
+    {
+        public Cube[] Cube;
+    }
     [Serializable]
     public abstract class Base
     {
@@ -87,6 +95,7 @@ namespace PalaceWar
     [Serializable]
     public class Update_Network_SyncData
     {
+<<<<<<< HEAD
         public Character_PointData[] Character;
     }
 
@@ -118,5 +127,12 @@ namespace PalaceWar
     {
         public int Character_Index;
     }
+=======
+        public int index;
+        public Character_Camp FightingCharacter_Friendly_Camp;
+        public float[] Point;
+        public float[] Rotate;
+    }
+>>>>>>> parent of 817de2a... 更換 BeginWrite 、 BeginRead 前
 }
 

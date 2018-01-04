@@ -164,8 +164,8 @@ namespace TCPServer.Projects.Palace
                             case 2://Join With info
                                 if (_server.RoomOperator is PalaceQueueOperator queue)
                                 {
-                                    QueueInfo info =
-                                        (QueueInfo)Serializate.ToObject((byte[])operationRequest.Parameters[1]);
+                                    PalaceTest info =
+                                        (PalaceTest)Serializate.ToObject((byte[])operationRequest.Parameters[1]);
                                     PalaceQueueInfo queueInfo = new PalaceQueueInfo() { Peer = this, Key = info.Key, Guid = _Guid.ToString() };
                                     this._RoomOperator = queue;
                                     this.room = this._RoomOperator.QueueJoin(queueInfo);
