@@ -30,6 +30,7 @@ namespace TCPServer.Projects.Palace
             for (byte i = 0; i < peers.Length; i++)
             {
                 peers[i] = infos[i].Peer as PalacePeer;
+                peers[i]._Queueing = false; //排隊成功進入
             }
             string roomIndexInApplication = Guid.NewGuid().ToString();
             PalaceGamingRoom room = new PalaceGamingRoom(Guid.NewGuid().ToString(), peers, roomIndexInApplication,server);

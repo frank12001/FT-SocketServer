@@ -86,29 +86,37 @@ namespace TCPServer.Projects.Palace
                     break;
                 #endregion
 
+                #region 1 Loading Scene Ready
                 case 1: //Loading Scene Ready
                     loadingSceneReady.Add(playerId);
                     if (loadingSceneReady.Count.Equals(players.Count))
                         SendInitPacket();
                     break;
-                case 2: //同步資料
+                #endregion
+
+                #region 2 同步位置資料
+                case 2: 
                     packet[0] = 3;
-                    object oo = Math.Serializate.ToObject((byte[])packet[1]);
-                    if (oo is Cubes)
-                    {
-                        Cubes c = (Cubes)oo;
-                        packet = new Dictionary<byte, object>()
-                        {
-                             { (byte)0,3 }, //switch code 客製化封包                                   
-                             { (byte)1,Math.Serializate.ToByteArray(c) }
-                        };
-                    }
                     _server.printLine("playerid = " + playerId);
                     BroadcastPacket(packet, playerId);
-                    //BroadcastPacket(packet);
-                    //SendToAssignPlayer(packet, 1);
                     break;
-                
+                #endregion
+
+                #region 3 GameOver
+                case 3:
+                    //GamingOver
+                    packet[0] = 3;
+                    object oo = Math.Serializate.ToObject((byte[]) packet[1]);
+                    if (oo is GamingOver)
+                    {
+                        _server.printLine(" 遊戲結束 ");
+                    }
+                    BroadcastPacket(packet);
+                    // 離開/解散房間
+                    Room_Disband();
+                    break;
+                #endregion 
+
             }
         }
 

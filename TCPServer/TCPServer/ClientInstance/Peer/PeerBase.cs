@@ -48,8 +48,7 @@ namespace startOnline
         /// </summary>
         public void RoomWasKicked()
         {
-            if (this.room != null)
-                this.room = null;
+            this.room = null;
             this.playeridInRoom = 0;
             //Send Message
             //要發新的包
@@ -65,7 +64,7 @@ namespace startOnline
         public void SendEvent(byte eventCode, Dictionary<byte, object> packet)
         {
             EventData eventData = new EventData((byte)eventCode, packet);
-            base.SendEvent(eventData);
+            base.WriteAsync(eventData);
         }
         /// <summary>
         /// 傳送伺服器訊息給此 Client。 Client 用 Connect.System.ReveiveServerLog 接
@@ -78,7 +77,7 @@ namespace startOnline
                 {(byte)1,message }, //Message
             };
             EventData eventData = new EventData((byte)3, packet); //event Code = 3,System
-            SendEvent(eventData);
+            WriteAsync(eventData);
         }
         #endregion
     }

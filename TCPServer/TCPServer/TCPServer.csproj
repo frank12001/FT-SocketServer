@@ -54,7 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientInstance\Peer\ClientNode.cs" />
-    <Compile Include="ClientInstance\Interface\Input\ITCPClientCallBack.cs" />
     <Compile Include="ClientInstance\Interface\Output\IManagedPeer.cs" />
     <Compile Include="ClientInstance\Packet\EventData.cs" />
     <Compile Include="ClientInstance\Packet\IPacket.cs" />

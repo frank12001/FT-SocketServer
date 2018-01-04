@@ -16,6 +16,18 @@ namespace TCPServer.Projects.Palace
         /// 該 Peer 的 Uid
         /// </summary>
         public Guid _Guid { get; private set; }
+        /// <summary>
+        /// 排隊 / 房間，處理器
+        /// </summary>
+        private PalaceQueueOperator _RoomOperator;
+        /// <summary>
+        /// 是否在排隊中
+        /// </summary>
+        public bool _Queueing;
+        /// <summary>
+        /// Debug 用。 OnOperationRequest 接到哪個  switchcode
+        /// </summary>
+        private byte OnOperationSwitchCode = 0;
         public PalacePeer(Form1 app, TcpClient _tclient, byte[] _tx, byte[] _rx, string _str, IApplication applicationInterface) : base(app, _tclient, _tx, _rx, _str, applicationInterface)
         {
             _Guid = Guid.NewGuid();
@@ -44,9 +56,7 @@ namespace TCPServer.Projects.Palace
             room?.Room_Exit(this.playeridInRoom);
         }
 
-        private byte exeCode = 0;
-        private PalaceQueueOperator _RoomOperator;
-        private bool _Queueing;
+
 
         public override void OnOperationRequest(OperationRequest operationRequest)
         {
@@ -66,7 +76,7 @@ namespace TCPServer.Projects.Palace
                              * 1 = sucess or false
                              */
                         byte switchcode_1 = byte.Parse(operationRequest.Parameters[0].ToString());
-                        exeCode = switchcode_1;
+                        OnOperationSwitchCode = switchcode_1;
                         bool issucess = true;
                         Dictionary<byte, object> packet = new Dictionary<byte, object>
                         {
@@ -121,7 +131,7 @@ namespace TCPServer.Projects.Palace
                     #endregion
                     #region 2 : Gaming 
                     case 2: //傳進 room 的遊戲邏輯處理區，進行處理
-                        exeCode = 0;
+                        OnOperationSwitchCode = 0;
                         this.room.GamingProcess(this.playeridInRoom, operationRequest.Parameters);
                         break;
                     #endregion
@@ -132,7 +142,7 @@ namespace TCPServer.Projects.Palace
                              * 這裡的功能不一定要經過 Room
                              */
                         byte switchcode_3 = byte.Parse(operationRequest.Parameters[0].ToString());
-                        exeCode = switchcode_3;
+                        OnOperationSwitchCode = switchcode_3;
                         switch (switchcode_3)
                         {
                             case 0: //計算 Ping 
@@ -141,10 +151,10 @@ namespace TCPServer.Projects.Palace
                                 break;
                             case 2: //取得現在房間數量
                                 Dictionary<byte, object> packet_system_2 = new Dictionary<byte, object>()
-                            {
-                                { (byte)0,(byte)2 }, //switch code
-                                { (byte)1,(int)_server.RoomOperator.GetRoomsCount()},
-                            };
+                                {
+                                    { (byte)0,(byte)2 }, //switch code
+                                    { (byte)1,(int)_server.RoomOperator.GetRoomsCount()},
+                                };
                                 SendEvent((byte)3, packet_system_2);
                                 break;
                             case 4: //不會有東西，可是也不要用。 case 4 是Server 傳送訊息給 Client 用的
@@ -153,9 +163,11 @@ namespace TCPServer.Projects.Palace
                         }
                         break;
                     #endregion
+                    #region 5 : 測試用
                     case 5:
                         _server.PrintLine(DateTime.Now + " - " + this.ToString() + ": " + operationRequest.ForTest);
                         break;
+                    #endregion 
                     #region 6 : Queue
                     case 6:
                         byte switchcode_6 = byte.Parse(operationRequest.Parameters[0].ToString());
@@ -211,7 +223,7 @@ namespace TCPServer.Projects.Palace
             catch (Exception e)
             {
                 _server.PrintLine("peer OnOperationRequest error = " + e.Message);
-                _server.PrintLine("OperationCode = " + operationRequest.OperationCode + "/ ExeCode = " + exeCode);
+                _server.PrintLine("OperationCode = " + operationRequest.OperationCode + "/ OnOperationSwitchCode = " + OnOperationSwitchCode);
             }
         }
     }

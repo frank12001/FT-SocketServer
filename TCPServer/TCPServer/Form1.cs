@@ -59,7 +59,7 @@ namespace TCPServer
             printLine("Setup Finish");
         }
 
-        IPAddress findMyIPV4Address()
+        private IPAddress findMyIPV4Address()
         {
             string strThisHostName = string.Empty;
             IPHostEntry thisHostDNSEntry = null;
@@ -116,20 +116,15 @@ namespace TCPServer
 
             while (true)
             {
-                //mTCPListener.BeginAcceptTcpClient(onCompleteAcceptTcpClient, mTCPListener);
+                //等待有人連接
                 TcpClient tcpc = await mTCPListener.AcceptTcpClientAsync();
-                ClientNode cNode = cNode = new PalacePeer(this, tcpc, new byte[InputBufferSize],
-                    new byte[InputBufferSize], tcpc.Client.RemoteEndPoint.ToString(), this);
-
-                //開啟 TcpClient 的輸入串流
-                tcpc.ReceiveBufferSize = (int) InputBufferSize;
-                tcpc.GetStream().BeginRead(cNode.Rx, 0, cNode.Rx.Length, cNode.onCompleteReadFromTCPClientStream, tcpc);
-
+                //有人連接後的處理
+                ClientNode cNode = new PalacePeer(this, tcpc, new byte[InputBufferSize],
+                    new byte[InputBufferSize], tcpc.Client.RemoteEndPoint.ToString(), this);              
                 //使用此 TcpClient 製作 ClientNode 
                 mlClientSocks.Add(cNode);
                 //將 ClientNode 放到 畫面中顯示
                 lbClients.Items.Add(cNode.ToString());
-
             }
 
         }       
@@ -158,7 +153,7 @@ namespace TCPServer
             {
                 {1,new EventData(1,new Dictionary<byte, object>()){ ForTest = "2" } },
             };
-            cn.SendEvent(new EventData(5, dic) { ForTest = tbPayload.Text });
+            cn.WriteAsync(new EventData(5, dic) { ForTest = tbPayload.Text });
             //cn.SendEvent(new TestPacket(new Dictionary<byte, object>()) { Text = tbPayload.Text });
             
         }
