@@ -8,7 +8,7 @@ namespace TCPServer.Projects.Palace.Packet
     [Serializable]
     public class QueueInfo
     {
-        public string Key;
+        public string Key, CustomName;
     }
     /// <summary>
     /// 遊戲時輸入的傳遞封包
@@ -17,5 +17,7 @@ namespace TCPServer.Projects.Palace.Packet
     public class LoadingNextScene
     {
         public bool Start = true;
+        public string[] PlayersName;
     }
+
 }

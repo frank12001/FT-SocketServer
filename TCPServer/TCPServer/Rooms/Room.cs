@@ -256,6 +256,7 @@ namespace startOnline
         {
             foreach (KeyValuePair<byte, PeerBase> player in this.players)
             {
+                _server.printLine("Send "+player.Key + " , "+player.Value.playeridInRoom);
                 player.Value.SendEvent((byte)OperationCode.Gaming, packet);
             }
         }

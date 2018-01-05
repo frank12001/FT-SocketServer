@@ -34,6 +34,11 @@ namespace TCPServer.ClientInstance
             BeginReadAsync();            
         }
 
+        ~ClientNode()
+        {
+            application.PrintLine("ClientNode 解構子觸發.");
+        }
+
         /// <summary>
         /// 開始等待封包傳入
         /// </summary>
@@ -55,6 +60,7 @@ namespace TCPServer.ClientInstance
                     application.MlClientSockets.Remove(cn);
                     application.LbClients.Items.Remove(cn.ToString());
                     OnDisconnect();
+                    cn.tclient.Close();
                     return;
                 }
                 try

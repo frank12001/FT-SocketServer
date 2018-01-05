@@ -41,6 +41,10 @@ namespace PalaceWar
     {
         public Team _Team;
         public string[] CardsFight, CardsCommander;
+        /// <summary>
+        /// 所有玩家的自定義名稱
+        /// </summary>
+        public string[] PlayersName;
     }
     [Serializable]
     public class GamingOver

@@ -7,7 +7,7 @@ using System.Timers;
 using PalaceWar;
 using startOnline;
 using TCPServer.Projects.Stellar;
-using LoadingNextScene = TCPServer.Projects.Palace.Packet.LoadingNextScene;
+using TCPServer.Projects.Palace.Packet;
 
 namespace TCPServer.Projects.Palace
 {
@@ -27,16 +27,18 @@ namespace TCPServer.Projects.Palace
 
         public override void mainThread(object sender, ElapsedEventArgs e)
         {
+            #region 跟玩家說排到了，可以進遊戲場景了
             if (!SendGameStart)
             {
+                SendGameStart = true;
                 Dictionary<byte, object> packet = new Dictionary<byte, object>()
                 {
                     {(byte)0,3 },
-                    {(byte)1,Math.Serializate.ToByteArray(new LoadingNextScene()) },
+                    {(byte)1,Math.Serializate.ToByteArray(new LoadingNextScene(){ PlayersName = GetAllPlayersCustimName()}) },
                 };
-                BroadcastPacket(packet);
-                SendGameStart = true;
+                BroadcastPacket(packet);               
             }
+            #endregion 
             GamingTime += timer_interal;
         }
 
@@ -128,8 +130,8 @@ namespace TCPServer.Projects.Palace
             PalaceWar.GamingStart start = new PalaceWar.GamingStart()
             {
                 CardsFight = new[] { "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1" },
-                CardsCommander = new[] { "FC_1", "FC_1", "FC_1" }
-
+                CardsCommander = new[] { "FC_1", "FC_1", "FC_1" },
+                PlayersName = GetAllPlayersCustimName()
             };
 
             foreach (KeyValuePair<byte, PeerBase> player in this.players)
@@ -143,6 +145,21 @@ namespace TCPServer.Projects.Palace
                 };
                 player.Value.SendEvent((byte)OperationCode.Gaming, packet);
             }
+        }
+
+        /// <summary>
+        /// 取得所有玩家的自定義名子
+        /// </summary>
+        /// <returns></returns>
+        private string[] GetAllPlayersCustimName()
+        {
+            List<string> playersName = new List<string>();
+            foreach (KeyValuePair<byte, PeerBase> @base in players)
+            {
+                PalacePeer peer = (PalacePeer)@base.Value;
+                playersName.Add(peer.CustomName);
+            }
+            return playersName.ToArray();
         }
     }
 }

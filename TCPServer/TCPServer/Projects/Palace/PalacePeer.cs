@@ -25,6 +25,10 @@ namespace TCPServer.Projects.Palace
         /// </summary>
         public bool _Queueing;
         /// <summary>
+        /// 用戶的自定義名稱
+        /// </summary>
+        public string CustomName = "";
+        /// <summary>
         /// Debug 用。 OnOperationRequest 接到哪個  switchcode
         /// </summary>
         private byte OnOperationSwitchCode = 0;
@@ -132,7 +136,7 @@ namespace TCPServer.Projects.Palace
                     #region 2 : Gaming 
                     case 2: //傳進 room 的遊戲邏輯處理區，進行處理
                         OnOperationSwitchCode = 0;
-                        this.room.GamingProcess(this.playeridInRoom, operationRequest.Parameters);
+                        room?.GamingProcess(this.playeridInRoom, operationRequest.Parameters);
                         break;
                     #endregion
                     #region 3 : System
@@ -178,6 +182,8 @@ namespace TCPServer.Projects.Palace
                                 {
                                     QueueInfo info =
                                         (QueueInfo)Serializate.ToObject((byte[])operationRequest.Parameters[1]);
+                                    CustomName = info.CustomName;
+                                    _server.printLine(CustomName);
                                     PalaceQueueInfo queueInfo = new PalaceQueueInfo() { Peer = this, Key = info.Key, Guid = _Guid.ToString() };
                                     this._RoomOperator = queue;
                                     this.room = this._RoomOperator.QueueJoin(queueInfo);
