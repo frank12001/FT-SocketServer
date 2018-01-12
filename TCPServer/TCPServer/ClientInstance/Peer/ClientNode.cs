@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using TCPServer.ClientInstance.Packet;
 using TCPServer.ClientInstance.Interface.Output;
 using System.Windows.Forms;
@@ -39,6 +40,9 @@ namespace TCPServer.ClientInstance
             application.PrintLine("ClientNode 解構子觸發.");
         }
 
+
+        public bool Reading = false;
+
         /// <summary>
         /// 開始等待封包傳入
         /// </summary>
@@ -49,7 +53,16 @@ namespace TCPServer.ClientInstance
 
             while (true)
             {
-                int nCountReadBytes = await stream.ReadAsync(buff, 0, buff.Length);
+                int nCountReadBytes = 0;
+                try
+                {
+                    nCountReadBytes = await stream.ReadAsync(buff, 0, buff.Length);
+                }
+                catch (Exception e)
+                {
+                    application.PrintLine(" stream.ReadAsync錯誤 : " + e.Message);
+                }
+
                 ClientNode cn = this;
 
                 //輸入長度為 0 ，代表斷線了
@@ -84,7 +97,7 @@ namespace TCPServer.ClientInstance
         /// 將資料寫出
         /// </summary>
         /// <param name="eventData"></param>
-        public async void WriteAsync(EventData eventData)
+        public void Write(EventData eventData)
         {
             //取出選定的 ClientNode
             ClientNode cn = this;
@@ -103,6 +116,39 @@ namespace TCPServer.ClientInstance
                         //從暫存區把資料寫出，給對應到此 TCPClient 的 Client 端         
                         
                         //寫出後不用做事 //如果需要的話使用 await 等待
+                        cn.tclient.GetStream().WriteAsync(cn.Tx, 0, cn.Tx.Length);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                application.PrintLine(exc.Message);
+                //MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /// <summary>
+        /// 將資料寫出
+        /// </summary>
+        /// <param name="eventData"></param>
+        public async Task WriteAsync(EventData eventData)
+        {
+            //取出選定的 ClientNode
+            ClientNode cn = this;
+            //初始化 ClientNode 的傳送暫存空間
+            cn.Tx = new byte[application.InputBufferSize];
+            try
+            {
+                //且 TCPClient 不為 null
+                if (cn.tclient != null)
+                {
+                    //如果現在 TCPClient 有連線
+                    if (cn.tclient.Client.Connected)
+                    {
+                        //將資料轉成 byte[] 
+                        cn.Tx = Serializate(eventData);
+                        //從暫存區把資料寫出，給對應到此 TCPClient 的 Client 端         
+
+                        //寫出後不用做事 //如果需要的話使用 await 等待
                         await cn.tclient.GetStream().WriteAsync(cn.Tx, 0, cn.Tx.Length);
                         //這裡可以做寫完後的事
                     }
@@ -114,7 +160,6 @@ namespace TCPServer.ClientInstance
                 //MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         bool IEquatable<string>.Equals(string other)
         {
             if (string.IsNullOrEmpty(other)) return false;

@@ -28,24 +28,30 @@ namespace TCPServer.Projects.Palace
         public override void mainThread(object sender, ElapsedEventArgs e)
         {
             #region 跟玩家說排到了，可以進遊戲場景了
+            CanNextScene();
+            #endregion
+            GamingTime += timer_interal;
+        }
+
+        private void CanNextScene()
+        {
             if (!SendGameStart)
             {
                 SendGameStart = true;
                 Dictionary<byte, object> packet = new Dictionary<byte, object>()
                 {
                     {(byte)0,3 },
-                    {(byte)1,Math.Serializate.ToByteArray(new LoadingNextScene(){ PlayersName = GetAllPlayersCustimName()}) },
+                    {(byte)1,Math.Serializate.ToByteArray(new LoadingNextScene(){ PlayersName = GetAllPlayersCustomName()}) },
                 };
-                BroadcastPacket(packet);               
+                BroadcastPacketAsync(packet);
             }
-            #endregion 
-            GamingTime += timer_interal;
         }
 
         private List<byte> loadingSceneReady = new List<byte>();
 
-        public override void GamingProcess(byte playerId, Dictionary<byte, object> packet)
+        public override void GamingProcess(byte playerId, Dictionary<byte, object> packet100)
         {
+            Dictionary<byte, object> packet = new Dictionary<byte, object>(packet100);
             byte switchcode_1 = byte.Parse(packet[0].ToString()); //switch code
             switch (switchcode_1)
             {
@@ -61,6 +67,7 @@ namespace TCPServer.Projects.Palace
                     {
                         case 0:    //傳給所有人
                             BroadcastPacket(packet);
+                            //BroadcastPacketAsync(packet);
                             break;
                         case 1:    //傳給除了自己之外的人
                             BroadcastPacket(packet, playerId);
@@ -98,9 +105,13 @@ namespace TCPServer.Projects.Palace
 
                 #region 2 同步位置資料
                 case 2: 
-                    packet[0] = 3;
-                    _server.printLine("playerid = " + playerId);
-                    BroadcastPacket(packet, playerId);
+                   
+                    Dictionary<byte,object> dic = new Dictionary<byte, object>(packet);
+                    dic[0] = 3;
+                    //_server.printLine("playerid = " + playerId);
+                    //BroadcastPacket(packet, playerId);
+                    //BroadcastPacket(dic, playerId);
+                    BroadcastPacket(dic);
                     break;
                 #endregion
 
@@ -112,12 +123,17 @@ namespace TCPServer.Projects.Palace
                     if (oo is GamingOver)
                     {
                         _server.printLine(" 遊戲結束 ");
+                        BroadcastPacket(packet);
+                        // 離開/解散房間
+                        Room_Disband();
                     }
-                    BroadcastPacket(packet);
-                    // 離開/解散房間
-                    Room_Disband();
+
                     break;
-                #endregion 
+                #endregion
+
+                case 4: //怪物死亡
+                    BroadcastPacket(packet);
+                    break;
 
             }
         }
@@ -131,7 +147,7 @@ namespace TCPServer.Projects.Palace
             {
                 CardsFight = new[] { "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1", "FS_A_1" },
                 CardsCommander = new[] { "FC_1", "FC_1", "FC_1" },
-                PlayersName = GetAllPlayersCustimName()
+                PlayersName = GetAllPlayersCustomName()
             };
 
             foreach (KeyValuePair<byte, PeerBase> player in this.players)
@@ -151,7 +167,7 @@ namespace TCPServer.Projects.Palace
         /// 取得所有玩家的自定義名子
         /// </summary>
         /// <returns></returns>
-        private string[] GetAllPlayersCustimName()
+        private string[] GetAllPlayersCustomName()
         {
             List<string> playersName = new List<string>();
             foreach (KeyValuePair<byte, PeerBase> @base in players)

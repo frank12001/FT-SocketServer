@@ -8,30 +8,39 @@ using TCPServer.Projects.Palace.Packet;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using PalaceWar;
 
 public class Test : MonoBehaviour
 {
     private Connect connect;
     private TestUIController uiController;
     private float ping = 0;
-
-    public GameObject Cube;
-    public List<GameObject> Cubes;
-    
+    private AsyncOperation sceneAsyncOperation;
 
     // Use this for initialization
-	void Start ()
+    void Start ()
 	{
         DontDestroyOnLoad(gameObject);
         Application.runInBackground = true;
         connect = GetComponent<Connect>();
 	    uiController = FindObjectOfType<TestUIController>();
 
-	    connect._system.Connect += () =>
+	    sceneAsyncOperation = SceneManager.LoadSceneAsync("Map1");
+	    sceneAsyncOperation.allowSceneActivation = false;
+
+
+        connect._system.Connect += () =>
 	    {
 	        uiController.CanQueue();
         };
+
+        //connect._room.ReceiveCreateRoom += value =>
+        //{
+        //    Debug.Log(value.Length);
+        //    if (value.Length.Equals(0))
+        //    {
+        //        connect._room.JoinRoom("Test");
+        //       }
+        //};
 
         connect._room.ReceiveJoinRoom += (b, bb) =>
 	    {
@@ -51,45 +60,27 @@ public class Test : MonoBehaviour
 
         connect._gaming.ReceiveServerPacket += o =>
 	    {
-            if (o is Cubes)
-            {
-                Cubes cubes = (Cubes)o;
-                Debug.Log(cubes.Cube.Length);
-                return;
-            }
-	        if (o is TCPServer.Projects.Palace.Packet.GamingStart)
+	        if (o is LoadingNextScene)
 	        {
-                Debug.Log("GameStart");
-                //SceneManager.LoadSceneAsync("Map1");
-                //SceneManager.LoadSceneAsync("Map1");
-                //SceneManager.LoadSceneAsync("Test2");                
+	            LoadingNextScene packet = (LoadingNextScene) o;
+                //Debug.Log(" 名子 : "+packet.PlayersName[0]+" , "+packet.PlayersName[1]);
+                Debug.Log("LoadingNextScene");
+
+                //過場演出時間
+	            float ShowTime = 3;
+                Invoke("NextScene",ShowTime);
                 hasReady = false;
-                uiController.gameObject.SetActive(false);
 
-            }
-
-	        if (o is GamingTest)
-	        {
-                Debug.Log("From Server GamingTest");
 	        }
-
-	        if (o is PalaceWar.GamingStart)
-	        {
-	            PalaceWar.GamingStart start = (PalaceWar.GamingStart) o;
-                Debug.Log(start._Team);
-	            Debug.Log(start.CardsFight);
-	            Debug.Log(start.CardsCommander);
-            }
 	    };
-
         Invoke("Connect",1);
 
-        for (int i = 0; i < 25; i++)
-        {
-            GameObject cube = Instantiate(Cube);
-            cube.name = "This Computer";
-            Cubes.Add(cube);
-        }
+	    //Invoke("ConpletePing", 1);
+    }
+
+    private void NextScene()
+    {
+        sceneAsyncOperation.allowSceneActivation = true;
     }
 
     private void Connect()
@@ -101,59 +92,46 @@ public class Test : MonoBehaviour
         }
     }
 
-    private bool StartSend = false;
+    //private void ConpletePing()
+    //{
+    //    if(connect.IsConnect)
+    //        connect._system.ComputePing(new object());
+    //    Invoke("ConpletePing", 1);
+    //}
+
     // Update is called once per frame
 	void Update () {
 
+     //   if (!connect._system.Ping.Equals(0))
+	    //{
+	    //    if (ping.Equals(0))
+	    //        ping = connect._system.Ping;
+	    //    else if (!ping.Equals(connect._system.Ping) && !ping.Equals(0))
+	    //    {
+     //           Debug.Log(string.Format("In ping = {0},connect ping = {1}", ping, connect._system.Ping));
+	    //        ping = ((ping + connect._system.Ping) / 2);
+	    //    }
+	    //}
 
 	    if (uiController != null)
 	    {
 	        if (connect.IsConnect)
-	            uiController.QueueButton_SetText("開始排隊");
+	            uiController.QueueButton_SetText("進入戰場");
 	        else
 	            uiController.QueueButton_SetText("連線中");
 	    }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            StartSend = !StartSend;
-        }
-        if (StartSend)
-        {
-            if (time > timeMax)
-            {
-                Cubes cubes = new PalaceWar.Cubes() { Cube = new PalaceWar.Cube[Cubes.Count] };
-                for (int i = 0; i < Cubes.Count; i++)
-                {
-                    Cube cube = new Cube()
-                    {
-                        PosX = Cubes[i].transform.position.x,
-                        PosY = Cubes[i].transform.position.y,
-                        PosZ = Cubes[i].transform.position.z,
-                        RotX = Cubes[i].transform.eulerAngles.x,
-                        RotY = Cubes[i].transform.eulerAngles.y,
-                        RotZ = Cubes[i].transform.eulerAngles.z
-                    };
-                    cubes.Cube[i] = cube;
-                }
-                
 
-                connect._gaming.SendToServer(new Dictionary<byte, object>() {
-                    {(byte)0,(byte)2 },            //自訂的 class
-                    {(byte)1,Serializate.ToByteArray(cubes) },
-                });
-                time = 0;
-            }
-            time += Time.deltaTime;
+        if (Input.anyKeyDown && !hasReady)
+        {
+            GetComponent<PalaceServerConnecter>().LoadingReady();
+
+            hasReady = true;
+
         }
 
     }
-    private float time = 0.0f,timeMax = 0.3f;
+
     private bool hasReady = true;
-
-    public void Sending()
-    {
-      StartSend = !StartSend;        
-    }
 
     public void Ready()
     {
@@ -165,7 +143,9 @@ public class Test : MonoBehaviour
 
     public void Queue()
     {
-        if(connect.IsConnect)
-            connect._queue.JoinQueue(new PalaceTest() { Key = "palaceTest1" });
+        if (connect.IsConnect)
+        {
+            connect._queue.JoinQueue(new QueueInfo() {Key = "palaceTest1",CustomName = uiController.GetName() });
+        }
     }
 }

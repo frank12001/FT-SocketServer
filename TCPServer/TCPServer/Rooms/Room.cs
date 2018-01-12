@@ -2,6 +2,7 @@
 using System.Timers;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using startOnline.playar.Rooms;
 using TVEducation.ServerClientSwap;
@@ -42,7 +43,7 @@ namespace startOnline
         /// <summary>
         /// 遊戲進程呼叫間格 (毫秒)
         /// </summary>
-        protected const float timer_interal = 30;
+        protected const float timer_interal = 1;
         #endregion
 
         #region 建構子
@@ -248,6 +249,14 @@ namespace startOnline
         #endregion
 
         #region Gaming Function - Base
+
+        //public void BroadcastPacket(Dictionary<byte, object> packet)
+        //{
+        //    foreach (KeyValuePair<byte, PeerBase> player in this.players)
+        //    {
+        //        player.Value.SendEvent((byte)OperationCode.Gaming, packet);
+        //    }
+        //}
         /// <summary>
         /// Broadcast assign packet to everyone. (預設OperatorCode.Gaming)
         /// </summary>
@@ -256,8 +265,19 @@ namespace startOnline
         {
             foreach (KeyValuePair<byte, PeerBase> player in this.players)
             {
-                _server.printLine("Send "+player.Key + " , "+player.Value.playeridInRoom);
-                player.Value.SendEvent((byte)OperationCode.Gaming, packet);
+                player.Value.SendEventList((byte) OperationCode.Gaming, packet);
+            }
+        }
+
+        /// <summary>
+        /// Broadcast assign packet to everyone. (預設OperatorCode.Gaming)
+        /// </summary>
+        /// <param name="packet"></param>
+        public async Task BroadcastPacketAsync(Dictionary<byte, object> packet)
+        {
+            foreach (KeyValuePair<byte, PeerBase> player in this.players)
+            {
+                await player.Value.SendEventAsync((byte)OperationCode.Gaming, packet);
             }
         }
         /// <summary>
@@ -271,7 +291,6 @@ namespace startOnline
             {
                 if (player.Key != id)
                 {
-                    _server.printLine(" player Key = "+player.Key);
                     player.Value.SendEvent((byte)OperationCode.Gaming, packet);
                 }
             }

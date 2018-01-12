@@ -25,33 +25,73 @@ namespace FTServer
         /// <summary>
         /// 接收封包暫存區大小 (單位 : byte)
         /// </summary>
-        private const uint InputBufferSize = 4096;
+        private const uint InputBufferSize = 40960;
         /// <summary>
         /// 全域封包暫存區 
         /// </summary>
-        private static EventData OnEvent_EventData = null;
+        //private static EventData OnEvent_EventData = null;
+        private static List<EventData> OnEvent_EventData = new List<EventData>();
 
         private SmallPacketSender smallPacketSender=null;
 
+        private static uint OnEventCallNum = 0,ReceivePacketNum=0;
+        private static bool One = true;
+        private static List<EventData> OnEvent_EventData1 = new List<EventData>();
+        private static List<EventData> OnEvent_EventData2 = new List<EventData>();
+
+        private bool CanSend = true;
 
         /// <summary>
         /// 需要放在 Update 中一直執行的功能
         /// </summary>
         public void Service()
         {
+            //UnityEngine.Debug.Log(" OnEventCallNum =  "+ OnEventCallNum + "  ReceivePacketNum = "+ ReceivePacketNum);
+            if(One)
+                OnEvent_EventData = OnEvent_EventData1;
+            else
+                OnEvent_EventData = OnEvent_EventData2;
+
+
             if (OnEvent_EventData != null)
             {
                 lock (OnEvent_EventData)
                 {
-                    OnEvent(OnEvent_EventData);
-                    OnEvent_EventData = null;
+                    One = !One;
+                    while (OnEvent_EventData.Count > 0)
+                    {
+                        OnEvent(OnEvent_EventData[0]);
+                        OnEventCallNum++;
+                        OnEvent_EventData.RemoveAt(0);
+                    };
+                    //OnEvent(OnEvent_EventData);
+                    //OnEvent_EventData = null;
                 }
             }
-            
+
+            if (_processTests.Count > 0 && CanSend)
+            {
+                deliver(_processTests[0].code, _processTests[0].dic);
+                _processTests.RemoveAt(0);
+            }
+
             //if (smallPacketSender != null)
             //{
             //    smallPacketSender.Update();
             //}
+        }
+
+        private struct ProcessTest
+        {
+            public byte code;
+            public Dictionary<byte, object> dic;
+        }
+
+        private List<ProcessTest> _processTests = new List<ProcessTest>();
+
+        public void Deliver(byte code, Dictionary<byte, object> dic)
+        {
+            _processTests.Add(new ProcessTest(){ code = code, dic = dic });
         }
 
         /// <summary>
@@ -59,9 +99,9 @@ namespace FTServer
         /// </summary>
         /// <param name="code">此封包的索引碼，在伺服器中用此作為索引</param>
         /// <param name="dic">傳給伺服器的封包</param>
-        public void Deliver(byte code, Dictionary<byte, object> dic)
+        public void deliver(byte code, Dictionary<byte, object> dic)
         {    //普通的傳送
-
+            CanSend = false;
             //宣告一個傳送暫存
             byte[] tx;
             //將傳入的 code , dic , 傳換為我定義的封包
@@ -141,7 +181,6 @@ namespace FTServer
             }
         }
 
-
         protected enum StatusCode : byte { Connect, Disconnect };
         /// <summary>
         /// 當連線狀態改變時呼叫
@@ -196,32 +235,42 @@ namespace FTServer
 
             try
             {
+                //Debug.Log("onCompleteReadFromServerStream Error 1");
                 tcpc = (TcpClient)iar.AsyncState;
+                //Debug.Log("onCompleteReadFromServerStream Error 2");
                 //取得這次傳入資料的長度
                 nCountBytesReceivedFromServer = tcpc.GetStream().EndRead(iar);
+                //Debug.Log("onCompleteReadFromServerStream Error 3");
                 if (nCountBytesReceivedFromServer == 0) //如果傳入資料的等於零
                 {
                     Debug.Log("Connection broken");
                     OnStatusChanged(StatusCode.Disconnect);
                     return;
                 }
+                //Debug.Log("onCompleteReadFromServerStream Error 4");
+                ReceivePacketNum++;
                 //解包成我定義的封包
                 IPacket packet = DisSerializate(mRx);
-                if (!this.smallPacketSender.Ignore(packet))
-                {
-                    //轉換為 EventData 並回傳
-                    EventData eventData =
-                        new EventData(packet.OperationCode, new Dictionary<byte, object>(packet.Parameters))
-                        {
-                            ForTest = packet.ForTest
-                        };
-                    //將資料存入全域暫存區
-                    OnEvent_EventData = eventData;
-                }
+                //if (!this.smallPacketSender.Ignore(packet))
+                //{
+                //轉換為 EventData 並回傳
+                //Debug.Log("onCompleteReadFromServerStream Error 5");
+                EventData eventData =
+                    new EventData(packet.OperationCode, new Dictionary<byte, object>(packet.Parameters));
+                //Debug.Log("onCompleteReadFromServerStream Error 6");
+                //將資料存入全域暫存區
+                //OnEvent_EventData = eventData;
+                //OnEvent_EventData.Add(eventData);
+                if (One)
+                    OnEvent_EventData1.Add(eventData);
                 else
-                {
-                    //Debug.Log("SP Packet In");
-                }
+                    OnEvent_EventData2.Add(eventData);
+                //Debug.Log("onCompleteReadFromServerStream Error 7");
+                //}
+                //else
+                //{
+                //Debug.Log("SP Packet In");
+                //}
                 //重新給予暫存一個大小
                 mRx = new byte[InputBufferSize];
                 tcpc.ReceiveBufferSize = (int)InputBufferSize;
@@ -230,13 +279,18 @@ namespace FTServer
             }
             catch (Exception exc)
             {
+
+                Debug.LogError("onCompleteReadFromServerStream Error " + exc.Message);
+
                 tcpc = (TcpClient)iar.AsyncState;
-                Debug.Log(exc.Message);
-                //重新給予暫存一個大小
-                mRx = new byte[InputBufferSize];
-                tcpc.ReceiveBufferSize = (int)InputBufferSize;
-                //開始等待封包
-                tcpc.GetStream().BeginRead(mRx, 0, mRx.Length, onCompleteReadFromServerStream, tcpc);
+                if (tcpc.Connected)
+                {
+                    //重新給予暫存一個大小
+                    mRx = new byte[InputBufferSize];
+                    tcpc.ReceiveBufferSize = (int) InputBufferSize;
+                    //開始等待封包
+                    tcpc.GetStream().BeginRead(mRx, 0, mRx.Length, onCompleteReadFromServerStream, tcpc);
+                }
             }
 
         }
@@ -251,10 +305,11 @@ namespace FTServer
             {
                 tcpc = (TcpClient)iar.AsyncState;
                 tcpc.GetStream().EndWrite(iar);
+                CanSend = true;
             }
             catch (Exception exc)
             {
-                Debug.Log(exc.Message);
+                Debug.LogError(exc.Message);
             }
         }
 

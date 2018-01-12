@@ -34,6 +34,8 @@ namespace PalaceWar.Server
 
        public float ping;
 
+        public string CustomName = "";
+
         void Awake()
         {
             if (PalaceServerConnecter.Instance==null)
@@ -53,17 +55,10 @@ namespace PalaceWar.Server
                     PalaceWar.GamingStart start = (PalaceWar.GamingStart) o;
 
                     this.gamingTime = ConvertGamingTimeWithDelay(start.GamingTime/1000, ping/1000);
+
+                    //Debug.Log("GamingStart = Name 0 = " + start.PlayersName[0]+" , Name 1 = "+start.PlayersName[1]);
                     Debug.Log("GamingTime = "+ GamingTime);
                     StartGamingTime = true;
-                }
-
-                if (o is Monster)
-                {
-                    //Debug.Log("In Monster 2");
-                    //Monster m = (Monster) o;
-
-                    //float monsterShowTime = m.GetDelayTime(PalaceServerConnecter.Instance.GamingTime);
-                    //Debug.Log("Server GamingTime"+ m.GamingTime );
                 }
             };
 

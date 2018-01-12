@@ -35,12 +35,12 @@ namespace FTServer
             gameService.Address = ServerIP + ":" + "23000";
             //gameService.Address = ServerIP + ":" + "4530";
         }
-        // Use this for initialization
-        void Start()
-        {
-
-        }
         void OnApplicationQuit()
+        {
+            gameService.DisConnect();
+        }
+
+        void OnDisable()
         {
             gameService.DisConnect();
         }

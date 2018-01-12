@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TCPServer.ClientInstance;
 using TCPServer;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using TCPServer.ClientInstance.Packet;
 using TCPServer.Math;
 
@@ -64,8 +65,52 @@ namespace startOnline
         public void SendEvent(byte eventCode, Dictionary<byte, object> packet)
         {
             EventData eventData = new EventData((byte)eventCode, packet);
-            base.WriteAsync(eventData);
+            base.Write(eventData);
         }
+
+        public async Task SendEventAsync(byte eventCode, Dictionary<byte, object> packet)
+        {
+            EventData eventData = new EventData((byte)eventCode, packet);
+            await WriteAsync(eventData);
+        }
+
+        public struct ProcessTest
+        {
+            public byte eventCode;
+            public Dictionary<byte, object> packet;
+        }
+
+        private List<ProcessTest> _ProcessTest = new List<ProcessTest>();
+        private bool IsRunWhile = false;
+        async Task Task1(byte eventCode, Dictionary<byte, object> packet)
+        {
+            if (IsRunWhile)
+                return;
+            while (_ProcessTest.Count > 0)
+            {
+                IsRunWhile = true;
+                EventData eventData = new EventData(_ProcessTest[0].eventCode, _ProcessTest[0].packet);
+                await WriteAsync(eventData);
+                _ProcessTest.RemoveAt(0);                
+            }
+            IsRunWhile = false;
+        }
+        public void SendEventList(byte eventCode, Dictionary<byte, object> packet)
+        {
+            _ProcessTest.Add(new ProcessTest(){ eventCode = eventCode, packet = packet });
+            Task.Run(() => Task1(eventCode, packet));
+            //if (IsRunWhile)
+            //    return;            
+            //while (_ProcessTest.Count > 0)
+            //{
+            //    IsRunWhile = true;
+            //    EventData eventData = new EventData(_ProcessTest[0].eventCode, _ProcessTest[0].packet);
+            //    await WriteAsync(eventData);
+            //    _ProcessTest.RemoveAt(0);
+            //}
+            //IsRunWhile = false;
+        }
+
         /// <summary>
         /// 傳送伺服器訊息給此 Client。 Client 用 Connect.System.ReveiveServerLog 接
         /// </summary>

@@ -336,6 +336,8 @@ namespace FTServer.Operator
         #region Receive Server CallBack Event
         //客製化封包
         public event ReceiveObjectHandler ReceiveCustomPacket;
+        //客製化封包
+        public event ReceiveObjectHandler ReceiveCustomPacketTest;
         //如果房間種類有變更的話，接收新的房間種類
         public event ReceiveRoomTypeHanlder ReceiveRoomType;
         /// <summary>
@@ -366,6 +368,20 @@ namespace FTServer.Operator
             {
                 { (byte)0,0 }, //switch code 客製化封包
                 { (byte)1,0 }, //deliver code 傳送給誰 0 = 所有人 、 1 = 除了自己之外的所有人、2 = RoomOwner
+                { (byte)2,Serializate.ToByteArray(custom_packet) }
+            };
+            gameService.Deliver((byte)this.operationCode, packet);
+        }
+        /// <summary>
+        /// 發送客製化封包給，在遊戲房中的所有人。除了自己
+        /// </summary>
+        /// <param name="custom_packet"></param>
+        public void BroadcastCustomPacket_EveryOneTest(object custom_packet)
+        {
+            Dictionary<byte, object> packet = new Dictionary<byte, object>()
+            {
+                { (byte)0,4 }, //switch code 客製化封包
+                //{ (byte)1,0 }, //deliver code 傳送給誰 0 = 所有人 、 1 = 除了自己之外的所有人、2 = RoomOwner
                 { (byte)2,Serializate.ToByteArray(custom_packet) }
             };
             gameService.Deliver((byte)this.operationCode, packet);
@@ -440,6 +456,9 @@ namespace FTServer.Operator
                 case 3: //回傳個房間不同的包裹
                     Receive_ServerPacket(server_packet);
                     break;
+                case 4: //測試怪物死亡
+                    Receive_CustomPacketTest(server_packet);
+                    break;
             }
         }
 
@@ -450,6 +469,13 @@ namespace FTServer.Operator
             if (ReceiveCustomPacket != null)
                 ReceiveCustomPacket(custom_class);
         }
+        private void Receive_CustomPacketTest(Dictionary<byte, object> packet)
+        {
+            object custom_class = Serializate.ToObject((byte[])packet[2]);
+            if (ReceiveCustomPacketTest != null)
+                ReceiveCustomPacketTest(custom_class);
+        }
+
         private void Receive_RoomType(Dictionary<byte, object> packet)
         {
             //Debug.Log("新房間 = " + packet[1].ToString());

@@ -21,6 +21,10 @@ namespace PalaceWar.Server
             }
 
             Canvans.transform.Find("QueuingText").gameObject.SetActive(false);
+            Canvans.transform.Find("QueueStart/Btn_Queue").gameObject.GetComponent<Button>().enabled = false;
+
+            string customName = PlayerPrefs.GetString("CustomName", "輸入暱稱");
+            Canvans.transform.Find("CustomName/Input").gameObject.GetComponent<InputField>().text = customName;
         }
 
         // Update is called once per frame
@@ -29,8 +33,9 @@ namespace PalaceWar.Server
             switch (uiState)
             {
                 case 1:
+                    Canvans.transform.Find("QueueStart/Btn_Queue").gameObject.GetComponent<Button>().enabled = true;
                     Text queueBtnText = Canvans.transform.Find("QueueStart/Btn_Queue/Text").gameObject.GetComponent<Text>();
-                    queueBtnText.text = "開始排隊";
+                    queueBtnText.text = "加入戰場";
                     break;
                 case 2:
                     Canvans.transform.Find("QueueStart").gameObject.SetActive(false);
@@ -91,6 +96,42 @@ namespace PalaceWar.Server
             Text queueBtnText = Canvans.transform.Find("QueueStart/Btn_Queue/Text").gameObject.GetComponent<Text>();
             if(!queueBtnText.text.Equals(content))
                 queueBtnText.text = content;
+        }
+
+        public void CloseInput()
+        {
+            Canvans.transform.Find("CustomName/Input").gameObject.SetActive(false);
+        }
+
+        public void OpenInput()
+        {
+            Canvans.transform.Find("CustomName/Input").gameObject.SetActive(true);
+        }
+
+        public void CloseName()
+        {
+            Canvans.transform.Find("CustomName/Name").gameObject.SetActive(false);
+        }
+
+        public void OpenName()
+        {
+            Canvans.transform.Find("CustomName/Name").gameObject.SetActive(true);
+        }
+
+        public string GetName()
+        {
+            return Canvans.transform.Find("CustomName/Input").gameObject.GetComponent<InputField>().text;
+        }
+
+        public void SetInputToName()
+        {
+            Text name = Canvans.transform.Find("CustomName/Name").gameObject.GetComponent<Text>();
+            InputField input = Canvans.transform.Find("CustomName/Input").gameObject.GetComponent<InputField>();
+
+            name.text = input.text;
+
+            PlayerPrefs.SetString("CustomName", name.text);
+            PalaceServerConnecter.Instance.CustomName = name.text;
         }
     }
 }
