@@ -23,6 +23,23 @@ namespace startOnline
         public Room room;
         public byte playeridInRoom; //現在在room中的 id
 
+        /// <summary>
+        /// 封包暫存的格式
+        /// </summary>
+        private struct PacketTemp
+        {
+            public byte eventCode;
+            public Dictionary<byte, object> packet;
+        }
+        /// <summary>
+        /// 暫存封包空間
+        /// </summary>
+        private List<PacketTemp> PacketTempList = new List<PacketTemp>();
+        /// <summary>
+        /// 是否有包在傳送中
+        /// </summary>
+        private bool IsSending = false;
+
         public PeerBase(Form1 app, TcpClient _tclient, byte[] _tx, byte[] _rx, string _str, IApplication applicationInterface) : base(_tclient, _tx, _rx, _str, applicationInterface)
         {
             this._server = app;
@@ -62,11 +79,17 @@ namespace startOnline
         }
         #endregion 
         #region myFunction
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="eventCode"></param>
+        /// <param name="packet"></param>
         public void SendEvent(byte eventCode, Dictionary<byte, object> packet)
         {
             EventData eventData = new EventData((byte)eventCode, packet);
             base.Write(eventData);
         }
+
 
         public async Task SendEventAsync(byte eventCode, Dictionary<byte, object> packet)
         {
@@ -74,43 +97,29 @@ namespace startOnline
             await WriteAsync(eventData);
         }
 
-        public struct ProcessTest
-        {
-            public byte eventCode;
-            public Dictionary<byte, object> packet;
-        }
-
-        private List<ProcessTest> _ProcessTest = new List<ProcessTest>();
-        private bool IsRunWhile = false;
-        async Task Task1(byte eventCode, Dictionary<byte, object> packet)
-        {
-            if (IsRunWhile)
-                return;
-            while (_ProcessTest.Count > 0)
-            {
-                IsRunWhile = true;
-                EventData eventData = new EventData(_ProcessTest[0].eventCode, _ProcessTest[0].packet);
-                await WriteAsync(eventData);
-                _ProcessTest.RemoveAt(0);                
-            }
-            IsRunWhile = false;
-        }
+        /// <summary>
+        /// 使用排程傳送
+        /// </summary>
+        /// <param name="eventCode"></param>
+        /// <param name="packet"></param>
         public void SendEventList(byte eventCode, Dictionary<byte, object> packet)
         {
-            _ProcessTest.Add(new ProcessTest(){ eventCode = eventCode, packet = packet });
-            Task.Run(() => Task1(eventCode, packet));
-            //if (IsRunWhile)
-            //    return;            
-            //while (_ProcessTest.Count > 0)
-            //{
-            //    IsRunWhile = true;
-            //    EventData eventData = new EventData(_ProcessTest[0].eventCode, _ProcessTest[0].packet);
-            //    await WriteAsync(eventData);
-            //    _ProcessTest.RemoveAt(0);
-            //}
-            //IsRunWhile = false;
+            PacketTempList.Add(new PacketTemp(){ eventCode = eventCode, packet = packet });
+            Task.Run(() => SendTask(eventCode, packet));
         }
-
+        private async Task SendTask(byte eventCode, Dictionary<byte, object> packet)
+        {
+            if (IsSending)
+                return;
+            while (PacketTempList.Count > 0)
+            {
+                IsSending = true;
+                EventData eventData = new EventData(PacketTempList[0].eventCode, PacketTempList[0].packet);
+                await WriteAsync(eventData);
+                PacketTempList.RemoveAt(0);
+            }
+            IsSending = false;
+        }
         /// <summary>
         /// 傳送伺服器訊息給此 Client。 Client 用 Connect.System.ReveiveServerLog 接
         /// </summary>

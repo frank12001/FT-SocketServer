@@ -249,14 +249,6 @@ namespace startOnline
         #endregion
 
         #region Gaming Function - Base
-
-        //public void BroadcastPacket(Dictionary<byte, object> packet)
-        //{
-        //    foreach (KeyValuePair<byte, PeerBase> player in this.players)
-        //    {
-        //        player.Value.SendEvent((byte)OperationCode.Gaming, packet);
-        //    }
-        //}
         /// <summary>
         /// Broadcast assign packet to everyone. (預設OperatorCode.Gaming)
         /// </summary>

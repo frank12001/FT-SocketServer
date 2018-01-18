@@ -6,7 +6,6 @@ using startOnline.playar.Rooms;
 using TCPServer.Math;
 using TCPServer.ClientInstance.Packet;
 using TCPServer.Projects.Palace.Packet;
-using TCPServer.Rooms.Operator;
 
 namespace TCPServer.Projects.Palace
 {

@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using startOnline;
 using startOnline.playar.Rooms;
-using TCPServer.Projects.Stellar;
 using TCPServer.Rooms.Operator;
 
 namespace TCPServer.Projects.Palace
