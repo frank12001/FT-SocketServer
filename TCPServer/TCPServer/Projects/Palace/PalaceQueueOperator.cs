@@ -61,6 +61,10 @@ namespace TCPServer.Projects.Palace
                         room = new PalaceGamingRoom(serialId,new PalacePeer[]{palacePeer}, id, server);
                         server.printLine("PalaceGamingRoom + 1");
                         break;
+                    case RoomTypes.PalaceAIGamingRoom:
+                        room = new PalaceAIGamingRoom(serialId, palacePeer, id, server);
+                        server.printLine("PalaceAIGamingRoom + 1");
+                        break;
                     default: //默認創建 base 房 
                         room = new Room(serialId, peer, id, server);
                         server.printLine("基本房 + 1");

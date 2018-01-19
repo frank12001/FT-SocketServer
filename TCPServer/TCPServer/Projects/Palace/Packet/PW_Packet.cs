@@ -45,6 +45,10 @@ namespace PalaceWar
         /// 所有玩家的自定義名稱
         /// </summary>
         public string[] PlayersName;
+        /// <summary>
+        /// 是否跟 Bot 打
+        /// </summary>
+        public bool IsBot = false;
     }
     [Serializable]
     public class GamingOver
@@ -120,7 +124,9 @@ namespace PalaceWar
     [Serializable]
     public class Character_Death
     {
+        public Character_Camp Character_Camp;
         public int Character_Index;
+        public int Population_Quantity;
     }
 }
 

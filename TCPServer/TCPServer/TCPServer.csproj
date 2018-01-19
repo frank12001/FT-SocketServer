@@ -71,6 +71,7 @@
     <Compile Include="ClientInstance\Peer\PeerBase.cs" />
     <Compile Include="Projects\Palace\Packet\Packet.cs" />
     <Compile Include="Projects\Palace\Packet\PW_Packet.cs" />
+    <Compile Include="Projects\Palace\PalaceAIGamingRoom.cs" />
     <Compile Include="Projects\Palace\PalaceGamingRoom.cs" />
     <Compile Include="Projects\Palace\PalacePeer.cs" />
     <Compile Include="Projects\Palace\PalaceQueueOperator.cs" />

@@ -15,6 +15,10 @@ namespace startOnline.playar.Rooms
         /// <summary>
         /// Palace Gaming Room
         /// </summary>
-        PalaceGamingRoom
+        PalaceGamingRoom,
+        /// <summary>
+        /// Palace AI Gaming Room
+        /// </summary>
+        PalaceAIGamingRoom
     }
 }
