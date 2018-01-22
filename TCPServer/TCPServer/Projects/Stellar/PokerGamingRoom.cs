@@ -75,8 +75,9 @@ namespace TCPServer.Projects.Stellar
                     break;
                 #endregion
                 #region  1 確認玩家進房，發給玩家和桌面牌，並傳送
-                case 1:
+                case 1:                   
                     _logicTimer.nowTimer += (timer_interal/1000);
+
                     if (_logicTimer.nowTimer >= _logicTimer.max_Timer)
                     {
                         //發牌 1. User , desktop 
@@ -573,7 +574,293 @@ namespace TCPServer.Projects.Stellar
         /// <returns>贏家的 id in Room</returns>
         private byte WhoWin()
         {
-            return 0;
+            Dictionary<byte, int> playersScore = new Dictionary<byte, int>();
+            foreach (KeyValuePair<byte, PlayerGamingInfo> info in playerGamingInfo)
+            {
+                if (info.Value.IsLose)
+                    continue;
+                List<Card> cards = new List<Card>();
+                cards.AddRange(info.Value.OwnedCards);
+                cards.AddRange(DesktopCard);
+                List<Card> usedCard;
+
+                #region 牌型分數計算，及找出最有用的牌
+                byte cardTypeScore = 9;
+                if (!IsFourofaKind(cards, out usedCard))
+                {
+                    cardTypeScore--;
+                    if (!IsFlush(cards, out usedCard))
+                    {
+                        cardTypeScore--;
+                        if (!IsStraight(cards, out usedCard))
+                        {
+                            cardTypeScore--;
+                            if (!IsThreeofaKind(cards, out usedCard))
+                            {
+                                cardTypeScore--;
+                                if (!IsTwoPairs(cards, out usedCard))
+                                {
+                                    cardTypeScore--;
+                                    if (!IsOnePair(cards, out usedCard))
+                                    {
+                                        cardTypeScore--;
+                                        IsHighCard(cards,out usedCard);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                #endregion
+                #region 算出各個組牌個別的分數 (花色分(百位) + 最大牌(十位))
+                //再將牌，排序一次
+                usedCard = SortCards(usedCard);
+                Card maxCard = usedCard[0];
+                             //牌型分                     //花色分                       //數字分
+                int score = (cardTypeScore * 1000) + ((byte)maxCard.MCategory * 100) + maxCard.Number;
+                #endregion
+
+                playersScore.Add(info.Key, score);
+
+            }
+
+            //找出
+            byte maxScoreIndex = 0;
+            int maxScore = 0;
+            foreach (KeyValuePair<byte, int> s in playersScore)
+            {
+                if (s.Value > maxScore)
+                {
+                    maxScore = s.Value;
+                    maxScoreIndex = s.Key;
+                }
+            }
+            return maxScoreIndex;
+        }
+
+        #region 牌型判斷
+        /// <summary>
+        /// 是不是四條
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="usedCard"></param>
+        /// <returns></returns>
+        private bool IsFourofaKind(List<Card> cards,out List<Card> usedCard)
+        {
+            usedCard = null;
+            for (byte i = 1; i <= 13; i++)
+            {
+                List<Card> cardList = cards.FindAll(card => { return card.Number.Equals(i); });
+                if (cardList.Count.Equals(4))
+                {
+                    usedCard = cardList;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 是同花嗎
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="usedCard"></param>
+        /// <returns></returns>
+        private bool IsFlush(List<Card> cards, out List<Card> usedCard)
+        {
+            usedCard = null;
+            for (byte i = 1; i <= 4; i++)
+            {
+                Card.Category category = (Card.Category)i;
+                List<Card> cardList = cards.FindAll(card => { return card.MCategory.Equals(category); });
+                if (cardList.Count.Equals(5))
+                {
+                    usedCard = cardList;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 回傳是否為順子，是的話回傳哪五張
+        /// </summary>
+        /// <param name="cards">排堆</param>
+        /// <param name="usedCard">是順子的話，是哪五張。第 0 張，是最大的</param>
+        /// <returns>是否為順子</returns>
+        private bool IsStraight(List<Card> cards, out List<Card> usedCard)
+        {
+            usedCard = null;
+            cards.Sort((card1, card2) => {
+                if (card1.Number > card2.Number)
+                    return 1;
+                else if (card1.Number < card2.Number)
+                    return -1;
+                else
+                    return 0;
+            });
+
+            //移除相同的數字
+            for (int i = 0; i < cards.Count; i++)
+            {
+                for (int j = cards.Count - 1; j > i; j--)  
+                {
+                    if (cards[i].Number.Equals(cards[j].Number))
+                    {
+                        cards.RemoveAt(j);
+                    }
+                }
+            }
+
+            List<Card> result = new List<Card>();
+            result.Add(cards[cards.Count - 1]);
+            //判斷是否有五張連號 //從後往前回判斷
+            for (int i = cards.Count - 2; i >= 0; i--)
+            {
+                if (cards[i].Number==(byte)(result[result.Count - 1].Number - 1))
+                {
+                    result.Add(cards[i]);
+                }
+                else
+                {
+                    result.Clear();
+                    result.Add(cards[i]);
+                }
+                if (result.Count==5)
+                {
+                    break;
+                }
+            }
+            if (result.Count.Equals(5))
+            {
+                usedCard = result;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 是三條嗎
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="usedCard"></param>
+        /// <returns></returns>
+        private bool IsThreeofaKind(List<Card> cards, out List<Card> usedCard)
+        {
+            usedCard = null;
+            for (byte i = 1; i <= 13; i++)
+            {
+                List<Card> cardList = cards.FindAll(card => { return card.Number.Equals(i); });
+                if (cardList.Count.Equals(3))
+                {
+                    usedCard = cardList;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 是兩對嗎
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="usedCard"></param>
+        /// <returns></returns>
+        private bool IsTwoPairs(List<Card> cards, out List<Card> usedCard)
+        {
+            usedCard = null;
+            List<List<Card>> result = new List<List<Card>>();
+            for (byte i = 1; i <= 13; i++)
+            {
+                List<Card> cardList = cards.FindAll(card => { return card.Number.Equals(i); });
+                if (cardList.Count.Equals(2))
+                {
+                    result.Add(cardList);
+                }
+            }
+
+            if (result.Count >= 2)
+            {
+                usedCard = new List<Card>();
+                while (usedCard.Count <= 2)
+                {
+                    usedCard.AddRange(result[0]);
+                    result.RemoveAt(0);
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 是三條嗎
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="usedCard"></param>
+        /// <returns></returns>
+        private bool IsOnePair(List<Card> cards, out List<Card> usedCard)
+        {
+            usedCard = null;
+            for (byte i = 1; i <= 13; i++)
+            {
+                List<Card> cardList = cards.FindAll(card => { return card.Number.Equals(i); });
+                if (cardList.Count.Equals(2))
+                {
+                    usedCard = cardList;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 哪張牌對大
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="usedCard"></param>
+        /// <returns></returns>
+        private void IsHighCard(List<Card> cards, out List<Card> usedCard)
+        {
+            cards = SortCards(cards);
+
+            usedCard = new List<Card>();
+            usedCard.Add(cards[cards.Count - 1]);
+        }
+
+        #endregion 
+
+        /// <summar>
+        /// 用花色和點數排序牌，由大至小
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <returns>由大至小</returns>
+        private List<Card> SortCards(List<Card> cards)
+        {
+            List<Card> result = new List<Card>(cards);
+            result.Sort((card1, card2) => {
+                if (card1.Number > card2.Number)
+                    return 1;
+                else if (card1.Number < card2.Number)
+                    return -1;
+                else
+                {
+                    if ((byte)card1.MCategory < (byte)card2.MCategory)
+                        return 1;
+                    else if ((byte)card1.MCategory > (byte)card2.MCategory)
+                        return -1;
+                    else
+                        return 0;
+                }
+            });
+
+            result.Reverse();
+            return result;
         }
 
         /// <summary>
