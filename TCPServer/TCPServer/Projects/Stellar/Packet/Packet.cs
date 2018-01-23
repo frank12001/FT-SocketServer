@@ -102,7 +102,7 @@ namespace TCPServer.Projects.Stellar
     {
         [Serializable]
         public enum Category
-        {   //4 黑桃 , 3 紅心 ,  2 方塊 , 1 梅花
+        {   // 1 梅花 , 2 方塊 , 3 紅心 , 4 黑桃
             club = 1, diamond, heart, spade
         }
         public string Value;

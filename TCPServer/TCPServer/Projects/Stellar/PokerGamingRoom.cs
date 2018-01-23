@@ -486,9 +486,10 @@ namespace TCPServer.Projects.Stellar
         private List<Card> GetRandomCard(ref List<Card> cardPool, byte randomNum)
         {
             List<Card> result = new List<Card>();
+            Random rnd = new Random();
             for (int i = 0; i < randomNum; i++)
             {
-                int indexNext = new Random().Next(0, cardPool.Count);
+                int indexNext = rnd.Next(0, cardPool.Count);
                 result.Add(cardPool[indexNext]);
                 cardPool.RemoveAt(indexNext);
             }
@@ -586,25 +587,29 @@ namespace TCPServer.Projects.Stellar
 
                 #region 牌型分數計算，及找出最有用的牌
                 byte cardTypeScore = 9;
-                if (!IsFourofaKind(cards, out usedCard))
+                if (!IsStraightlush(cards, out usedCard))
                 {
                     cardTypeScore--;
-                    if (!IsFlush(cards, out usedCard))
+                    if (!IsFourofaKind(cards, out usedCard))
                     {
                         cardTypeScore--;
-                        if (!IsStraight(cards, out usedCard))
+                        if (!IsFlush(cards, out usedCard))
                         {
                             cardTypeScore--;
-                            if (!IsThreeofaKind(cards, out usedCard))
+                            if (!IsStraight(cards, out usedCard))
                             {
                                 cardTypeScore--;
-                                if (!IsTwoPairs(cards, out usedCard))
+                                if (!IsThreeofaKind(cards, out usedCard))
                                 {
                                     cardTypeScore--;
-                                    if (!IsOnePair(cards, out usedCard))
+                                    if (!IsTwoPairs(cards, out usedCard))
                                     {
                                         cardTypeScore--;
-                                        IsHighCard(cards,out usedCard);
+                                        if (!IsOnePair(cards, out usedCard))
+                                        {
+                                            cardTypeScore--;
+                                            IsHighCard(cards, out usedCard);
+                                        }
                                     }
                                 }
                             }
@@ -639,6 +644,28 @@ namespace TCPServer.Projects.Stellar
         }
 
         #region 牌型判斷
+
+        /// <summary>
+        /// 是不是同花順
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <param name="usedCard"></param>
+        /// <returns></returns>
+        private bool IsStraightlush(List<Card> cards, out List<Card> usedCard)
+        {
+            usedCard = null;
+
+            if (IsStraight(cards, out usedCard))
+            {
+                if (IsFlush(new List<Card>(usedCard), out usedCard))
+                {
+                    return true;
+                }
+            }
+            usedCard = null;
+            return false;
+        }
+
         /// <summary>
         /// 是不是四條
         /// </summary>
