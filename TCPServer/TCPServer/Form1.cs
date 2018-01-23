@@ -53,8 +53,8 @@ namespace TCPServer
         protected void Setup()
         {
             //roomOperator = new Operator(this);
-            roomOperator = new PokerQueueOperator(this);
-            //roomOperator = new PalaceQueueOperator(this);
+            //roomOperator = new PokerQueueOperator(this);
+            roomOperator = new PalaceQueueOperator(this);
             printLine(" Server 開機");
             printLine("Setup Finish");
         }
@@ -119,10 +119,10 @@ namespace TCPServer
                 //等待有人連接
                 TcpClient tcpc = await mTCPListener.AcceptTcpClientAsync();
                 //有人連接後的處理
-                //ClientNode cNode = new PalacePeer(this, tcpc, new byte[InputBufferSize],
-                //    new byte[InputBufferSize], tcpc.Client.RemoteEndPoint.ToString(), this);    
-                ClientNode cNode = new PokerPeer(this, tcpc, new byte[InputBufferSize],
-                    new byte[InputBufferSize], tcpc.Client.RemoteEndPoint.ToString(), this);
+                ClientNode cNode = new PalacePeer(this, tcpc, new byte[InputBufferSize],
+                    new byte[InputBufferSize], tcpc.Client.RemoteEndPoint.ToString(), this);    
+                //ClientNode cNode = new PokerPeer(this, tcpc, new byte[InputBufferSize],
+                //    new byte[InputBufferSize], tcpc.Client.RemoteEndPoint.ToString(), this);
                 //使用此 TcpClient 製作 ClientNode 
                 mlClientSocks.Add(cNode);
                 //將 ClientNode 放到 畫面中顯示

@@ -43,7 +43,7 @@ namespace startOnline
         /// <summary>
         /// 遊戲進程呼叫間格 (毫秒)
         /// </summary>
-        protected const float timer_interal = 30;
+        protected const float timer_interal = 1;
         #endregion
 
         #region 建構子
