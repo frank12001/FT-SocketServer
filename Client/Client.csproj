@@ -252,10 +252,10 @@
     <Compile Include="Assets\F.T\CSharpTCPServer\Script\Test\Test2.cs" />
     <Compile Include="Assets\F.T\CSharpTCPServer\Script\Test\TestPacket.cs" />
     <Compile Include="Assets\F.T\FileServer\Script\File.cs" />
-    <Compile Include="Assets\F.T\FileServer\Script\Packet.cs" />
     <Compile Include="Assets\F.T\Firebase\Script\EditorCall\DataBase.cs" />
     <Compile Include="Assets\F.T\Http\Scripts\EditorCall\Http.cs" />
     <Compile Include="Assets\F.T\Http\Scripts\Http.cs" />
+    <Compile Include="Assets\F.T\Http\Scripts\Packet.cs" />
     <Compile Include="Assets\F.T\Http\Scripts\Test.cs" />
   </ItemGroup>
   <ItemGroup>
