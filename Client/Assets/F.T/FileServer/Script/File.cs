@@ -7,7 +7,7 @@ namespace FTServer.FileServer
     {
         public static File Instance { get { return (instance != null) ? instance : instance = new File(); } }
         private static File instance;
-
+        private File() { }
 
         private const string ServerIP = @"http://35.229.191.68/fileupload";
         /// <summary>
