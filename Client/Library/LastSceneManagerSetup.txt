@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/F.T/CSharpTCPServer/Scene/Test2_MySocketServer.unity
-  isLoaded: 1
-  isActive: 1
