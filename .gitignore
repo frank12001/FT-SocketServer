@@ -1,9 +1,0 @@
-
-*.lock
-TCPServer/.vs/TCPServer/v15/Server/sqlite3/storage.ide-shm
-TCPServer/.vs/TCPServer/v15/Server/sqlite3/storage.ide-wal
-TCPServer/.vs/TCPServer/v15/Server/sqlite3/db.lock
-TCPServer/.vs/TCPServer/v15/Server/sqlite3/db.lock
-TCPServer/.vs/TCPServer/v15/Server/sqlite3/db.lock
-TCPServer/.vs/TCPServer/v15/Server/sqlite3/db.lock
-TCPServer/.vs/TCPServer/v15/Server/sqlite3/storage.ide-shm
