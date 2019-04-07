@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/F.T/QuickStart.unity
-  isLoaded: 1
-  isActive: 1
