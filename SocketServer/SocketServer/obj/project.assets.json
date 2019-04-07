@@ -2835,11 +2835,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\download\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServer\\SocketServer\\SocketServer.csproj",
       "projectName": "SocketServer",
-      "projectPath": "D:\\download\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServer\\SocketServer\\SocketServer.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\download\\SocketServer\\SocketServer\\SocketServer\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServer\\SocketServer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -2859,8 +2859,8 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
-            "D:\\download\\SocketServer\\SocketServer\\websocketsharp\\websocketsharp.csproj": {
-              "projectPath": "D:\\download\\SocketServer\\SocketServer\\websocketsharp\\websocketsharp.csproj"
+            "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServer\\websocketsharp\\websocketsharp.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServer\\websocketsharp\\websocketsharp.csproj"
             }
           }
         }

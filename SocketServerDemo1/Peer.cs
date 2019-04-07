@@ -8,25 +8,37 @@ namespace SocketServerDemo1
 {
     public class Peer : PeerBase
     {
-        static int count=0;
         public Peer(ISender sender, IPEndPoint iPEndPoint,FTServer.SocketServer socketServer): base(sender, iPEndPoint, socketServer, 10000)
         {     
-            count++;
-            Console.WriteLine("Create Peer. Count = "+ count);
         }
 
         ~Peer()
         {
-            count--;
-            Console.WriteLine("Release Peer. Count = "+count);
         }
 
         public override void OnOperationRequest(IPacket packet)
         {
-            Console.WriteLine("i get something from OnOperationRequest.");
-            if (packet.OperationCode == 10)
+            if (packet.OperationCode == 11)
             {
-                SendEvent(10, packet.Parameters);
+                string code = packet.Parameters[0].ToString();
+                string key = packet.Parameters[1].ToString();
+                void res(string response)
+                {
+                    SendEvent(11, new System.Collections.Generic.Dictionary<byte, object>()
+                        {
+                            {0,code},
+                            {1,response}
+                        });
+                }
+                if (code == "Get")
+                {
+                    Member.GetAccount(key, res);
+                }
+                if (code == "Set")
+                {
+                    string value = packet.Parameters[2].ToString();
+                    Member.SetAccount(key, value, res);
+                }
             }
         }
         public override void OnDisconnect()

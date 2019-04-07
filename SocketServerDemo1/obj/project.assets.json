@@ -1892,11 +1892,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\download\\SocketServer\\SocketServerDemo1\\SocketServerDemo1.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServerDemo1\\SocketServerDemo1.csproj",
       "projectName": "SocketServerDemo1",
-      "projectPath": "D:\\download\\SocketServer\\SocketServerDemo1\\SocketServerDemo1.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServerDemo1\\SocketServerDemo1.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\download\\SocketServer\\SocketServerDemo1\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServerDemo1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -1916,8 +1916,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "D:\\download\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj": {
-              "projectPath": "D:\\download\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj"
+            "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServer\\SocketServer\\SocketServer.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\Socket-Server\\SocketServer\\SocketServer\\SocketServer.csproj"
             }
           }
         }

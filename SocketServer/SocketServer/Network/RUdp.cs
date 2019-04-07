@@ -128,7 +128,7 @@ namespace FTServer.Network
 
         public async Task Send(byte[] datagram)
         {
-            _NetPeer.Send(datagram, DeliveryMethod.Unreliable);
+            _NetPeer.Send(datagram, DeliveryMethod.ReliableOrdered);
         }
 
         public void PassData(byte[] datagram)
