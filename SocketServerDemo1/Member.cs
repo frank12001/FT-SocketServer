@@ -6,7 +6,7 @@ namespace SocketServerDemo1
 {
     public class Member
     {
-        private const string ServerUrl = "http://localhost:60094/";
+        private const string ServerUrl = "http://member:30003/";//"http://10.110.253.165:30003/";
         private static void Get(string url, Action<string> @do)
         {
             var req = (HttpWebRequest)WebRequest.Create(url);

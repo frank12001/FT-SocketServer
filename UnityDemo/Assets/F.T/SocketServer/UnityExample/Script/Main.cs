@@ -20,7 +20,7 @@ namespace FTServer.Example
         void Start()
         {
             connecter = GetComponent<FTServerConnecter>();
-            connecter.InitAndConnect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 30100),NetworkProtocol.RUDP,()=> { Debug.Log("Connected!"); });
+            connecter.InitAndConnect(new IPEndPoint(IPAddress.Parse("104.199.194.170"), 30100),NetworkProtocol.RUDP,()=> { Debug.Log("Connected!"); });
 
             myCallBack = new MyCallBackHandler();
             connecter.AddCallBackHandler(10,myCallBack);
@@ -52,15 +52,15 @@ namespace FTServer.Example
             }
             //if(connecter.IsConnect)
             //   myCallBack.Send();
-            //if (Input.GetKeyDown(KeyCode.R))
-            //{                
-            //    accountCallBack.Set(Key, Value);
-            //}
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                accountCallBack.Set(Key, Value);
+            }
 
-            //if (Input.GetKeyDown(KeyCode.T))
-            //{
-            //    accountCallBack.Get(Key);
-            //}
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                accountCallBack.Get(Key);
+            }
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 groupCallBackHandler.Join(RoomKey);
