@@ -43,3 +43,12 @@ C:\Users\User\Desktop\Socket-Server\SocketServer\websocketsharp\obj\Debug\netsta
 C:\Users\User\Desktop\Socket-Server\SocketServer\websocketsharp\obj\Debug\netstandard2.0\websocketsharp.AssemblyInfo.cs
 C:\Users\User\Desktop\Socket-Server\SocketServer\websocketsharp\obj\Debug\netstandard2.0\websocketsharp.dll
 C:\Users\User\Desktop\Socket-Server\SocketServer\websocketsharp\obj\Debug\netstandard2.0\websocketsharp.pdb
+C:\Users\Frank\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\bin\Debug\netstandard2.0\websocketsharp.deps.json
+C:\Users\Frank\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\bin\Debug\netstandard2.0\websocketsharp.dll
+C:\Users\Frank\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\bin\Debug\netstandard2.0\websocketsharp.pdb
+C:\Users\Frank\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Debug\netstandard2.0\websocketsharp.csprojAssemblyReference.cache
+C:\Users\Frank\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Debug\netstandard2.0\websocketsharp.csproj.CoreCompileInputs.cache
+C:\Users\Frank\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Debug\netstandard2.0\websocketsharp.AssemblyInfoInputs.cache
+C:\Users\Frank\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Debug\netstandard2.0\websocketsharp.AssemblyInfo.cs
+C:\Users\Frank\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Debug\netstandard2.0\websocketsharp.dll
+C:\Users\Frank\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Debug\netstandard2.0\websocketsharp.pdb

@@ -79,6 +79,7 @@ namespace FTServer.Network
             {
                 i--;
                 Console.WriteLine("Count : " + i);
+                DisConnect(peer.EndPoint);
             };
 
             Task.Run(async () =>
@@ -140,6 +141,7 @@ namespace FTServer.Network
         {
             if(_NetPeer.ConnectionState == ConnectionState.Connected)
                 _NetPeer.Disconnect();
+            _ClientNode.OnDisconnect();
         }
     }
 }
