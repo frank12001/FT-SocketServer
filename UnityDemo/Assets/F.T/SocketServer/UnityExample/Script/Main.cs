@@ -9,8 +9,8 @@ namespace FTServer.Example
     public class Main : MonoBehaviour
     {
         FTServerConnecter connecter;
-        public AccountCallBackHandler accountCallBack;
-        public GroupCallBackHandler groupCallBackHandler;
+        public AccountCallBackHandler _AccountCallBack;
+        public GroupCallBackHandler _GroupCallBackHandler;
 
         // Use this for initialization
         void Start()
@@ -18,14 +18,14 @@ namespace FTServer.Example
             connecter = GetComponent<FTServerConnecter>();
             connecter.InitAndConnect(new IPEndPoint(IPAddress.Parse("104.199.194.170"), 30100),NetworkProtocol.RUDP,()=> { Debug.Log("Connected!"); });
        
-            accountCallBack = new AccountCallBackHandler(11);
-            connecter.AddCallBackHandler(11, accountCallBack);
-            accountCallBack.GetAction += res => { Debug.Log("Get Account Response: " + res); };
-            accountCallBack.SetAction += res => { Debug.Log("Set Account Response: " + res); };
+            _AccountCallBack = new AccountCallBackHandler(11);
+            connecter.AddCallBackHandler(11, _AccountCallBack);
+            _AccountCallBack.GetAction += res => { Debug.Log("Get Account Response: " + res); };
+            _AccountCallBack.SetAction += res => { Debug.Log("Set Account Response: " + res); };
 
-            groupCallBackHandler = new GroupCallBackHandler(12);
-            connecter.AddCallBackHandler(12, groupCallBackHandler);
-            groupCallBackHandler.GetListAction += o => {
+            _GroupCallBackHandler = new GroupCallBackHandler(12);
+            connecter.AddCallBackHandler(12, _GroupCallBackHandler);
+            _GroupCallBackHandler.GetListAction += o => {
                 string msg = "";
                 foreach (string s in o)
                 {
@@ -33,7 +33,7 @@ namespace FTServer.Example
                 }
                 Debug.Log("receive roomlist msg : "+msg);
             };
-            groupCallBackHandler.BroadcastAction += o =>{ Debug.Log("receive broadcast msg : "+o); };
+            _GroupCallBackHandler.BroadcastAction += o =>{ Debug.Log("receive broadcast msg : "+o); };
         }
     }
     public class AccountCallBackHandler : CallBackHandler
