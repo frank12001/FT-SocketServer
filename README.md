@@ -14,7 +14,12 @@
 進階操作  
     1. CallBackHandler 為處理邏輯的中介層  
     2. 在 UnityDemo 專案中提供兩個 CallBackHandler 進行邏輯操作 AccountCallBackHandler 及 GroupCallBackHandler  
-    3. 您可以使用 ``` GameObject.FindObjectOfType<Main>()._AccountCallBack; GameObject.FindObjectOfType<Main>()._GroupCallBack ``` 找到該物件  
+    3. 您可以使用  
+```csharp
+        GameObject.FindObjectOfType<Main>()._AccountCallBack;
+        GameObject.FindObjectOfType<Main>()._GroupCallBack;
+```  
+    找到該物件  
     4. AccountCallBackHandler - 包含帳號的 Set 及 Get  
     5. GroupCallBackHandler - 包含群集的 Join , Exit , GetList , Broadcast  
   
