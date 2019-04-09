@@ -9,21 +9,14 @@ namespace FTServer.Example
     public class Main : MonoBehaviour
     {
         FTServerConnecter connecter;
-        MyCallBackHandler myCallBack;
-        AccountCallBackHandler accountCallBack;
-        GroupCallBackHandler groupCallBackHandler;
+        public AccountCallBackHandler accountCallBack;
+        public GroupCallBackHandler groupCallBackHandler;
 
-        public string Key, Value;
-        public string RoomKey;
-        public string BroadString;
         // Use this for initialization
         void Start()
         {
             connecter = GetComponent<FTServerConnecter>();
             connecter.InitAndConnect(new IPEndPoint(IPAddress.Parse("104.199.194.170"), 30100),NetworkProtocol.RUDP,()=> { Debug.Log("Connected!"); });
-
-            myCallBack = new MyCallBackHandler();
-            connecter.AddCallBackHandler(10,myCallBack);
        
             accountCallBack = new AccountCallBackHandler(11);
             connecter.AddCallBackHandler(11, accountCallBack);
@@ -42,44 +35,57 @@ namespace FTServer.Example
             };
             groupCallBackHandler.BroadcastAction += o =>{ Debug.Log("receive broadcast msg : "+o); };
         }
-
-        // Update is called once per frame
-        void Update()
+    }
+    public class AccountCallBackHandler : CallBackHandler
+    {
+        private const int HttpMaxLangth = 2000;
+        public Action<string> GetAction, SetAction;
+        private byte OperatorCode;
+        public AccountCallBackHandler(byte operatorCode)
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                myCallBack.Send();
-            }
-            //if(connecter.IsConnect)
-            //   myCallBack.Send();
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                accountCallBack.Set(Key, Value);
-            }
+            this.OperatorCode = operatorCode;
+        }
 
-            if (Input.GetKeyDown(KeyCode.T))
+        public void Get(string key)
+        {
+            if (key.Length > HttpMaxLangth)
+                throw new Exception("key 長度不能超過 2000 現在的長度是 : " + key.Length);
+            gameService.Deliver(OperatorCode, new Dictionary<byte, object>()
             {
-                accountCallBack.Get(Key);
-            }
-            if (Input.GetKeyDown(KeyCode.Y))
+                {0,"Get"},
+                {1,key}
+            });
+        }
+        public void Set(string key, string value)
+        {
+            int totalLength = key.Length + value.Length;
+            if (totalLength > HttpMaxLangth)
+                throw new Exception("key + value 長度不能超過 2000. 現在的長度是 : " + totalLength);
+            gameService.Deliver(OperatorCode, new Dictionary<byte, object>()
             {
-                groupCallBackHandler.Join(RoomKey);
-            }
-            if (Input.GetKeyDown(KeyCode.U))
+                {0,"Set"},
+                {1,key},
+                {2,value }
+            });
+        }
+        public override void ServerCallBack(Dictionary<byte, object> server_packet)
+        {
+            string code = server_packet[0].ToString();
+            string response = server_packet[1].ToString();
+            switch (code)
             {
-                groupCallBackHandler.Broadcast(BroadString);
-            }
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                groupCallBackHandler.GetList();
-            }
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                groupCallBackHandler.Exit();
+                case "Get":
+                    GetAction?.Invoke(response);
+                    break;
+                case "Set":
+                    SetAction?.Invoke(response);
+                    break;
+                default:
+                    Debug.Log("AccountCallBackHandler.ServerCallBack code u=is wrong.");
+                    break;
             }
         }
     }
-
     public class GroupCallBackHandler : CallBackHandler
     {
         public Action<string[]> GetListAction;
@@ -142,77 +148,6 @@ namespace FTServer.Example
                     break;
                 default:
                     Debug.Log("GroupCallBackHandler.ServerCallBack code u=is wrong.");
-                    break;
-            }
-        }
-    }
-
-    public class MyCallBackHandler : CallBackHandler
-    {
-        public void Send()
-        {
-            string s = "";
-            for (int i = 0; i < 700; i++)
-            {
-                s += i;
-            }
-            gameService.Deliver(10, new Dictionary<byte, object>()
-            {
-                {0,s },
-            });
-        }
-        public override void ServerCallBack(Dictionary<byte, object> server_packet)
-        {
-            Debug.Log("server_packet in");
-        }
-    }
-
-    public class AccountCallBackHandler : CallBackHandler
-    {
-        private const int HttpMaxLangth = 2000;
-        public Action<string> GetAction, SetAction;
-        private byte OperatorCode;
-        public AccountCallBackHandler(byte operatorCode)
-        {
-            this.OperatorCode = operatorCode;
-        }
-
-        public void Get(string key)
-        {
-            if (key.Length > HttpMaxLangth)
-                throw new Exception("key 長度不能超過 2000 現在的長度是 : " + key.Length);
-            gameService.Deliver(OperatorCode, new Dictionary<byte, object>()
-            {
-                {0,"Get"},
-                {1,key}
-            });
-        }
-        public void Set(string key, string value)
-        {
-            int totalLength = key.Length + value.Length;
-            if (totalLength > HttpMaxLangth)
-                throw new Exception("key + value 長度不能超過 2000. 現在的長度是 : " + totalLength);
-            gameService.Deliver(OperatorCode, new Dictionary<byte, object>()
-            {
-                {0,"Set"},
-                {1,key},
-                {2,value }
-            });
-        }
-        public override void ServerCallBack(Dictionary<byte, object> server_packet)
-        {
-            string code = server_packet[0].ToString();
-            string response = server_packet[1].ToString();
-            switch (code)
-            {
-                case "Get":
-                    GetAction?.Invoke(response);
-                    break;
-                case "Set":
-                    SetAction?.Invoke(response);
-                    break;
-                default:
-                    Debug.Log("AccountCallBackHandler.ServerCallBack code u=is wrong.");
                     break;
             }
         }
