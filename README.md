@@ -4,6 +4,7 @@
 ### 下載此專案   
 ```
     git clone https://github.com/frank12001/Socket-Server.git
+    cd Socket-Server
     git checkout IntegrateHttpServerExample
 ```
 
