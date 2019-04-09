@@ -13,7 +13,7 @@ namespace FTServer.Example
         public GroupCallBackHandler _GroupCallBackHandler;
 
         // Use this for initialization
-        void Start()
+        void Awake()
         {
             connecter = GetComponent<FTServerConnecter>();
             connecter.InitAndConnect(new IPEndPoint(IPAddress.Parse("104.199.194.170"), 30100),NetworkProtocol.RUDP,()=> { Debug.Log("Connected!"); });
