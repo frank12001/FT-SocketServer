@@ -3,7 +3,7 @@
 
 ### 下載此專案   
 ```
-    git clone 
+    git clone https://github.com/frank12001/Socket-Server.git
     git checkout IntegrateHttpServerExample
 ```
 
