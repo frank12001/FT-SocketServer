@@ -1,7 +1,12 @@
 # Socket-Server 和會員系統
 這是一個整合會員系統的展示專案
 
-使用 git clone 下載此專案
+使用 
+```
+    git clone 
+    git checkout IntegrateHttpServerExample
+```
+下載此專案  
 
 快速入門  
     1. 使用 Unity 打開 UnityDemo 專案  
