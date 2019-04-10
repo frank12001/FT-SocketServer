@@ -975,7 +975,7 @@ GameObject:
   - component: {fileID: 359186258}
   - component: {fileID: 359186262}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: "\u4ECB\u9762\u7BA1\u7406\u5668"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3238,7 +3238,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1178113066}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd7ef08c677b96c499be06f49642892e, type: 3}
+  m_Script: {fileID: 11500000, guid: 34ad4362f39eb274597932dc16700550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IsConnect: 0

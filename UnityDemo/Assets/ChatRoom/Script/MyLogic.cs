@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using System;
@@ -9,12 +8,12 @@ namespace ChatRoom
     public class MyLogic : MonoBehaviour
     {
         UIManager UIManager;
-        Main _Network;
+        Network _Network;
         MemberValue myMemberValue;
         // Use this for initialization
         void Start()
         {
-            _Network = FindObjectOfType<Main>();
+            _Network = FindObjectOfType<Network>();
             _Network._GroupCallBackHandler.BroadcastAction = GetBroadcast;
 
             UIManager = FindObjectOfType<UIManager>();
@@ -30,12 +29,8 @@ namespace ChatRoom
             UIManager.Chatroom._ExitOnClick = ExitGroup;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
 
-        }
-
+        /*-------對伺服器的功能範例-------*/
         private void Register(string account, string password)
         {
             if (!CheckAccount(account,password))
@@ -87,6 +82,24 @@ namespace ChatRoom
             });
         }
 
+        private void SetGroupList()
+        {
+            UIManager.Register.gameObject.SetActive(false);
+            UIManager.Login.gameObject.SetActive(false);
+
+            UIManager.SelectChatroom.gameObject.SetActive(true);
+            _Network._GroupCallBackHandler.GetList(groups =>
+            {
+                UIManager.SelectChatroom.Roomlist.ClearOptions();
+                List<string> options = new List<string>(groups);
+                string myRoom = $"{myMemberValue.Name} 的房間";
+                if (!options.Contains(myRoom))
+                    options.Add(myRoom);
+                UIManager.SelectChatroom.Roomlist.AddOptions(options);
+
+            });
+        }
+
         private void JoinGroup(string groupId)
         {
             _Network._GroupCallBackHandler.Join(groupId);
@@ -115,6 +128,9 @@ namespace ChatRoom
             UIManager.Chatroom.Output.text += msg + "\n";
         }
 
+        /*-------對伺服器的功能範例-------*/
+
+        /*-------依照玩家需求自己定義-----*/
         private bool CheckAccount(string account, string password)
         {
             //在這裡自訂帳密的檢查
@@ -131,24 +147,6 @@ namespace ChatRoom
         {
             MemberKey memberKey = new MemberKey() { Account = account, Password = password };
             return JsonConvert.SerializeObject(memberKey);
-        }
-
-        private void SetGroupList()
-        {
-            UIManager.Register.gameObject.SetActive(false);
-            UIManager.Login.gameObject.SetActive(false);
-
-            UIManager.SelectChatroom.gameObject.SetActive(true);
-            _Network._GroupCallBackHandler.GetList(groups =>
-            {
-                UIManager.SelectChatroom.Roomlist.ClearOptions();
-                List<string> options = new List<string>(groups);
-                string myRoom = $"{myMemberValue.Name} 的房間";
-                if (!options.Contains(myRoom))
-                    options.Add(myRoom);
-                UIManager.SelectChatroom.Roomlist.AddOptions(options);
-
-            });
         }
 
         private struct MemberKey
@@ -168,6 +166,7 @@ namespace ChatRoom
                 Diamond = 0;
             }
         }
+        /*-------依照玩家需求自己定義-----*/
     }
-    
+
 }
