@@ -77,20 +77,8 @@ namespace ChatRoom
                 {
                     Debug.Log("Login 成功");
                     MemberValue memberValue = JsonConvert.DeserializeObject<MemberValue>(res);
-                    UIManager.Register.gameObject.SetActive(false);
-                    UIManager.Login.gameObject.SetActive(false);
-
-                    UIManager.SelectChatroom.gameObject.SetActive(true);
-                    _Network._GroupCallBackHandler.GetList(groups => 
-                    {
-                        UIManager.SelectChatroom.Roomlist.ClearOptions();
-                        List<string> options = new List<string>(groups);
-                        string myRoom = $"{memberValue.Name} 的房間";
-                        if(!options.Contains(myRoom))
-                            options.Add(myRoom);
-                        UIManager.SelectChatroom.Roomlist.AddOptions(options);
-                        myMemberValue = memberValue;
-                    });
+                    myMemberValue = memberValue;
+                    SetGroupList();
                 }
                 else
                 {
@@ -110,6 +98,7 @@ namespace ChatRoom
         private void ExitGroup()
         {
             _Network._GroupCallBackHandler.Exit();
+            SetGroupList();
             UIManager.Chatroom.Output.text = string.Empty;
             UIManager.Chatroom.gameObject.SetActive(false);
             UIManager.SelectChatroom.gameObject.SetActive(true);
@@ -142,6 +131,24 @@ namespace ChatRoom
         {
             MemberKey memberKey = new MemberKey() { Account = account, Password = password };
             return JsonConvert.SerializeObject(memberKey);
+        }
+
+        private void SetGroupList()
+        {
+            UIManager.Register.gameObject.SetActive(false);
+            UIManager.Login.gameObject.SetActive(false);
+
+            UIManager.SelectChatroom.gameObject.SetActive(true);
+            _Network._GroupCallBackHandler.GetList(groups =>
+            {
+                UIManager.SelectChatroom.Roomlist.ClearOptions();
+                List<string> options = new List<string>(groups);
+                string myRoom = $"{myMemberValue.Name} 的房間";
+                if (!options.Contains(myRoom))
+                    options.Add(myRoom);
+                UIManager.SelectChatroom.Roomlist.AddOptions(options);
+
+            });
         }
 
         private struct MemberKey
