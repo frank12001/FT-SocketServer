@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using UnityEngine;
+using FTServer;
+using FTServer.Example;
 
-namespace FTServer.Example.ChatRoom
+namespace ChatRoom
 {
     public class Main : MonoBehaviour
     {
@@ -21,6 +21,8 @@ namespace FTServer.Example.ChatRoom
 
             _GroupCallBackHandler = new GroupCallBackHandler(12);
             connecter.AddCallBackHandler(12, _GroupCallBackHandler);
+
+            _GroupCallBackHandler.BroadcastAction += o => { Debug.Log("receive broadcast msg : " + o); };
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FTServer.Example.ChatRoom
+namespace ChatRoom
 {
     public class ScrollView_SettoBottom : MonoBehaviour
     {

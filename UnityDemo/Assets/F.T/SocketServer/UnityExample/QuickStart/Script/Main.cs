@@ -20,33 +20,35 @@ namespace FTServer.Example
        
             _AccountCallBack = new AccountCallBackHandler(11);
             connecter.AddCallBackHandler(11, _AccountCallBack);
-            _AccountCallBack.GetAction += res => { Debug.Log("Get Account Response: " + res); };
-            _AccountCallBack.SetAction += res => { Debug.Log("Set Account Response: " + res); };
+            //_AccountCallBack.GetAction += res => { Debug.Log("Get Account Response: " + res); };
+            //_AccountCallBack.SetAction += res => { Debug.Log("Set Account Response: " + res); };
 
             _GroupCallBackHandler = new GroupCallBackHandler(12);
             connecter.AddCallBackHandler(12, _GroupCallBackHandler);
-            _GroupCallBackHandler.GetListAction += o => {
-                string msg = "";
-                foreach (string s in o)
-                {
-                    msg += s + " ,";
-                }
-                Debug.Log("receive roomlist msg : "+msg);
-            };
-            _GroupCallBackHandler.BroadcastAction += o =>{ Debug.Log("receive broadcast msg : "+o); };
+            //_GroupCallBackHandler.GetListAction += o => {
+            //    string msg = "";
+            //    foreach (string s in o)
+            //    {
+            //        msg += s + " ,";
+            //    }
+            //    Debug.Log("receive roomlist msg : "+msg);
+            //};
+            //_GroupCallBackHandler.BroadcastAction += o =>{ Debug.Log("receive broadcast msg : "+o); };
         }
     }
     public class AccountCallBackHandler : CallBackHandler
     {
         private const int HttpMaxLangth = 2000;
-        public Action<string> GetAction, SetAction;
+        private Queue<Action<string>> GetActions, SetActions;
         private byte OperatorCode;
         public AccountCallBackHandler(byte operatorCode)
         {
             this.OperatorCode = operatorCode;
+            GetActions = new Queue<Action<string>>();
+            SetActions = new Queue<Action<string>>();
         }
 
-        public void Get(string key)
+        public void Get(string key,Action<string> callback)
         {
             if (key.Length > HttpMaxLangth)
                 throw new Exception("key 長度不能超過 2000 現在的長度是 : " + key.Length);
@@ -55,8 +57,9 @@ namespace FTServer.Example
                 {0,"Get"},
                 {1,key}
             });
+            GetActions.Enqueue(callback);
         }
-        public void Set(string key, string value)
+        public void Set(string key, string value, Action<string> callback)
         {
             int totalLength = key.Length + value.Length;
             if (totalLength > HttpMaxLangth)
@@ -67,6 +70,7 @@ namespace FTServer.Example
                 {1,key},
                 {2,value }
             });
+            SetActions.Enqueue(callback);
         }
         public override void ServerCallBack(Dictionary<byte, object> server_packet)
         {
@@ -75,10 +79,18 @@ namespace FTServer.Example
             switch (code)
             {
                 case "Get":
-                    GetAction?.Invoke(response);
+                    if (GetActions.Count > 0)
+                    {
+                        Action<string> callback = GetActions.Dequeue();
+                        callback(response);
+                    }
                     break;
                 case "Set":
-                    SetAction?.Invoke(response);
+                    if (SetActions.Count > 0)
+                    {
+                        Action<string> callback = SetActions.Dequeue();
+                        callback(response);
+                    }
                     break;
                 default:
                     Debug.Log("AccountCallBackHandler.ServerCallBack code u=is wrong.");
@@ -88,12 +100,13 @@ namespace FTServer.Example
     }
     public class GroupCallBackHandler : CallBackHandler
     {
-        public Action<string[]> GetListAction;
-        public Action<object> BroadcastAction;
+        private Queue<Action<string[]>> GetListActions;
+        public Action<string> BroadcastAction;
         private byte OperatorCode;
         public GroupCallBackHandler(byte operatorCode)
         {
             this.OperatorCode = operatorCode;
+            GetListActions = new Queue<Action<string[]>>();
         }
 
         public void Join(string key)
@@ -111,12 +124,13 @@ namespace FTServer.Example
                 {0,"Exit"}
             });
         }
-        public void GetList()
+        public void GetList(Action<string[]> callback)
         {
             gameService.Deliver(OperatorCode, new Dictionary<byte, object>()
             {
                 {0,"GetList"}
             });
+            GetListActions.Enqueue(callback);
         }
         public void Broadcast(string msg)
         {
@@ -134,13 +148,17 @@ namespace FTServer.Example
             switch (code)
             {
                 case "GetList":
-                    object[] resGetList = (object[])server_packet[1];
-                    List<string> s = new List<string>();
-                    foreach (object o in resGetList)
+                    if (GetListActions.Count > 0)
                     {
-                        s.Add(o.ToString());
+                        object[] resGetList = (object[])server_packet[1];
+                        List<string> s = new List<string>();
+                        foreach (object o in resGetList)
+                        {
+                            s.Add(o.ToString());
+                        }
+                        Action<string[]> callback = GetListActions.Dequeue();
+                        callback(s.ToArray());
                     }
-                    GetListAction?.Invoke(s.ToArray());
                     break;
                 case "Broadcast":
                     string resBroadcast = server_packet[1].ToString();
