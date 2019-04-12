@@ -10,11 +10,11 @@ We recommend use docker or k8s deploy server.
 ## Features
 * UDP, TCP, RUDP(LitNetLib), Websocket(Websocketsharp) support
 * Ipv6 support
-* Docker support
 * Unity support
   * Android
   * iOS
   * WebGL (websocket)
+* Ready for Container!! Nice work with Docker and K8s
 
 ## Usage samples
 * Change PlayerSetting First!!!  File/Build Setting/PlayerSetting
