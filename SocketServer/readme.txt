@@ -1,4 +1,4 @@
-the csproject is fork from https://github.com/sta/websocket-sharp
+the csproject websocketsharp is fork from https://github.com/sta/websocket-sharp
 and change following code to support ipv6 connection
 
 
