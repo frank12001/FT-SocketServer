@@ -1,3 +1,7 @@
+the csproject is fork from https://github.com/sta/websocket-sharp
+and change following code to support ipv6 connection
+
+
 WebSocketSharp.Server.cs 
 
 801  
@@ -5,7 +9,7 @@ WebSocketSharp.Server.cs
 
    _listener = new TcpListener(port);
 
-   �令
+   §ï¦¨
 
    _listener = new TcpListener(System.Net.IPAddress.IPv6Any, port);
    _listener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
@@ -17,6 +21,6 @@ WebSocketSharp.Server.cs
      SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true 
    );
 
-   �令 
+   §ï¦¨ 
 
    _listener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);  
