@@ -22,11 +22,6 @@ We recommend use docker or k8s deploy server.
   * PlayerSetting/OtherSettings/Configuration/ScriptingBackend     -> IL2CPP
 ### Client
 ```csharp
-using System.Collections.Generic;
-using UnityEngine;
-using FTServer;
-using FTServer.Operator;
-
 public class NewBehaviourScript : MonoBehaviour {
     private Connect mConnect;
     private MyCallBackHandler MyCallBackHandler;
@@ -40,7 +35,7 @@ public class NewBehaviourScript : MonoBehaviour {
         //create logic object
         MyCallBackHandler = new MyCallBackHandler();    
         //add this logic object to connection object
-        mConnect.AddCallBackHandler(20/*if server send packet which code is 20. this obj is going to handler it.*/, MyCallBackHandler);
+        mConnect.AddCallBackHandler(MyCallBackHandler.OperatorCode/*if server send packet which code is 20. this obj is going to handler it.*/, MyCallBackHandler);
     }
     // Update is called once per frame
     void Update () {
@@ -52,10 +47,11 @@ public class NewBehaviourScript : MonoBehaviour {
 }
 public class MyCallBackHandler : CallBackHandler
 {
+    public const int OperatorCode = 20;
     public void Send(string packet)
     {
         //send packet to server
-        gameService.Deliver(20, new Dictionary<byte, object>(){ {0,packet }});
+        gameService.Deliver(MyCallBackHandler.OperatorCode, new Dictionary<byte, object>(){ {0,packet }});
     }
     public override void ServerCallBack(Dictionary<byte, object> server_packet)
     {
@@ -63,6 +59,7 @@ public class MyCallBackHandler : CallBackHandler
         Debug.Log("Msg from server : " + server_packet[0].ToString());     
     }
 }
+
 ```
 ### Server
 ```csharp
