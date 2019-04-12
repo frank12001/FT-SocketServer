@@ -8,3 +8,7 @@
 /Demo/Server/HttpServerMember/Properties
 /Demo/Server/HttpServerMember/obj
 /Demo/Server/SocketServerDemo1/obj
+/SocketServer/.vs
+/SocketServer/SocketServer/.vs
+/SocketServer/SocketServer/obj
+/SocketServer/websocketsharp/obj
