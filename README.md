@@ -12,9 +12,9 @@ We recommend use docker or k8s deploy server.
 * Ipv6 support
 * Docker support
 * Unity support
-  * Android (Unity)
-  * iOS (Unity)
-  * WebGL (Unity)
+  * Android
+  * iOS
+  * WebGL (websocket)
 
 ## Usage samples
 
