@@ -2,6 +2,18 @@
 Socket Server for .Net Core with Unity Client Libary.  
 We recommend use docker or k8s deploy server.
 
+## Build
+
+## Features
+
+## Usage samples
+
+### Client
+```csharp
+```
+### Server
+```csharp
+```
 
 ## License ##
 
