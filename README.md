@@ -17,9 +17,52 @@ We recommend use docker or k8s deploy server.
   * WebGL (websocket)
 
 ## Usage samples
-
+* Change PlayerSetting First!!!  File/Build Setting/PlayerSetting
+  * PlayerSetting/OtherSettings/Configuration/ScriptRuntimeVersion -> .Net 4.x Equivalent  
+  * PlayerSetting/OtherSettings/Configuration/ScriptingBackend     -> IL2CPP
 ### Client
 ```csharp
+using System.Collections.Generic;
+using UnityEngine;
+using FTServer;
+using FTServer.Operator;
+
+public class NewBehaviourScript : MonoBehaviour {
+    private Connect mConnect;
+    private MyCallBackHandler MyCallBackHandler;
+    // Use this for initialization
+    void Start () {
+        //create connection
+        mConnect = new Connect("104.199.194.170"/*Server Ip*/, 30100/*port*/, NetworkProtocol.RUDP);
+        //establish connection
+        mConnect._system.ConnectToServer();
+        mConnect._system.Connect += ()=> { Debug.Log("Connect to Server Success."); };
+        //create logic object
+        MyCallBackHandler = new MyCallBackHandler();    
+        //add this logic object to connection object
+        mConnect.AddCallBackHandler(20/*if server send packet which code is 20. this obj is going to handler it.*/, MyCallBackHandler);
+    }
+    // Update is called once per frame
+    void Update () {
+        //call every frame
+        mConnect.Service();
+        if (Input.anyKeyDown)
+            MyCallBackHandler.Send("hellow world!!");
+    }
+}
+public class MyCallBackHandler : CallBackHandler
+{
+    public void Send(string packet)
+    {
+        //send packet to server
+        gameService.Deliver(20, new Dictionary<byte, object>(){ {0,packet }});
+    }
+    public override void ServerCallBack(Dictionary<byte, object> server_packet)
+    {
+        //get something from server
+        Debug.Log("Msg from server : " + server_packet[0].ToString());     
+    }
+}
 ```
 ### Server
 ```csharp
