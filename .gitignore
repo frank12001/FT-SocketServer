@@ -1,0 +1,10 @@
+/Demo/UnityClient/.vs
+/Demo/UnityClient/Library
+/Demo/UnityClient/obj
+/Demo/UnityClient/Packages
+/Demo/UnityClient/Assembly-CSharp.csproj
+/Demo/UnityClient/UnityClient.sln
+/Demo/Server/.vs
+/Demo/Server/HttpServerMember/Properties
+/Demo/Server/HttpServerMember/obj
+/Demo/Server/SocketServerDemo1/obj
