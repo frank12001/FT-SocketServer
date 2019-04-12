@@ -50,7 +50,7 @@ namespace FTServer
 
         public override void BeginSend(byte[] datagram, int bytes)
         {
-            peer.Send(datagram, DeliveryMethod.Unreliable);
+            peer.Send(datagram, DeliveryMethod.ReliableOrdered);
             fireCompleteSend();
         }
 

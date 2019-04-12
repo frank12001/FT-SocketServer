@@ -79,6 +79,7 @@ namespace FTServer.Network
             {
                 i--;
                 Console.WriteLine("Count : " + i);
+                DisConnect(peer.EndPoint);
             };
 
             Task.Run(async () =>
@@ -128,7 +129,7 @@ namespace FTServer.Network
 
         public async Task Send(byte[] datagram)
         {
-            _NetPeer.Send(datagram, DeliveryMethod.Unreliable);
+            _NetPeer.Send(datagram, DeliveryMethod.ReliableOrdered);
         }
 
         public void PassData(byte[] datagram)
@@ -140,6 +141,7 @@ namespace FTServer.Network
         {
             if(_NetPeer.ConnectionState == ConnectionState.Connected)
                 _NetPeer.Disconnect();
+            _ClientNode.OnDisconnect();
         }
     }
 }

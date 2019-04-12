@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocketServer", "SocketServe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "websocketsharp", "SocketServer\websocketsharp\websocketsharp.csproj", "{26B53652-6D3A-460E-9967-C1159666C8F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpServerMember", "HttpServerMember\HttpServerMember.csproj", "{D0A897DF-0D3A-45FA-B5F8-D315464F9DF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{26B53652-6D3A-460E-9967-C1159666C8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26B53652-6D3A-460E-9967-C1159666C8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26B53652-6D3A-460E-9967-C1159666C8F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A897DF-0D3A-45FA-B5F8-D315464F9DF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A897DF-0D3A-45FA-B5F8-D315464F9DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A897DF-0D3A-45FA-B5F8-D315464F9DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A897DF-0D3A-45FA-B5F8-D315464F9DF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
