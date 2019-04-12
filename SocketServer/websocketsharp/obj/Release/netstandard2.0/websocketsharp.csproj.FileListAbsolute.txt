@@ -1,0 +1,8 @@
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\bin\Release\netstandard2.0\websocketsharp.deps.json
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\bin\Release\netstandard2.0\websocketsharp.dll
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\bin\Release\netstandard2.0\websocketsharp.pdb
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Release\netstandard2.0\websocketsharp.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Release\netstandard2.0\websocketsharp.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Release\netstandard2.0\websocketsharp.AssemblyInfo.cs
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Release\netstandard2.0\websocketsharp.dll
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\websocketsharp\obj\Release\netstandard2.0\websocketsharp.pdb

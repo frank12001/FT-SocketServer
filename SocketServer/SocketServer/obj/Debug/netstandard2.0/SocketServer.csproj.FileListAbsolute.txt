@@ -1,0 +1,12 @@
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\bin\Debug\netstandard2.0\SocketServer.deps.json
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\bin\Debug\netstandard2.0\SocketServer.dll
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\bin\Debug\netstandard2.0\SocketServer.pdb
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\bin\Debug\netstandard2.0\websocketsharp.dll
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\bin\Debug\netstandard2.0\websocketsharp.pdb
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\obj\Debug\netstandard2.0\SocketServer.csprojAssemblyReference.cache
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\obj\Debug\netstandard2.0\SocketServer.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\obj\Debug\netstandard2.0\SocketServer.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\obj\Debug\netstandard2.0\SocketServer.AssemblyInfo.cs
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\obj\Debug\netstandard2.0\SocketServer.csproj.CopyComplete
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\obj\Debug\netstandard2.0\SocketServer.dll
+C:\Users\User\Desktop\新增資料夾\Socket-Server\SocketServer\SocketServer\obj\Debug\netstandard2.0\SocketServer.pdb
