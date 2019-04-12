@@ -3,8 +3,10 @@ Socket Server for .Net Core with Unity Client Libary.
 We recommend use docker or k8s deploy server.
 
 ## Build
+
 ### [NuGet](https://www.nuget.org/packages/FTServer/) [![NuGet](https://img.shields.io/nuget/v/FTServer.svg)](https://www.nuget.org/packages/FTServer/) 
 
+### [Release builds](https://github.com/frank12001/Socket-Server/releases) [![GitHub (pre-)release](https://img.shields.io/github/release/frank12001/Socket-Server/all.svg)](https://github.com/frank12001/Socket-Server/releases)
 ## Features
 
 ## Usage samples
