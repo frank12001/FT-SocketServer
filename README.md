@@ -101,4 +101,4 @@ public class MyCallBackHandler : CallBackHandler
 
 ## License ##
 
-FTServer is provided under [The MIT License].
+FTServer is provided under [The MIT License(https://github.com/frank12001/Socket-Server/blob/master/LICENSE.txt)].
