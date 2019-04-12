@@ -12,7 +12,6 @@ We recommend use docker or k8s deploy server.
 * Ipv6 support
 * Docker support
 * Unity support
-* Supported client platforms:
   * Android (Unity)
   * iOS (Unity)
   * WebGL (Unity)
