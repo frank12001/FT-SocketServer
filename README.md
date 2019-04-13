@@ -1,4 +1,4 @@
-# FT Socket-Server 0.0.2 indev
+# FT Socket-Server 0.0.3 indev
 Socket Server for .NET Framework 4.5, Mono, .NET Core 2.0, .NET Standard 2.0 with Unity Client Libary.  
 We recommend use docker or k8s deploy server.
 
