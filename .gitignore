@@ -12,3 +12,8 @@
 /SocketServer/SocketServer/.vs
 /SocketServer/SocketServer/obj
 /SocketServer/websocketsharp/obj
+/ClientLib/Unity/Library
+/ClientLib/Unity/Packages
+/ClientLib/Unity/Temp
+/ClientLib/Unity/Assembly-CSharp.csproj
+/ClientLib/Unity/Unity.sln
