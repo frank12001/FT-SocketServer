@@ -67,10 +67,10 @@ namespace FTServer
                 {
                     udpClient.Close();
                     udpClient = null;
-                    MaintainConnecting_Stop();
-                    fireCompleteDisconnect();
                 }
             }
+            MaintainConnecting_Stop();
+            fireCompleteDisconnect();
         }
 
         protected override void onCompleteConnect(IAsyncResult iar)
