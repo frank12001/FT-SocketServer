@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System;
+using System.Timers;
 using FTServer.ClientInstance.Packet;
 
 namespace FTServer.ClientInstance.Peer
@@ -21,7 +22,7 @@ namespace FTServer.ClientInstance.Peer
         /// <summary>
         /// 斷線之time out時間長度
         /// </summary>
-        private ushort TimeLimit_Disconnect = 5000;//1000;
+        private readonly ushort TimeLimit_Disconnect;
         /// <summary>
         /// 客戶端節點
         /// </summary>
@@ -42,7 +43,7 @@ namespace FTServer.ClientInstance.Peer
             this.TimeLimit_Disconnect = timeout;
 
             BeginReadAsync();                 // 開始接收封包
-            //BeginMaintainConnectingAsync();   // 開始進行維持連線之封包發送
+            BeginMaintainConnectingAsync();   // 開始進行維持連線之封包發送
         }
 
         /// <summary>
@@ -86,15 +87,14 @@ namespace FTServer.ClientInstance.Peer
                     // 如果是維持連線的訊號封包，則不予處理
                     if (!buff.Length.Equals(1))
                     {
-                        buff = Math.Serializate.Decompress(buff);
-                        IPacket packet = (IPacket)Math.Serializate.ToObject(buff);
+                        buff = Math.Serialize.Decompress(buff);
+                        IPacket packet = (IPacket)Math.Serialize.ToObject(buff);
                         clientNode.OnOperationRequest(packet); // 客戶端節點執行接收事件
                     }
                 }
             }
             Timer_ReadPacket += Tick_Read;
         }
-
 
         private void Handler_MaintainConnecting(object o, ElapsedEventArgs e)
         {
@@ -123,8 +123,8 @@ namespace FTServer.ClientInstance.Peer
             receiver.Close();
             maintainConnecting.Stop();
             maintainConnecting.Close();
-
-            clientNode.OnDisconnect();
+            Console.WriteLine("ClientNodeListener Disconnect");
+            //clientNode.OnDisconnect();
             clientNode.socketServer.CloseClient(clientNode.iPEndPoint);
         }
     }

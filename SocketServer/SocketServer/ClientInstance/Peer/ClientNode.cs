@@ -55,7 +55,7 @@ namespace FTServer.ClientInstance
         /// <param name="eventData">繼承IPacket之封包實體</param>
         public void Write(IPacket eventData)
         {
-            byte[] buff = Math.Serializate.Compress(Math.Serializate.ToByteArray(eventData));
+            byte[] buff = Math.Serialize.Compress(Math.Serialize.ToByteArray(eventData));
             //Console.WriteLine("封包大小 : " + buff.Length);
             _Sender.SendAsync(buff, iPEndPoint);
         }

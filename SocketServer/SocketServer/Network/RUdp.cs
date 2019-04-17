@@ -141,6 +141,7 @@ namespace FTServer.Network
         {
             if(_NetPeer.ConnectionState == ConnectionState.Connected)
                 _NetPeer.Disconnect();
+            Console.WriteLine("RUdpClient Disconnect");
             _ClientNode.OnDisconnect();
         }
     }

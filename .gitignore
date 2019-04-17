@@ -17,3 +17,13 @@
 /ClientLib/Unity/Temp
 /ClientLib/Unity/Assembly-CSharp.csproj
 /ClientLib/Unity/Unity.sln
+/StabilityTest/Client/Temp
+/StabilityTest/Client/Assembly-CSharp.csproj
+/StabilityTest/Client/Client.csproj
+/StabilityTest/Client/Client.sln
+/StabilityTest/Client/.vs
+/StabilityTest/Client/Library
+/StabilityTest/Client/obj
+/StabilityTest/Client/Packages
+/StabilityTest/Server/.vs
+/StabilityTest/Server/Server/obj
