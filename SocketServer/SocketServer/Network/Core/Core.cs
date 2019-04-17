@@ -9,11 +9,11 @@ namespace FTServer.Network
 {
     public abstract class Core : IListener, ISender
     {
-        public Dictionary<string, ClientNode> ClientInstance { get; private set; }
+        public Dictionary<string, Instance> ClientInstance { get; private set; }
         protected SocketServer _SocketServer;
         protected Core(SocketServer server)
         {
-            ClientInstance = new Dictionary<string, ClientNode>();
+            ClientInstance = new Dictionary<string, Instance>();
             _SocketServer = server;
         }
 
@@ -28,10 +28,11 @@ namespace FTServer.Network
                     string clientIp = receiveResult.RemoteEndPoint.ToString();
                     if (!ClientInstance.ContainsKey(clientIp) && receiveResult.isOk)
                     {
-                        // 建立玩家peer實體
-                        ClientNode cNode = _SocketServer.GetPeer(this, receiveResult.RemoteEndPoint, _SocketServer);                        
+                        // 建立玩家peer實體                   
+                        ClientNode cNode = _SocketServer.GetPeer(this, receiveResult.RemoteEndPoint, _SocketServer);
+                        Instance instance = new Instance(cNode);
                         //註冊到 mListener 中，讓他的 Receive 功能能被叫
-                        ClientInstance.Add(clientIp, cNode);
+                        ClientInstance.Add(clientIp, instance);
                         //成功加入後傳送 Connect 事件給 Client
                         await SendAsync(new byte[] { 1 }, cNode.iPEndPoint);
                     }

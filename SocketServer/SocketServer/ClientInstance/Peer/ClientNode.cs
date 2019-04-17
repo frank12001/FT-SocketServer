@@ -34,14 +34,14 @@ namespace FTServer.ClientInstance
         /// 用於處理與客戶端溝通，並觸發接收封包事件
         /// </remarks>
         public ClientNode(ISender sender, IPEndPoint iPEndPoint,
-                          SocketServer socketServer, ushort timeout=1000)
+                          SocketServer socketServer)
         {           
             Rx = new Queue<byte[]>();                       // 初始化接收佇列
             this.iPEndPoint = iPEndPoint;
             this.socketServer = socketServer;
             this._Sender = sender;
             // 建立客戶端節點並開始接受封包傳入
-            listener = new ClientNodeListener(this,timeout);            
+            listener = new ClientNodeListener(this);            
         }      
 
         ~ClientNode()
@@ -78,15 +78,16 @@ namespace FTServer.ClientInstance
         {}
 
         public virtual void OnDisconnect()
-        {}
-
+        {
+            listener.Dispose();
+        }
 
         /// <summary>
         /// 主動斷線
         /// </summary>
         public void Disconnect()
         {
-            listener.Disconnect();
+            socketServer.CloseClient(iPEndPoint);
         }
 
         public override string ToString()

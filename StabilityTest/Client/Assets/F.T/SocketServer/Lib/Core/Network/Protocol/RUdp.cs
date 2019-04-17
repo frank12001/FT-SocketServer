@@ -25,7 +25,12 @@ namespace FTServer
             {
                 Debug.Log("Connect Success : " + peer.EndPoint);
                 this.peer = peer;
-                fireCompleteConnect(true);
+                fireCompleteConnect();
+            };
+
+            listener.PeerDisconnectedEvent += (NetPeer peer, DisconnectInfo disconnectInfo) =>
+            {
+                fireCompleteDisconnect();
             };
 
             listener.NetworkReceiveEvent += (fromPeer, dataReader, deliveryMethod) =>
@@ -35,6 +40,7 @@ namespace FTServer
                 fireCompleteReadFromServerStream(packet);
                 dataReader.Recycle();
             };
+
 
         }
 

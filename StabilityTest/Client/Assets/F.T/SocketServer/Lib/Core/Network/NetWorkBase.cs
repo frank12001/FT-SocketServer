@@ -60,11 +60,9 @@ namespace FTServer
                     break;
             }
             
-            Network.CompleteConnect += result =>
+            Network.CompleteConnect += () =>
             {
-                Debug.Log("Connection State = "+result);
-                if (result)
-                    OnStatusChanged(StatusCode.Connect);
+                OnStatusChanged(StatusCode.Connect);
             };
             Network.CompleteDisConnect += () =>
             {

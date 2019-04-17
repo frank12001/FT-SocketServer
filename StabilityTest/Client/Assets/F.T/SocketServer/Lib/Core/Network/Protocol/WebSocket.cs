@@ -70,20 +70,14 @@ namespace FTServer
 
         protected override void onCompleteConnect(IAsyncResult iar)
         {
-            bool connectResult = false;
             try
             {
-                connectResult = true;
-                System.Console.WriteLine("MYLOG = SocketOpen");
+                fireCompleteConnect();
             }
             catch (Exception exc)
             {
+                fireCompleteDisconnect();
                 Console.WriteLine(exc.Message);
-                connectResult = false;
-            }
-            finally
-            {
-                fireCompleteConnect(connectResult);
             }
         }
     }

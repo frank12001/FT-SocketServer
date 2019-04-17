@@ -24,7 +24,7 @@ namespace Server
     }
     public class Peer : PeerBase
     {
-        public Peer(ISender sender, IPEndPoint iPEndPoint, FTServer.SocketServer socketServer) : base(sender, iPEndPoint, socketServer, 10000)
+        public Peer(ISender sender, IPEndPoint iPEndPoint, FTServer.SocketServer socketServer) : base(sender, iPEndPoint, socketServer)
         { }
         public override void OnOperationRequest(IPacket packet)
         {

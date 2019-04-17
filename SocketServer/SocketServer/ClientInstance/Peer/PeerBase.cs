@@ -11,7 +11,7 @@ namespace FTServer.ClientInstance
     /// </summary>
     public class PeerBase : ClientNode
     {
-        public PeerBase(ISender _tclient, IPEndPoint iPEndPoint, SocketServer applicationInterface, ushort timeout = 5000) : base(_tclient, iPEndPoint, applicationInterface, timeout)
+        public PeerBase(ISender _tclient, IPEndPoint iPEndPoint, SocketServer applicationInterface) : base(_tclient, iPEndPoint, applicationInterface)
         {}
 
         #region myFunction

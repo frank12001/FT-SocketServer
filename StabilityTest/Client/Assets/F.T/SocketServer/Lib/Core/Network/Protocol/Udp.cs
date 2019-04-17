@@ -90,15 +90,14 @@ namespace FTServer
                 }
 
                 MaintainConnecting_Start();
+                fireCompleteConnect();
             }
             catch(Exception ex)
             {
                 connectResult = false;
                 Debug.LogError(ex.StackTrace);
-            }
-            finally
-            {
-                fireCompleteConnect(connectResult);
+                fireCompleteDisconnect();
+
             }
         }
         protected override void onCompleteReadFromServerStream(IAsyncResult iar)

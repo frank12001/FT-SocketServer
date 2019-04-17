@@ -58,9 +58,9 @@ namespace FTServer.Network
 
             lock (ClientInstance)
             {
-                if (ClientInstance.TryGetValue(receiveResult.RemoteEndPoint.ToString(), out ClientNode clientNode))
+                if (ClientInstance.TryGetValue(receiveResult.RemoteEndPoint.ToString(), out Instance instance))
                 {
-                    clientNode.Rx.Enqueue(receiveResult.Buffer);
+                    instance._ClientNode.Rx.Enqueue(receiveResult.Buffer);
                 }
             }
 

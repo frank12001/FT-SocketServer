@@ -2,23 +2,37 @@
 using UnityEngine;
 using FTServer;
 using FTServer.Operator;
+using System.Timers;
+using System;
+using FTServer.Example;
 
 public class NewBehaviourScript : MonoBehaviour
 {
     private Connect mConnect;
     private MyCallBackHandler MyCallBackHandler;
+    private StabilityTest StabilityTestHandler;
+    private _System SystemHandler;
     // Use this for initialization
     void Start()
     {
         //create connection
         mConnect = new Connect("192.168.2.5"/*Server Ip*/, 30100/*port*/, NetworkProtocol.RUDP);
         //establish connection
-        mConnect._system.ConnectToServer();
-        mConnect._system.Connect += () => { Debug.Log("Connect to Server Success."); };
+        //mConnect._system.ConnectToServer();
+        //mConnect._system.Connect += () => { Debug.Log("Connect to Server Success."); };
+
+        SystemHandler = new _System();
+        mConnect.AddCallBackHandler(_System.OperatorCode, SystemHandler);
+
         //create logic object
         MyCallBackHandler = new MyCallBackHandler();
         //add this logic object to connection object
         mConnect.AddCallBackHandler(MyCallBackHandler.OperatorCode/*if server send packet which code is 20. this obj is going to handler it.*/, MyCallBackHandler);
+
+        StabilityTestHandler = new StabilityTest();
+        mConnect.AddCallBackHandler(StabilityTest.OperatorCode, StabilityTestHandler);
+
+        SystemHandler.ConnectToServer();
     }
     // Update is called once per frame
     void Update()
@@ -32,7 +46,8 @@ public class NewBehaviourScript : MonoBehaviour
 public class StabilityTest : CallBackHandler
 {
     public const int OperatorCode = 21;
-    public StabilityTest()
+
+    protected override void AfterAddService()
     {
         gameService.ConnectFromServer += GameService_ConnectFromServer;
         gameService.DisconnectFromServer += GameService_DisconnectFromServer;

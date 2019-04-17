@@ -1,13 +1,15 @@
-﻿using System;
+﻿using FTServer.Operator;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
 
-namespace FTServer.Operator
+namespace FTServer.Example
 {
-    //系統
     public class _System : CallBackHandler
     {
+        public const byte OperatorCode = 255;
         private Timer timer = new Timer();
         private float time = 0.0f;
         private const float ConnectToServerLimit = 5;
