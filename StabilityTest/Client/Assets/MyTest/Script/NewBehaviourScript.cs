@@ -40,7 +40,11 @@ public class NewBehaviourScript : MonoBehaviour
         //call every frame
         mConnect.Service();
         if (Input.anyKeyDown)
+        {
+            if(!SystemHandler.IsConnect)
+                SystemHandler.ConnectToServer();
             MyCallBackHandler.Send("hellow world!!");
+        }
     }
 }
 public class StabilityTest : CallBackHandler

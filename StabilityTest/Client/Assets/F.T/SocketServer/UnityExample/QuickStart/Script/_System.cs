@@ -44,7 +44,6 @@ namespace FTServer.Example
                 }
                 return; //如果正在計時，則跳出
             }
-
             this.timer.Start();
             if (!IsConnect)
             {
@@ -86,6 +85,11 @@ namespace FTServer.Example
         private void disConnect()
         {
             isConnect = false;
+            if (this.timer.Enabled)
+            {
+                this.timer.Stop();
+                this.time = 0;
+            }
             if (Disconnect != null)
                 Disconnect();
         }
