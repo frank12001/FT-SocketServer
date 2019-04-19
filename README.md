@@ -8,4 +8,4 @@
   * DB (Redis)
   * UnityClient            (source code /UnityDemo)
   
-使用 k8s/all.yml 進行伺服器部屬，並使用 UnityDemo 中的範例進行連線，即可執行聊天室 Demo  
+* 使用 k8s/all.yml 進行伺服器部屬，並使用 UnityDemo 中的範例進行連線，即可執行聊天室 Demo  
