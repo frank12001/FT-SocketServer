@@ -98,12 +98,15 @@ namespace FTServer.Network
 
         public override void DisConnect(IPEndPoint iPEndPoint)
         {
-            string key = iPEndPoint.ToString();
-            if (ClientInstance.TryGetValue(key, out Instance instance))
+            lock (ClientInstance)
             {
-                RUDPInstance rudpInstance = (RUDPInstance)instance;
-                rudpInstance.Dispose();
-                ClientInstance.Remove(key);
+                string key = iPEndPoint.ToString();
+                if (ClientInstance.TryGetValue(key, out Instance instance))
+                {
+                    RUDPInstance rudpInstance = (RUDPInstance)instance;
+                    rudpInstance.Dispose();
+                    ClientInstance.Remove(key);
+                }
             }
         }       
     }
@@ -137,9 +140,6 @@ namespace FTServer.Network
         /// </summary>
         private void BeginMaintainConnectingAsync()
         {
-            /*
-            * 可考慮在接收到資料封包時reset timer，藉此減少封包傳遞
-            */
             maintainConnecting = new Timer(Tick_MainConnecting);
             maintainConnecting.Elapsed += Handler_MaintainConnecting;
             maintainConnecting.Start();
@@ -151,7 +151,6 @@ namespace FTServer.Network
             {
                 maintainConnecting.Stop();
                 RUdp.DisConnect(IPEndPoint);
-                //Printer.WriteLine($"Client timed out {TimeLimit_Disconnect} (ms), diconnected.");
             }
             // 如果長時間未收到維持訊號
             Timer_ReadPacket += Tick_MainConnecting;

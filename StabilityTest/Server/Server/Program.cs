@@ -1,7 +1,7 @@
 ﻿using FTServer;
+using FTServer.Network;
 using FTServer.ClientInstance;
 using FTServer.ClientInstance.Packet;
-using FTServer.Network;
 using System;
 using System.Net;
 using System.Threading;
@@ -13,7 +13,7 @@ namespace Server
         static void Main(string[] args)
         {
             Program program = new Program();
-            program.StartListen(30100, Protocol.RUDP);
+            program.StartListen(30100, Protocol.UDP);
             while (true) { Thread.Sleep(500); }
         }
         public override ClientNode GetPeer(Core core, IPEndPoint iPEndPoint, SocketServer socketServer)
