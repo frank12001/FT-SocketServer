@@ -16,7 +16,7 @@ public class NewBehaviourScript : MonoBehaviour
     void Start()
     {
         //create connection
-        mConnect = new Connect("192.168.2.5"/*Server Ip*/, 30100/*port*/, NetworkProtocol.UDP);
+        mConnect = new Connect("192.168.2.5"/*Server Ip*/, 30100/*port*/, NetworkProtocol.RUDP);
         //establish connection
         //mConnect._system.ConnectToServer();
         //mConnect._system.Connect += () => { Debug.Log("Connect to Server Success."); };
@@ -45,6 +45,10 @@ public class NewBehaviourScript : MonoBehaviour
                 SystemHandler.ConnectToServer();
             MyCallBackHandler.Send("hellow world!!");
         }
+    }
+    void OnApplicationQuit()
+    {
+        mConnect.Dispose();
     }
 }
 public class StabilityTest : CallBackHandler

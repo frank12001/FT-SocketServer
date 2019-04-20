@@ -79,9 +79,14 @@ namespace LiteNetLib
                         NetDebug.Write(NetLogLevel.Trace, "[R]Ignored error: {0} - {1}",
                             (int)ex.SocketErrorCode, ex.ToString());
                         break;
+                    case SocketError.NotConnected:
+                        NetDebug.Write(NetLogLevel.Trace, "[R]Ignored error: {0} - {1}",
+                            (int)ex.SocketErrorCode, ex.ToString());
+                        break;
                     default:
                         NetDebug.WriteError("[R]Error code: {0} - {1}", (int)ex.SocketErrorCode,
                             ex.ToString());
+
                         _listener.OnMessageReceived(null, 0, ex.SocketErrorCode, (IPEndPoint)bufferEndPoint);
                         break;
                 }

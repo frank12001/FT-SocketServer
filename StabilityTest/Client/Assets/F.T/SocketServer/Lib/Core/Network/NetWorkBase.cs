@@ -103,6 +103,11 @@ namespace FTServer
             };
         }
 
+        ~NetworkBase()
+        {
+            Debug.Log("NetworkBase Reease");
+        }
+
         /// <summary>
         /// 需要放在 Update 中一直執行的功能
         /// </summary>

@@ -80,7 +80,8 @@ namespace FTServer.Network
     }
     public class Udp : Core
     {
-        public readonly byte[] password = new byte[] { 67, 111, 105, 110 };
+        private readonly byte[] ReqConnect = new byte[] { 67, 111, 105, 110 };
+        private readonly byte[] ReqDisconnect = new byte[] { 87, 241, 34, 124, 2 };
         public const int SIO_UDP_CONNRESET = -1744830452;
         private UdpClient _UdpClient;
  
@@ -119,15 +120,26 @@ namespace FTServer.Network
 
             //這個地方可以順便帶DEVICEID 如果發現有重複就應該擋掉
             var result = new ReceiveResult(receiveResult.RemoteEndPoint);
-            if (password.Length == receiveResult.Buffer.Length)
+            if (ReqConnect.Length == receiveResult.Buffer.Length)
             {
                 for (int i = 0; i < receiveResult.Buffer.Length; i++)
                 {
-                    result.isOk = result.isOk && receiveResult.Buffer[i].Equals(password[i]);
+                    result.isOk = result.isOk && receiveResult.Buffer[i].Equals(ReqConnect[i]);
                 }
             }
             else
                 result.isOk = false;
+
+            bool b = true;
+            if (ReqDisconnect.Length == receiveResult.Buffer.Length)
+            {
+                for (int i = 0; i < receiveResult.Buffer.Length; i++)
+                {
+                    b = b && receiveResult.Buffer[i].Equals(ReqConnect[i]);
+                }
+            }
+            if (!b)
+                DisConnect(receiveResult.RemoteEndPoint);
 
             lock (ClientInstance)
             {
