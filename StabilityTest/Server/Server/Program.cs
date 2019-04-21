@@ -1,10 +1,12 @@
 ﻿using FTServer;
 using FTServer.Network;
+using FTServer.Math;
 using FTServer.ClientInstance;
 using FTServer.ClientInstance.Packet;
 using System;
 using System.Net;
 using System.Threading;
+using GG;
 
 namespace Server
 {
@@ -30,10 +32,16 @@ namespace Server
         {
             if (packet.OperationCode == 20)
             {
-                Console.WriteLine("Client tell me : " + packet.Parameters[0].ToString());
+                //Console.WriteLine("Client tell me : " + packet.Parameters[0].ToString());
+                //SendEvent(packet.OperationCode, new System.Collections.Generic.Dictionary<byte, object>()
+                //{
+                //    {0,"hello client!" }
+                //});
+                G g = (G)Serialize.ToObject((byte[])packet.Parameters[0]);
+                Console.WriteLine("Client tell me : " + g.s);
                 SendEvent(packet.OperationCode, new System.Collections.Generic.Dictionary<byte, object>()
                 {
-                    {0,"hello client!" }
+                    {0,Server.Serialize.ToByteArray(g) }                    
                 });
             }
         }
@@ -41,5 +49,13 @@ namespace Server
         {
             Console.WriteLine("OnDisconnect");
         }      
+    }
+}
+namespace GG
+{
+    [Serializable]
+    public class G
+    {
+        public string s;
     }
 }

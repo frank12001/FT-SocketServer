@@ -5,6 +5,8 @@ using FTServer.Operator;
 using System.Timers;
 using System;
 using FTServer.Example;
+using FTServer.Math;
+using GG;
 
 public class NewBehaviourScript : MonoBehaviour
 {
@@ -16,7 +18,7 @@ public class NewBehaviourScript : MonoBehaviour
     void Start()
     {
         //create connection
-        mConnect = new Connect("192.168.2.5"/*Server Ip*/, 30100/*port*/, NetworkProtocol.RUDP);
+        mConnect = new Connect("192.168.1.101"/*Server Ip*/, 30100/*port*/, NetworkProtocol.RUDP);
         //establish connection
         //mConnect._system.ConnectToServer();
         //mConnect._system.Connect += () => { Debug.Log("Connect to Server Success."); };
@@ -41,9 +43,15 @@ public class NewBehaviourScript : MonoBehaviour
         mConnect.Service();
         if (Input.anyKeyDown)
         {
-            if(!SystemHandler.IsConnect)
+            if (!SystemHandler.IsConnect)
                 SystemHandler.ConnectToServer();
             MyCallBackHandler.Send("hellow world!!");
+            //Serialize.ToObject( Serialize.ToByteArray(new Dictionary<byte, object>()
+            //{
+            //    {0,"123" },
+            //}
+            //));
+            //Debug.Log(s);
         }
     }
     void OnApplicationQuit()
@@ -51,6 +59,15 @@ public class NewBehaviourScript : MonoBehaviour
         mConnect.Dispose();
     }
 }
+namespace GG
+{
+    [Serializable]
+    public class G
+    {
+        public string s;
+    }
+}
+
 public class StabilityTest : CallBackHandler
 {
     public const int OperatorCode = 21;
@@ -76,17 +93,19 @@ public class StabilityTest : CallBackHandler
         //throw new System.NotImplementedException();
     }
 }
+
 public class MyCallBackHandler : CallBackHandler
 {
     public const int OperatorCode = 20;
     public void Send(string packet)
     {
         //send packet to server
-        gameService.Deliver(MyCallBackHandler.OperatorCode, new Dictionary<byte, object>() { { 0, packet } });
+        gameService.Deliver(MyCallBackHandler.OperatorCode, new Dictionary<byte, object>() { { 0, Serialize.ToByteArray(new G() { s = "YY" }) } });
     }
     public override void ServerCallBack(Dictionary<byte, object> server_packet)
     {
         //get something from server
-        Debug.Log("Msg from server : " + server_packet[0].ToString());
+        //Debug.Log("Msg from server : " + server_packet[0].ToString());
+        Debug.Log("Msg from server : " + ((G)Serialize.ToObject((byte[])server_packet[0])).s);
     }
 }

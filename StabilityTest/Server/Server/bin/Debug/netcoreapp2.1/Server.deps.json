@@ -173,7 +173,7 @@
     "MessagePack/1.7.3.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-R0XRDHs6xJffxVpW1/p6YmYQ9NDd1xWtFZ7QsGoGU0lxTrXc+PqMYvEfhxTRuU1CPg1fdIs01EBPJg6qcYosqQ==",
+      "sha512": "sha512-QSKZVq6BmNaz/B4n0bAM/moQnc4E6XZ7uXRbJcEXxUzZufJiDYDE6awYqDtNz6acupYoPt2QupGV4rpyPCRRtg==",
       "path": "messagepack/1.7.3.4",
       "hashPath": "messagepack.1.7.3.4.nupkg.sha512"
     },

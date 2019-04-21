@@ -6,11 +6,11 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO.Compression;
 
-namespace FTServer.Math
+namespace Server
 {
     public class Serialize
     {
-        public static byte[] ToByteArray(object source)
+        public  static byte[] ToByteArray(object source)
         {
             var Formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
             using (var stream = new System.IO.MemoryStream())
