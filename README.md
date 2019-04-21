@@ -47,6 +47,11 @@ public class NewBehaviourScript : MonoBehaviour {
         if (Input.anyKeyDown)
             MyCallBackHandler.Send("hellow world!!");
     }
+    void OnApplicationQuit()
+    {
+        //Release connection
+        mConnect.Dispose();    
+    }
 }
 public class MyCallBackHandler : CallBackHandler
 {
