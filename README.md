@@ -25,17 +25,20 @@ We recommend use docker or k8s deploy server.
 public class NewBehaviourScript : MonoBehaviour {
     private Connect mConnect;
     private MyCallBackHandler MyCallBackHandler;
+    private _System SystemHandler;
     // Use this for initialization
     void Start () {
         //create connection
         mConnect = new Connect("104.199.194.170"/*Server Ip*/, 30100/*port*/, NetworkProtocol.RUDP);
-        //establish connection
-        mConnect._system.ConnectToServer();
-        mConnect._system.Connect += ()=> { Debug.Log("Connect to Server Success."); };
         //create logic object
         MyCallBackHandler = new MyCallBackHandler();    
         //add this logic object to connection object
         mConnect.AddCallBackHandler(MyCallBackHandler.OperatorCode/*if server send packet which code is 20. this obj is going to handler it.*/, MyCallBackHandler);
+        //Add default callbackhandler
+        SystemHandler = new _System();
+        mConnect.AddCallBackHandler(_System.OperatorCode, SystemHandler);
+        //establish connection
+        SystemHandler.ConnectToServer();
     }
     // Update is called once per frame
     void Update () {
