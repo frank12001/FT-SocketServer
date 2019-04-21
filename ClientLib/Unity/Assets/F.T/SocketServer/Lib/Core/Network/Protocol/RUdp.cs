@@ -19,13 +19,19 @@ namespace FTServer
             listener = new EventBasedNetListener();
             client = new NetManager(listener);
             client.UpdateTime = 15;
-            client.Start();
 
             listener.PeerConnectedEvent += (NetPeer peer) =>
             {
                 Debug.Log("Connect Success : " + peer.EndPoint);
                 this.peer = peer;
-                fireCompleteConnect(true);
+                fireCompleteConnect();
+            };
+
+            listener.PeerDisconnectedEvent += (NetPeer peer, DisconnectInfo disconnectInfo) =>
+            {
+                client.Flush();
+                client.Stop();
+                fireCompleteDisconnect();
             };
 
             listener.NetworkReceiveEvent += (fromPeer, dataReader, deliveryMethod) =>
@@ -36,15 +42,18 @@ namespace FTServer
                 dataReader.Recycle();
             };
 
+
         }
 
         public override void Service()
         {
-            client.PollEvents();
+            if(client != null)
+                client.PollEvents();
         }
 
         public override void Connect(IPAddress addr, int port)
         {
+            client.Start();
             client.Connect(new IPEndPoint(addr, port), "SomeConnectionKey");
         }
 

@@ -7,8 +7,7 @@ namespace FTServer
     {
         public NetworkProtocol NetworkProtocol { get; private set; }
 
-        public event Action CompleteDisConnect, CompleteSend;
-        public event Action<bool> CompleteConnect;
+        public event Action CompleteConnect, CompleteDisConnect, CompleteSend;
         public event Action<byte[]> CompleteReadFromServerStream;
 
         public INetwork(NetworkProtocol protocol)
@@ -17,6 +16,11 @@ namespace FTServer
         }
 
         #region Fire Event
+        protected void fireCompleteConnect()
+        {
+            if (CompleteConnect != null)
+                CompleteConnect();
+        }
 
         protected void fireCompleteDisconnect()
         {
@@ -28,12 +32,6 @@ namespace FTServer
         {
             if (CompleteSend != null)
                 CompleteSend();
-        }
-
-        protected void fireCompleteConnect(bool isConnect)
-        {
-            if (CompleteConnect != null)
-                CompleteConnect(isConnect);
         }
 
         protected void fireCompleteReadFromServerStream(byte[] datagram)

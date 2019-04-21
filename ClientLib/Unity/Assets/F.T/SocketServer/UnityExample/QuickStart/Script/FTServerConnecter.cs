@@ -12,13 +12,15 @@ namespace FTServer.Example
         /// </summary>
         private Connect mConnect;
         public bool IsConnect = false;
+        private _System SystemHandler;
 
         public void InitAndConnect(IPEndPoint ip, NetworkProtocol protocol,Action connect=null)
         {
             mConnect = new Connect(ip.Address.ToString(), ip.Port, protocol);
-            mConnect._system.ConnectToServer();
-            if (connect != null)
-                mConnect._system.Connect += connect;
+            SystemHandler = new _System();            
+            mConnect.AddCallBackHandler(_System.OperatorCode, SystemHandler);
+
+            SystemHandler.Connect += connect;
         }
 
         void OnDisable()
@@ -32,8 +34,8 @@ namespace FTServer.Example
             if (mConnect != null)
             {
                 mConnect.Service();
-                if (IsConnect != mConnect._system.IsConnect)
-                    IsConnect = mConnect._system.IsConnect;
+                if (IsConnect != SystemHandler.IsConnect)
+                    IsConnect = SystemHandler.IsConnect;
             }
         }
 

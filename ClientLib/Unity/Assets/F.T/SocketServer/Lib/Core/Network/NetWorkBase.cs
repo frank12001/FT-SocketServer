@@ -60,11 +60,9 @@ namespace FTServer
                     break;
             }
             
-            Network.CompleteConnect += result =>
+            Network.CompleteConnect += () =>
             {
-                Debug.Log("Connection State = "+result);
-                if (result)
-                    OnStatusChanged(StatusCode.Connect);
+                OnStatusChanged(StatusCode.Connect);
             };
             Network.CompleteDisConnect += () =>
             {
@@ -79,12 +77,12 @@ namespace FTServer
                 byte[] receiveBytes = result;
                 if (!receiveBytes.Length.Equals(1))
                 {
-                    receiveBytes = Math.Serializate.Decompress(receiveBytes);
+                    receiveBytes = Math.Serialize.Decompress(receiveBytes);
                     IPacket packet = null;
                     //解包成我定義的封包
                     try
                     {
-                        packet = (IPacket)Math.Serializate.ToObject(receiveBytes);
+                        packet = (IPacket)Math.Serialize.ToObject(receiveBytes);
                     }
                     catch (Exception e)
                     {
@@ -103,6 +101,11 @@ namespace FTServer
                     Network.BeginSend(new byte[] { 0 }, 1);
                 }
             };
+        }
+
+        ~NetworkBase()
+        {
+            Debug.Log("NetworkBase Reease");
         }
 
         /// <summary>
@@ -158,8 +161,8 @@ namespace FTServer
             try
             {
                 //將此封包，序列化並加入暫存區
-                tx = Math.Serializate.ToByteArray(packet);
-                tx = Math.Serializate.Compress(tx);
+                tx = Math.Serialize.ToByteArray(packet);
+                tx = Math.Serialize.Compress(tx);
                 Network.BeginSend(tx, tx.Length);
             }
             catch (Exception exc)

@@ -9,7 +9,6 @@ namespace FTServer
         private GameNetworkService gameService;
 
         public NetworkProtocol NetworkProtocol { get; private set; }
-        public _System _system;
 
         public Connect(string ip,int port,NetworkProtocol protocol)
         {
@@ -28,8 +27,6 @@ namespace FTServer
                 gameService.Address = string.Format("ws://{0}/WebSocket", ServerIP);
             else
                 gameService.Address = ServerIP;
-            _system = new _System();
-            AddCallBackHandler(255, _system);
         }
 
         /// <summary>

@@ -55,7 +55,6 @@ namespace FTServer
 
 		protected override void onCompleteConnect(IAsyncResult iar)
 		{
-			bool connectResult = false;
 			try
 			{
 				TcpClient tcpcc = (TcpClient)iar.AsyncState;
@@ -65,20 +64,16 @@ namespace FTServer
 				tcpcc.ReceiveTimeout = 10000;
 				UnityEngine.Debug.Log("Available = " + tcpcc.Available);
 				tcpcc.GetStream().BeginRead(mRx, 0, mRx.Length, onCompleteReadFromServerStream, tcpcc);
-				connectResult = true;
 
 				maintainConnecting = new Timer(Tick_MainConnecting);
 				maintainConnecting.Elapsed += Handler_MaintainConnecting;
 				maintainConnecting.Start();
-			}
+                fireCompleteConnect();
+            }
 			catch (Exception exc)
 			{
 				Console.WriteLine(exc.Message);
-				connectResult = false;
-			}
-			finally
-			{
-				fireCompleteConnect(connectResult);
+                fireCompleteDisconnect();
 			}
 		}
 

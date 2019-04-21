@@ -16,6 +16,11 @@ namespace FTServer
         /// 多久從序列中寫出或讀入一包
         /// </summary>
         private const float Tick_MainConnecting = 5000f;
+        private const string SocketErrorMsgs = "Cannot access a disposed object.";
+        private const string SocketErrorMsgs2 = "The socket is not connected";
+        private const string SocketErrorMsgs3 = "The socket has been shut down";
+        private readonly byte[] ReqConnect = new byte[] { 67, 111, 105, 110 };
+        private readonly byte[] ReqDisconnect = new byte[] { 87, 241, 34, 124, 2 };
         private Timer maintainConnecting;
         private bool udpMaintainConnecting = false;
 
@@ -38,8 +43,7 @@ namespace FTServer
                     addr = addr.MapToIPv6();
                 serverIPEndPoint = new IPEndPoint(addr.MapToIPv6(), port);
 
-                //udpClient.Send(new byte[] { 1 }, 1, serverIPEndPoint);
-                udpClient.Send(new byte[] { 67, 111, 105, 110 }, 4, serverIPEndPoint);
+                udpClient.Send(ReqConnect, ReqConnect.Length, serverIPEndPoint);
                 udpClient.BeginReceive(onCompleteConnect, udpClient);
             }
         }
@@ -49,13 +53,26 @@ namespace FTServer
             if (udpClient != null)
             {
                 udpClient.BeginSend(datagram, bytes, serverIPEndPoint, iar =>
-                {
-                    UdpClient tcpc;
-                    tcpc = (UdpClient) iar.AsyncState;
-                    tcpc.EndSend(iar);
-
-                    fireCompleteSend();
-                }, udpClient);
+                    {
+                        try
+                        {
+                            UdpClient tcpc;
+                            tcpc = (UdpClient)iar.AsyncState;
+                            tcpc.EndSend(iar);
+                        }
+                        catch (SocketException socketException)
+                        {
+                            if (!socketException.Message.Contains(SocketErrorMsgs3))
+                            {
+                                Debug.Log("Begin Send Socket Error : " + socketException.Message);
+                            }
+                            else
+                            {
+                                DisConnect();
+                            }
+                        }
+                        fireCompleteSend();
+                    }, udpClient);
             }
         }
 
@@ -65,6 +82,7 @@ namespace FTServer
             {
                 if (udpClient.Client.Connected)
                 {
+                    udpClient.Send(ReqDisconnect, ReqDisconnect.Length, serverIPEndPoint);
                     udpClient.Close();
                     udpClient = null;
                 }
@@ -90,15 +108,14 @@ namespace FTServer
                 }
 
                 MaintainConnecting_Start();
+                fireCompleteConnect();
             }
             catch(Exception ex)
             {
                 connectResult = false;
                 Debug.LogError(ex.StackTrace);
-            }
-            finally
-            {
-                fireCompleteConnect(connectResult);
+                fireCompleteDisconnect();
+
             }
         }
         protected override void onCompleteReadFromServerStream(IAsyncResult iar)
@@ -115,7 +132,8 @@ namespace FTServer
             }
             catch (Exception exc)
             {
-                Debug.Log(exc.Message);
+                if (!exc.Message.Contains(SocketErrorMsgs) && !exc.Message.Contains(SocketErrorMsgs2))
+                    Debug.Log(exc.Message);
             }
             finally
             {
