@@ -1,78 +1,34 @@
-﻿using FTServer.ClientInstance.Packet;
-using MessagePack;
-using System;
+﻿using System;
 using System.IO;
-using System.IO.Compression;
 using System.Reflection;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO.Compression;
 
 namespace FTServer.Math
 {
     internal class Serialize
     {
-        #region 物件序列化
         public static byte[] ToByteArray(object source)
         {
-            IPacket packet = (IPacket)source;
-            return MessagePackSerializer.Serialize(packet);
-            //var Formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            //using (var stream = new System.IO.MemoryStream())
-            //{
-            //    Formatter.Serialize(stream, source);
-            //    return stream.ToArray();
-            //}
-        }
-
-        public static object ToObject(byte[] source)
-        {
-            return MessagePackSerializer.Deserialize<IPacket>(source);
-            //try
-            //{
-            //    var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            //    using (var stream = new MemoryStream(source))
-            //    {
-            //        formatter.Binder = new CurrentAssemblyDeserializationBinder();
-            //        formatter.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
-            //        return formatter.Deserialize(stream);
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine("Error in Serializate.ToObject");
-            //    return new object();
-            //}
-        }
-
-        private sealed class CurrentAssemblyDeserializationBinder : SerializationBinder
-        {
-            public override Type BindToType(string assemblyName, string typeName)
+            var Formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            using (var stream = new System.IO.MemoryStream())
             {
-                //Console.WriteLine("Convert : " + String.Format("{0}, {1} ", typeName, Assembly.GetExecutingAssembly().FullName));
-                return Type.GetType(String.Format("{0}, {1} ", typeName, Assembly.GetExecutingAssembly().FullName));
+                Formatter.Serialize(stream, source);
+                return stream.ToArray();
             }
         }
-
-        public static byte[] JsonSerialize(object source)
+        public static object ToObject(byte[] source)
         {
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(source);
-            byte[] byteArray = Encoding.Unicode.GetBytes(json);
-            return byteArray;
+            var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            using (var stream = new MemoryStream(source))
+            {
+                formatter.Binder = new CurrentAssemblyDeserializationBinder();
+                formatter.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
+                return formatter.Deserialize(stream);
+            }
         }
-
-        public static object JsonDeserialize(byte[] data)
-        {
-            string json = Encoding.Unicode.GetString(data);
-            return Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-        }
-
-        public static T JsonDeserialize<T>(byte[] data)
-        {
-            string json = Encoding.Unicode.GetString(data);
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
-        }
-        #endregion
-
         #region byte array 壓縮
         public static byte[] Compress(byte[] buffer)
         {
@@ -110,5 +66,13 @@ namespace FTServer.Math
             //return buffer;
         }
         #endregion
+    }
+
+    public sealed class CurrentAssemblyDeserializationBinder : SerializationBinder
+    {
+        public override Type BindToType(string assemblyName, string typeName)
+        {
+            return Type.GetType(String.Format("{0}, {1}", typeName, Assembly.GetExecutingAssembly().FullName));
+        }
     }
 }
