@@ -12,6 +12,8 @@ namespace FTServer.Math
     {
         public static byte[] ToByteArray(object source)
         {
+            //IPacket packet = (IPacket)source;
+            //return MessagePackSerializer.Serialize(packet);
             var Formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
             using (var stream = new System.IO.MemoryStream())
             {
@@ -21,6 +23,7 @@ namespace FTServer.Math
         }
         public static object ToObject(byte[] source)
         {
+            //return MessagePackSerializer.Deserialize<IPacket>(source);
             var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
             using (var stream = new MemoryStream(source))
             {
