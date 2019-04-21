@@ -94,9 +94,9 @@ namespace FTServer.Network
                         continue;
 
                     // 將接收到的buff data送入client佇列等候處理
-                    if (ClientInstance.TryGetValue(iPEndPoint.ToString(), out ClientNode clientNode))
+                    if (ClientInstance.TryGetValue(iPEndPoint.ToString(), out Instance instance))
                     {
-                        clientNode.Rx.Enqueue(buff);
+                        instance._ClientNode.Rx.Enqueue(buff);
                     }
                 }
                 catch (Exception e)

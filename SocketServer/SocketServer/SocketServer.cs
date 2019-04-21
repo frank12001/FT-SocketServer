@@ -11,7 +11,7 @@ namespace FTServer
     {
         private const float TickConsoleClear = 60 * 1000;//5 * 60 * 1000; // 30 minute
 
-        protected Core mListener;
+        protected Core networkCore;
         private int Port;
         private Protocol _Protocol;
         private Timer consoleClear;
@@ -60,28 +60,28 @@ namespace FTServer
             switch (protocol)
             {
                 case Protocol.TCP:
-                    mListener = new Tcp(this, new IPEndPoint(IPAddress.Any, Port));
+                    networkCore = new Tcp(this, new IPEndPoint(IPAddress.Any, Port));
                     break;
                 case Protocol.UDP:
-                    mListener = new Udp(this, new IPEndPoint(IPAddress.Any, Port));
+                    networkCore = new Udp(this, new IPEndPoint(IPAddress.Any, Port));
                     break;
                 case Protocol.WebSocket:
-                    mListener = new WebSocket(this, Port);
+                    networkCore = new WebSocket(this, Port);
                     break;
                 case Protocol.RUDP:
-                    mListener = new RUdp(this, new IPEndPoint(IPAddress.Any, Port));
+                    networkCore = new RUdp(this, new IPEndPoint(IPAddress.Any, Port));
                     break;
                 default:
                     Printer.WriteLine("Not Support this Protocol.");
                     break;
             }
 
-            await mListener.StartListen();
+            await networkCore.StartListen();
         }
 
         public void CloseClient(IPEndPoint iPEndPoint)
         {
-            mListener.DisConnect(iPEndPoint);
+            networkCore.DisConnect(iPEndPoint);
         }
 
         public abstract ClientNode GetPeer(Core core, IPEndPoint iPEndPoint, SocketServer application);

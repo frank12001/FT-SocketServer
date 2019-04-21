@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using FTServer.Log;
 using FTServer.ClientInstance;
 using LiteNetLib;
+using System.Timers;
 
 namespace FTServer.Network
 {
@@ -12,12 +12,10 @@ namespace FTServer.Network
     {
         EventBasedNetListener listener;
         NetManager server;
-        Dictionary<string,RUdpClient> clients;
         IPEndPoint mIPEndPoint;
         int i = 0;
         public RUdp(SocketServer socketServer, IPEndPoint iPEndPoint) : base(socketServer)
         {
-            clients = new Dictionary<string, RUdpClient>();
             listener = new EventBasedNetListener();
             server = new NetManager(listener);
             mIPEndPoint = iPEndPoint;
@@ -33,26 +31,19 @@ namespace FTServer.Network
                 Console.WriteLine("Count : " + i);
                 //Console.WriteLine("We got connection: {0}", peer.EndPoint); // Show peer ip
                 string clientIp = peer.EndPoint.ToString();
-                RUdpClient client = new RUdpClient(peer);
-                lock (clients)
-                {
-                    // 請使用「取代」方法來取代「刪除後增加」,Dictionary會在刪除及增加時進行樹平衡
-                    if (clients.ContainsKey(clientIp))
-                        clients[clientIp] = client;
-                    else
-                        clients.Add(clientIp, client);
-                }
+
                 ReceiveResult receiveResult = new ReceiveResult(peer.EndPoint);
 
                 if (ClientInstance.ContainsKey(clientIp))
                     ClientInstance.Remove(clientIp);
                 // 建立玩家peer實體
                 ClientNode cNode = _SocketServer.GetPeer(this, receiveResult.RemoteEndPoint, _SocketServer);
-                client._ClientNode = cNode;
                 try
                 {
+                    //註冊到 mListener 中，讓他的 Receive 功能能被叫               
+                    RUDPInstance instance = new RUDPInstance(this,cNode,peer);
                     //註冊到 mListener 中，讓他的 Receive 功能能被叫
-                    ClientInstance.Add(clientIp, cNode);
+                    ClientInstance.Add(clientIp, instance);
                     //成功加入後傳送 Connect 事件給 Client
                     peer.Send(new byte[] { 1 },DeliveryMethod.ReliableOrdered);
                 }
@@ -65,8 +56,9 @@ namespace FTServer.Network
             listener.NetworkReceiveEvent += (NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)=> 
             {
                 //reader.GetBytesWithLength
-                if (clients.TryGetValue(peer.EndPoint.ToString(), out RUdpClient client))
+                if (ClientInstance.TryGetValue(peer.EndPoint.ToString(), out Instance instance))
                 {
+                    RUDPInstance client = (RUDPInstance)instance;
                     byte[] b = new byte[reader.AvailableBytes];
                     reader.GetBytes(b, reader.AvailableBytes);
                     //Console.WriteLine("We got something 2 : {0},Length: {1}", peer.EndPoint, b.Length); // Show peer ip
@@ -79,7 +71,6 @@ namespace FTServer.Network
             {
                 i--;
                 Console.WriteLine("Count : " + i);
-                DisConnect(peer.EndPoint);
             };
 
             Task.Run(async () =>
@@ -99,34 +90,77 @@ namespace FTServer.Network
 
         public override async Task SendAsync(byte[] datagram, IPEndPoint endPoint)
         {
-            if (clients.TryGetValue(endPoint.ToString(), out RUdpClient webClient))
+            if (ClientInstance.TryGetValue(endPoint.ToString(), out Instance instance))
             {
-                await webClient.Send(datagram);
+                await ((RUDPInstance)instance).Send(datagram);
             }
         }
 
         public override void DisConnect(IPEndPoint iPEndPoint)
         {
-            string key = iPEndPoint.ToString();
-            if (clients.TryGetValue(key, out RUdpClient client))
+            lock (ClientInstance)
             {
-                client.DisConnect();
-                clients.Remove(key);
+                string key = iPEndPoint.ToString();
+                if (ClientInstance.TryGetValue(key, out Instance instance))
+                {
+                    RUDPInstance rudpInstance = (RUDPInstance)instance;
+                    rudpInstance.Dispose();
+                    ClientInstance.Remove(key);
+                }
+            }
+        }       
+    }
+    public class RUDPInstance : Instance , IDisposable
+    {
+        private const byte Tick_MainConnecting = 100;
+        /// <summary>
+        /// 斷線之time out時間長度
+        /// </summary>
+        private readonly ushort TimeLimit_Disconnect = 5000;
+        /// <summary>
+        /// 接收封包及維持連線之Timer
+        /// </summary>
+        private Timer maintainConnecting;
+        /// <summary>
+        /// 接收封包之時間間隔
+        /// </summary>
+        private ushort Timer_ReadPacket = 0;
+        private NetPeer _NetPeer;
+        private RUdp RUdp;
+        public IPEndPoint IPEndPoint { get; private set; }
+        public RUDPInstance(RUdp rudp,ClientNode clientNode, NetPeer netPeer) : base(clientNode)
+        {
+            RUdp = rudp;
+            _NetPeer = netPeer;
+            IPEndPoint = _NetPeer.EndPoint;
+            BeginMaintainConnectingAsync();   // 開始進行維持連線之封包發送
+        }
+        /// <summary>
+        /// 每隔一段時間定期進行連絡以確認維持連線
+        /// </summary>
+        private void BeginMaintainConnectingAsync()
+        {
+            maintainConnecting = new Timer(Tick_MainConnecting);
+            maintainConnecting.Elapsed += Handler_MaintainConnecting;
+            maintainConnecting.Start();
+        }
+        private void Handler_MaintainConnecting(object o, ElapsedEventArgs e)
+        {
+            // 當維持連線之訊號中斷直到timeout，作斷線處理
+            if (Timer_ReadPacket >= TimeLimit_Disconnect)
+            {
+                maintainConnecting.Stop();
+                RUdp.DisConnect(IPEndPoint);
+            }
+            // 如果長時間未收到維持訊號
+            Timer_ReadPacket += Tick_MainConnecting;
+            if (Timer_ReadPacket >= 2000)
+            {
+                // 對客戶端發送維持連線之訊號
+                byte[] buff = new byte[] { 0 };
+                Send(buff);
             }
         }
-    }
-
-    public class RUdpClient
-    {
-        private NetPeer _NetPeer;
-        public IPEndPoint IPEndPoint { get; private set; }
-        public ClientNode _ClientNode = null;
-        public RUdpClient(NetPeer netPeer)
-        {
-            _NetPeer = netPeer;
-            IPEndPoint = _NetPeer.EndPoint;            
-        }
-
         public async Task Send(byte[] datagram)
         {
             _NetPeer.Send(datagram, DeliveryMethod.ReliableOrdered);
@@ -134,12 +168,14 @@ namespace FTServer.Network
 
         public void PassData(byte[] datagram)
         {
+            Timer_ReadPacket = 0;
             _ClientNode.Rx.Enqueue(datagram);
         }
 
-        public void DisConnect()
+        public void Dispose()
         {
-            if(_NetPeer.ConnectionState == ConnectionState.Connected)
+            maintainConnecting.Stop();
+            if (_NetPeer.ConnectionState == ConnectionState.Connected)
                 _NetPeer.Disconnect();
             _ClientNode.OnDisconnect();
         }

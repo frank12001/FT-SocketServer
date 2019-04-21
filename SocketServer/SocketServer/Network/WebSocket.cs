@@ -87,13 +87,14 @@ namespace FTServer.Network
                     // Coinmouse : 直接去掉已存在的玩家實體(因為timeout可能還沒到)
                     if (ClientInstance.ContainsKey(clientIp))
                         ClientInstance.Remove(clientIp);
-                    // 建立玩家peer實體
-                    ClientNode cNode = _SocketServer.GetPeer(this, receiveResult.RemoteEndPoint, _SocketServer);
-                    client._ClientNode = cNode;
                     try
                     {
+                        // 建立玩家peer實體                   
+                        ClientNode cNode = _SocketServer.GetPeer(this, receiveResult.RemoteEndPoint, _SocketServer);
+                        Instance instance = new Instance(cNode);
                         //註冊到 mListener 中，讓他的 Receive 功能能被叫
-                        ClientInstance.Add(clientIp, cNode);
+                        ClientInstance.Add(clientIp, instance);
+                        client._ClientNode = cNode;
                         //成功加入後傳送 Connect 事件給 Client
                         await SendAsync(new byte[] { 1 }, cNode.iPEndPoint);
                     }
@@ -116,7 +117,8 @@ namespace FTServer.Network
         public ClientNode GetClientNode(IPEndPoint iPEndPoint)
         {
             ClientNode result = null;
-            ClientInstance.TryGetValue(iPEndPoint.ToString(), out result);
+            if (ClientInstance.TryGetValue(iPEndPoint.ToString(), out Instance instance))
+                result = instance._ClientNode;            
             return result;
         }
 
