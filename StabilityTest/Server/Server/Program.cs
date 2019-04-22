@@ -15,7 +15,7 @@ namespace Server
         static void Main(string[] args)
         {
             Program program = new Program();
-            program.StartListen(30100, Protocol.RUDP);
+            program.StartListen(30100, Protocol.TCP);
             while (true) { Thread.Sleep(500); }
         }
         public override ClientNode GetPeer(Core core, IPEndPoint iPEndPoint, SocketServer socketServer)
