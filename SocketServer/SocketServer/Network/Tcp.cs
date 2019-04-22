@@ -14,19 +14,19 @@ namespace FTServer.Network
 {
     public class TCPInstance : Instance, IDisposable
     {
-        private const byte Tick_MainConnecting = 100;
-        /// <summary>
-        /// 斷線之time out時間長度
-        /// </summary>
-        private readonly ushort TimeLimit_Disconnect = 5000;
-        /// <summary>
-        /// 接收封包及維持連線之Timer
-        /// </summary>
-        private Timer maintainConnecting;
-        /// <summary>
-        /// 接收封包之時間間隔
-        /// </summary>
-        private ushort Timer_ReadPacket = 0;
+        //private const byte Tick_MainConnecting = 100;
+        ///// <summary>
+        ///// 斷線之time out時間長度
+        ///// </summary>
+        //private readonly ushort TimeLimit_Disconnect = 5000;
+        ///// <summary>
+        ///// 接收封包及維持連線之Timer
+        ///// </summary>
+        //private Timer maintainConnecting;
+        ///// <summary>
+        ///// 接收封包之時間間隔
+        ///// </summary>
+        //private ushort Timer_ReadPacket = 0;
         private TcpClient _TcpClient;
         private Tcp Tcp;
         public IPEndPoint IPEndPoint { get; private set; }
@@ -35,34 +35,34 @@ namespace FTServer.Network
             Tcp = tcp;
             _TcpClient = tcpClient;
             IPEndPoint = tcpClient.Client.RemoteEndPoint as IPEndPoint;
-            BeginMaintainConnectingAsync();   // 開始進行維持連線之封包發送
+            //BeginMaintainConnectingAsync();   // 開始進行維持連線之封包發送
         }
-        /// <summary>
-        /// 每隔一段時間定期進行連絡以確認維持連線
-        /// </summary>
-        private void BeginMaintainConnectingAsync()
-        {
-            maintainConnecting = new Timer(Tick_MainConnecting);
-            maintainConnecting.Elapsed += Handler_MaintainConnecting;
-            maintainConnecting.Start();
-        }
-        private void Handler_MaintainConnecting(object o, ElapsedEventArgs e)
-        {
-            // 當維持連線之訊號中斷直到timeout，作斷線處理
-            if (Timer_ReadPacket >= TimeLimit_Disconnect)
-            {
-                maintainConnecting.Stop();
-                Tcp.DisConnect(IPEndPoint);
-            }
-            // 如果長時間未收到維持訊號
-            Timer_ReadPacket += Tick_MainConnecting;
-            if (Timer_ReadPacket >= 2000)
-            {
-                // 對客戶端發送維持連線之訊號
-                byte[] buff = new byte[] { 0 };
-                Send(buff);
-            }
-        }
+        ///// <summary>
+        ///// 每隔一段時間定期進行連絡以確認維持連線
+        ///// </summary>
+        //private void BeginMaintainConnectingAsync()
+        //{
+        //    maintainConnecting = new Timer(Tick_MainConnecting);
+        //    maintainConnecting.Elapsed += Handler_MaintainConnecting;
+        //    maintainConnecting.Start();
+        //}
+        //private void Handler_MaintainConnecting(object o, ElapsedEventArgs e)
+        //{
+        //    // 當維持連線之訊號中斷直到timeout，作斷線處理
+        //    if (Timer_ReadPacket >= TimeLimit_Disconnect)
+        //    {
+        //        maintainConnecting.Stop();
+        //        Tcp.DisConnect(IPEndPoint);
+        //    }
+        //    // 如果長時間未收到維持訊號
+        //    Timer_ReadPacket += Tick_MainConnecting;
+        //    if (Timer_ReadPacket >= 2000)
+        //    {
+        //        // 對客戶端發送維持連線之訊號
+        //        byte[] buff = new byte[] { 0 };
+        //        Send(buff);
+        //    }
+        //}
 
         public async Task Send(byte[] datagram)
         {
@@ -72,13 +72,13 @@ namespace FTServer.Network
 
         public void PassData(byte[] datagram)
         {
-            Timer_ReadPacket = 0;
+            //Timer_ReadPacket = 0;
             _ClientNode.Rx.Enqueue(datagram);
         }
 
         public void Dispose()
         {
-            maintainConnecting.Stop();
+            //maintainConnecting.Stop();
             if (_TcpClient.Client.Connected)
                 _TcpClient.Close();
             _ClientNode.OnDisconnect();
@@ -156,14 +156,13 @@ namespace FTServer.Network
             ClientInstance.Add(clientIp, instance);
             //成功加入後傳送 Connect 事件給 Client
             byte[] packet = new byte[] { 1 };
-            tcpc.GetStream().Write(packet, 0, packet.Length);
+            tcpc.GetStream().Write(packet, 0, packet.Length);            
             return instance;
         }
 
         private async Task StartReceiveAsync(TcpClient tcpc)
         {
             IPEndPoint ipendpoint = tcpc.Client.RemoteEndPoint as IPEndPoint;
-
 
             if (ClientInstance.TryGetValue(ipendpoint.ToString(), out Instance instance))
             {
@@ -180,9 +179,12 @@ namespace FTServer.Network
                             int count = await stream.ReadAsync(buff, 0, buff.Length);
                             Array.Resize(ref buff, count);
                             if (count.Equals(0))
-                                continue;
-                        // 將接收到的buff data送入client佇列等候處理
-                        tcpInstance.PassData(buff);
+                            {
+                                DisConnect(ipendpoint);
+                                break;
+                            }
+                            // 將接收到的buff data送入client佇列等候處理
+                            tcpInstance.PassData(buff);
                         }
                     }
                     catch (IOException e)
