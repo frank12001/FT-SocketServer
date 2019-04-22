@@ -39,6 +39,7 @@ namespace Server
                 //});
                 G g = (G)Serialize.ToObject((byte[])packet.Parameters[0]);
                 Console.WriteLine("Client tell me : " + g.s);
+                g.s = "hello client!";
                 SendEvent(packet.OperationCode, new System.Collections.Generic.Dictionary<byte, object>()
                 {
                     {0,Server.Serialize.ToByteArray(g) }                    

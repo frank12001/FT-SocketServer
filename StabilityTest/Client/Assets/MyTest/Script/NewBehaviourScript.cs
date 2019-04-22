@@ -18,7 +18,7 @@ public class NewBehaviourScript : MonoBehaviour
     void Start()
     {
         //create connection
-        mConnect = new Connect("192.168.1.101"/*Server Ip*/, 30100/*port*/, NetworkProtocol.RUDP);
+        mConnect = new Connect("192.168.2.5"/*Server Ip*/, 30100/*port*/, NetworkProtocol.RUDP);
         //establish connection
         //mConnect._system.ConnectToServer();
         //mConnect._system.Connect += () => { Debug.Log("Connect to Server Success."); };
@@ -100,7 +100,7 @@ public class MyCallBackHandler : CallBackHandler
     public void Send(string packet)
     {
         //send packet to server
-        gameService.Deliver(MyCallBackHandler.OperatorCode, new Dictionary<byte, object>() { { 0, Serialize.ToByteArray(new G() { s = "YY" }) } });
+        gameService.Deliver(MyCallBackHandler.OperatorCode, new Dictionary<byte, object>() { { 0, Serialize.ToByteArray(new G() { s = packet }) } });
     }
     public override void ServerCallBack(Dictionary<byte, object> server_packet)
     {
