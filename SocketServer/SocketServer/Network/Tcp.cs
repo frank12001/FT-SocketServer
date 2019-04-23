@@ -12,78 +12,6 @@ using System.Timers;
 
 namespace FTServer.Network
 {
-    public class TCPInstance : Instance, IDisposable
-    {
-        //private const byte Tick_MainConnecting = 100;
-        ///// <summary>
-        ///// 斷線之time out時間長度
-        ///// </summary>
-        //private readonly ushort TimeLimit_Disconnect = 5000;
-        ///// <summary>
-        ///// 接收封包及維持連線之Timer
-        ///// </summary>
-        //private Timer maintainConnecting;
-        ///// <summary>
-        ///// 接收封包之時間間隔
-        ///// </summary>
-        //private ushort Timer_ReadPacket = 0;
-        private TcpClient _TcpClient;
-        private Tcp Tcp;
-        public IPEndPoint IPEndPoint { get; private set; }
-        public TCPInstance(Tcp tcp,ClientNode clientNode,TcpClient tcpClient) : base(clientNode)
-        {
-            Tcp = tcp;
-            _TcpClient = tcpClient;
-            IPEndPoint = tcpClient.Client.RemoteEndPoint as IPEndPoint;
-            //BeginMaintainConnectingAsync();   // 開始進行維持連線之封包發送
-        }
-        ///// <summary>
-        ///// 每隔一段時間定期進行連絡以確認維持連線
-        ///// </summary>
-        //private void BeginMaintainConnectingAsync()
-        //{
-        //    maintainConnecting = new Timer(Tick_MainConnecting);
-        //    maintainConnecting.Elapsed += Handler_MaintainConnecting;
-        //    maintainConnecting.Start();
-        //}
-        //private void Handler_MaintainConnecting(object o, ElapsedEventArgs e)
-        //{
-        //    // 當維持連線之訊號中斷直到timeout，作斷線處理
-        //    if (Timer_ReadPacket >= TimeLimit_Disconnect)
-        //    {
-        //        maintainConnecting.Stop();
-        //        Tcp.DisConnect(IPEndPoint);
-        //    }
-        //    // 如果長時間未收到維持訊號
-        //    Timer_ReadPacket += Tick_MainConnecting;
-        //    if (Timer_ReadPacket >= 2000)
-        //    {
-        //        // 對客戶端發送維持連線之訊號
-        //        byte[] buff = new byte[] { 0 };
-        //        Send(buff);
-        //    }
-        //}
-
-        public async Task Send(byte[] datagram)
-        {
-            if(_TcpClient.Client.Connected)
-                await _TcpClient.GetStream().WriteAsync(datagram, 0, datagram.Length);
-        }
-
-        public void PassData(byte[] datagram)
-        {
-            //Timer_ReadPacket = 0;
-            _ClientNode.Rx.Enqueue(datagram);
-        }
-
-        public void Dispose()
-        {
-            //maintainConnecting.Stop();
-            if (_TcpClient.Client.Connected)
-                _TcpClient.Close();
-            _ClientNode.OnDisconnect();
-        }
-    }
     public class Tcp : Core
     {
         private const string ErrorMsg1 = "Unable to read data from the transport connection";
@@ -106,7 +34,8 @@ namespace FTServer.Network
                      try
                      {
                          TcpClient tcpc = await listener.AcceptTcpClientAsync();
-                         await Task.Run(async () =>
+                         //每個 client 都有一個 task 去等他的 StartReceiveAsync 
+                         Task.Run(async () =>
                           {
                               CreateInstance(tcpc);
                               await StartReceiveAsync(tcpc);                             
@@ -167,13 +96,13 @@ namespace FTServer.Network
             if (ClientInstance.TryGetValue(ipendpoint.ToString(), out Instance instance))
             {
                 TCPInstance tcpInstance = (TCPInstance)instance;
-
+              
                 NetworkStream stream = tcpc.GetStream();
                 await Task.Run(async () =>
                 {
                     try
                     {
-                        while (true && tcpc.Client.Connected)
+                        while (true &&  tcpc.Client.Connected)
                         {
                             byte[] buff = new byte[BufferSize];
                             int count = await stream.ReadAsync(buff, 0, buff.Length);
@@ -198,6 +127,36 @@ namespace FTServer.Network
                     }
                 });
             }
+        }
+    }
+    public class TCPInstance : Instance, IDisposable
+    {
+        private TcpClient _TcpClient;
+        private Tcp Tcp;
+        public IPEndPoint IPEndPoint { get; private set; }
+        public TCPInstance(Tcp tcp, ClientNode clientNode, TcpClient tcpClient) : base(clientNode)
+        {
+            Tcp = tcp;
+            _TcpClient = tcpClient;
+            IPEndPoint = tcpClient.Client.RemoteEndPoint as IPEndPoint;
+        }
+
+        public async Task Send(byte[] datagram)
+        {
+            if (_TcpClient.Client.Connected)
+                await _TcpClient.GetStream().WriteAsync(datagram, 0, datagram.Length);
+        }
+
+        public void PassData(byte[] datagram)
+        {
+            _ClientNode.Rx.Enqueue(datagram);
+        }
+
+        public void Dispose()
+        {
+            if (_TcpClient.Client.Connected)
+                _TcpClient.Close();
+            _ClientNode.OnDisconnect();
         }
     }
 }

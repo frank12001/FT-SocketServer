@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Timers;
-using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace FTServer
 {
@@ -12,14 +12,9 @@ namespace FTServer
 		private TcpClient tcpClient;
 		private const int BufferSize = 40960;
 		private byte[] mRx;
+        bool callForTcpClientClose = false;
 
-		/// <summary>
-		/// 多久從序列中寫出或讀入一包
-		/// </summary>
-		private const float Tick_MainConnecting = 10000f;
-		private Timer maintainConnecting;
-
-		public Tcp() : base(NetworkProtocol.TCP)
+        public Tcp() : base(NetworkProtocol.TCP)
 		{ }
 
 		public override void Connect(IPAddress address, int port)
@@ -28,83 +23,86 @@ namespace FTServer
             tcpClient.Client.DualMode = true;
             if (!IPTool.IOSCheck(address, out address))
                 address = address.MapToIPv6();
-            tcpClient.BeginConnect(address, port, onCompleteConnect, tcpClient);
+            try
+            {
+                tcpClient.Connect(address, port);
+                if (tcpClient.Connected)
+                {
+                    fireCompleteConnect();
+                    StartReceiveAsync(tcpClient);
+                }
+                else
+                    fireCompleteDisconnect();
+            }
+            catch (SocketException e)
+            {
+                switch (e.ErrorCode)
+                {
+                    case (int)SocketError.ConnectionRefused:
+                        fireCompleteDisconnect();
+                        Debug.Log(e.Message);
+                        break;
+                }            
+            }
         }
 
-		public override void BeginSend(byte[] datagram, int bytes)
-		{
-			tcpClient.GetStream().BeginWrite(datagram, 0, bytes, iar =>
-				{
-					TcpClient tcpc;
-					tcpc = (TcpClient)iar.AsyncState;
-					tcpc.GetStream().EndWrite(iar);
-
-					fireCompleteSend();
-				}, tcpClient);
-		}
-
-		public override void DisConnect()
-		{
-			if (tcpClient.Client.Connected)
-			{
-				tcpClient.Close();
-				tcpClient = null;
-				fireCompleteDisconnect();
-			}
-		}
-
-		protected override void onCompleteConnect(IAsyncResult iar)
-		{
-			try
-			{
-				TcpClient tcpcc = (TcpClient)iar.AsyncState;
-				tcpcc.EndConnect(iar);
-				mRx = new byte[BufferSize];
-				tcpcc.ReceiveBufferSize = (int)BufferSize;
-				tcpcc.ReceiveTimeout = 10000;
-				UnityEngine.Debug.Log("Available = " + tcpcc.Available);
-				tcpcc.GetStream().BeginRead(mRx, 0, mRx.Length, onCompleteReadFromServerStream, tcpcc);
-
-				maintainConnecting = new Timer(Tick_MainConnecting);
-				maintainConnecting.Elapsed += Handler_MaintainConnecting;
-				maintainConnecting.Start();
-                fireCompleteConnect();
+        public override void BeginSend(byte[] datagram, int bytes)
+        {
+            if (tcpClient.Connected)
+            {
+                try
+                {
+                    tcpClient.GetStream().Write(datagram, 0, bytes);
+                    fireCompleteSend();
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(e.Message);
+                    // tell tcpclient don't do tcpClient.GetStream().Read
+                    tcpClient.GetStream().Flush();
+                }
             }
-			catch (Exception exc)
-			{
-				Console.WriteLine(exc.Message);
-                fireCompleteDisconnect();
-			}
-		}
+        }
 
-		protected override void onCompleteReadFromServerStream(IAsyncResult iar)
-		{
-			try
-			{
-				TcpClient tcpcc = (TcpClient)iar.AsyncState;
-				//取得這次傳入資料的長度
-				int nCountBytesReceivedFromServer = tcpcc.GetStream().EndRead(iar);
-				Array.Resize(ref mRx, nCountBytesReceivedFromServer);
-				byte[] receiveBytes = (byte[])mRx.Clone();
-				fireCompleteReadFromServerStream(receiveBytes);
-			}
-			catch (Exception exc)
-			{
-				Console.WriteLine(exc.Message);
-			}
-			finally
-			{
-				//重新給予暫存一個大小
-				mRx = new byte[BufferSize];
-				//開始等待封包
-				tcpClient.GetStream().BeginRead(mRx, 0, mRx.Length, onCompleteReadFromServerStream, tcpClient);
-			}
-		}
+        private async Task StartReceiveAsync(TcpClient tcpc)
+        {
+            Task.Run(async () => {
+                while (true)
+                {
+                    try
+                    {
+                        byte[] buff = new byte[BufferSize];
+                        int count = await tcpClient.GetStream().ReadAsync(buff, 0, buff.Length);
 
-		private void Handler_MaintainConnecting(object sender, ElapsedEventArgs e)
+                        Array.Resize(ref buff, count);
+                        if (count.Equals(0))
+                        {
+                            Debug.Log("Get Packet Length = 0");
+                            DisConnect();
+                            break;
+                        }
+                        Task.Run(() =>{ try { fireCompleteReadFromServerStream(buff); } catch (Exception e) { Debug.LogError(e.Message); } });
+                    }
+                    catch (Exception e)
+                    {                  
+                        if(!callForTcpClientClose)
+                            DisConnect();
+                        callForTcpClientClose = false;
+                        Debug.Log(e.Message);
+                        break;
+                    }
+                }
+            });
+        }
+
+        public override void DisConnect()
 		{
-			if (!tcpClient.Connected)
-				fireCompleteDisconnect();
-		}
+            if (tcpClient.Connected)
+            {
+                callForTcpClientClose = true;
+                tcpClient.Close();                
+            }
+            fireCompleteDisconnect();
+        }
 	}
 }

@@ -12,15 +12,26 @@ namespace Server
 {
     class Program : SocketServer
     {
+        static Peer p;
         static void Main(string[] args)
         {
             Program program = new Program();
             program.StartListen(30100, Protocol.TCP);
-            while (true) { Thread.Sleep(500); }
+            while (true) {
+                Console.ReadLine();
+                G g = new G();
+                Console.WriteLine("Client tell me : " + g.s);
+                g.s = "hello client!";
+                p.SendEvent(20, new System.Collections.Generic.Dictionary<byte, object>()
+                {
+                    {0,Server.Serialize.ToByteArray(g) }
+                });
+                Thread.Sleep(500); }
         }
         public override ClientNode GetPeer(Core core, IPEndPoint iPEndPoint, SocketServer socketServer)
         {
             Peer player = new Peer(core, iPEndPoint, socketServer);
+            p = player;
             return player;
         }
     }
