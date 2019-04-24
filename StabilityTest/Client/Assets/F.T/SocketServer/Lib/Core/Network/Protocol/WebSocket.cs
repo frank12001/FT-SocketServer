@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Net;
-using BestHTTP.WebSocket;
+using System.Threading;
 using UnityEngine;
+using BestHTTP.WebSocket;
 
 namespace FTServer
 {
     public class WebSocketLis : INetwork
     {
         private WebSocket mWebSocket;
-
+        private CancellationToken cancelToken;
         public WebSocketLis() : base(NetworkProtocol.WebSocket)
         { }
 
@@ -29,28 +30,27 @@ namespace FTServer
             mWebSocket.StartPingThread = true;
             mWebSocket.OnOpen += webSocket =>
             {
-                UnityEngine.Debug.Log("WebSocket isOpen= " + webSocket.IsOpen);
+                Debug.Log("WebSocket isOpen= " + webSocket.IsOpen);
                 if (webSocket.IsOpen)
                     onCompleteConnect(null);
             };
             mWebSocket.OnBinary += (webSocket, message) =>
             {
                 fireCompleteReadFromServerStream(message);
-                //UnityEngine.Debug.Log("Binary Message received from server. Length: " + message.Length);
             };
-            mWebSocket.OnError += (ws, ex) =>
+            mWebSocket.OnError += (WebSocket webSocket, Exception ex) =>
             {
-                string errorMsg = string.Empty;
-                fireCompleteDisconnect();
-                mWebSocket.Close();
-                UnityEngine.Debug.Log("An error occured: " + (ex != null ? ex.Message : "Unknown: " + errorMsg));
-                System.Console.WriteLine("MYLOG = Error:" + ex.Message);
+                Debug.Log("OnError");
+                if (webSocket.State == WebSocketStates.Open)
+                    webSocket.Close();
+                else
+                    fireCompleteDisconnect();
+                //Debug.LogError(ex.Message);
             };
             mWebSocket.OnClosed += (webSocket, code, message) =>
             {
+                Debug.Log("OnClose");
                 fireCompleteDisconnect();
-                UnityEngine.Debug.Log("WebSocket Closed!");
-                System.Console.WriteLine("MYLOG = Client Close");                
             };
             mWebSocket.Open();
         }
@@ -64,8 +64,7 @@ namespace FTServer
         public override void DisConnect()
         {           
             mWebSocket.Close();
-            fireCompleteDisconnect();
-            Debug.Log("Close");
+            //fireCompleteDisconnect();
         }
 
         protected override void onCompleteConnect(IAsyncResult iar)

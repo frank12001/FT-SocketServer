@@ -1,112 +1,97 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using FTServer.ClientInstance;
-
+using FTServer.Log;
 
 namespace FTServer.Network
 {
-    public class Client
+    public class WSInstance : Instance , IDisposable
     {
-        private WebSocketClient _WebSocket;
-        private WebSocket _ServerCore;
+        private WSPeer WSPeer;
+        private WebSocket WebSocket;
         public IPEndPoint IPEndPoint { get; private set; }
-        public ClientNode _ClientNode = null;
-        public Client(WebSocketClient webSocket, WebSocket serverCore)
+        public WSInstance(WebSocket webSocket, ClientNode clientNode, WSPeer wsPeer) : base(clientNode)
         {
-            _WebSocket = webSocket;
-            _ServerCore = serverCore;
-            IPEndPoint = webSocket.Context.UserEndPoint;
-
-            _WebSocket._OnMessage += PassData;
-            _WebSocket._OnClose += closeMsg => { EndConnection(); };
-            _WebSocket._OnError += exception => { Console.WriteLine(exception); EndConnection(); };           
+            WSPeer = wsPeer;
+            WebSocket = webSocket;
+            IPEndPoint = WSPeer.Context.UserEndPoint;      
         }
 
         public async Task Send(byte[] datagram)
         {
-            _WebSocket.SendBytes(datagram);        
+            WSPeer.SendBytes(datagram);        
         }
 
-        private void PassData(byte[] datagram)
+        public void PassData(byte[] datagram)
         {
             _ClientNode.Rx.Enqueue(datagram);
         }
 
-        private void EndConnection()
+        public void Dispose()
         {
-            lock (_ServerCore.clients)
-            {
-                _ServerCore.clients.Remove(IPEndPoint.ToString());
-            }
-            _ServerCore.ClientInstance.Remove(IPEndPoint.ToString());
-            //if (_ClientNode != null)
-            //{
-            //    _ClientNode.OnDisconnect();
-            //}
-        }
-
-        public void Close()
-        {
-            _WebSocket.CloseConnection();
+            WSPeer.CloseConnection();
+            _ClientNode.OnDisconnect();
         }
     }
 
     public class WebSocket : Core
     {
         private WebSocketServer server;
-        public Dictionary<string, Client> clients { get; private set; }
-
         public WebSocket(SocketServer socketServer, int port) : base(socketServer)
         {
-            clients = new Dictionary<string, Client>();
-
-
             server = new WebSocketServer(port)
             {
                 WaitTime = TimeSpan.FromMilliseconds(5000)
-            };
-            server.WebSocketServices.AddService<WebSocketClient>("/WebSocket", socket =>
+            };           
+            server.WebSocketServices.AddService<WSPeer>("/WebSocket", peer =>
             {
-                socket._OnOpen += async () =>
+                peer._OnOpen += () =>
                 {
-                    //Console.WriteLine("Open!");
-                    Client client = new Client(socket, this);
+                    IPEndPoint iPEndPoint = peer.Context.UserEndPoint;
+                    string clientIp = iPEndPoint.ToString();
 
-                    lock (clients)
-                    {
-                        clients.Add(client.IPEndPoint.ToString(), client);
-                    }
-
-                    ReceiveResult receiveResult = new ReceiveResult(client.IPEndPoint);
-                    string clientIp = receiveResult.RemoteEndPoint.ToString();
-
-                    // Coinmouse : 直接去掉已存在的玩家實體(因為timeout可能還沒到)
                     if (ClientInstance.ContainsKey(clientIp))
                         ClientInstance.Remove(clientIp);
+
+                    // 建立玩家peer實體
+                    ClientNode cNode = _SocketServer.GetPeer(this, iPEndPoint, _SocketServer);
                     try
                     {
-                        // 建立玩家peer實體                   
-                        ClientNode cNode = _SocketServer.GetPeer(this, receiveResult.RemoteEndPoint, _SocketServer);
-                        Instance instance = new Instance(cNode);
+                        //註冊到 mListener 中，讓他的 Receive 功能能被叫               
+                        WSInstance instance = new WSInstance(this, cNode, peer);
                         //註冊到 mListener 中，讓他的 Receive 功能能被叫
                         ClientInstance.Add(clientIp, instance);
-                        client._ClientNode = cNode;
                         //成功加入後傳送 Connect 事件給 Client
-                        await SendAsync(new byte[] { 1 }, cNode.iPEndPoint);
+                        peer.SendBytes(new byte[] { 1 });
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
-                        Console.WriteLine(e.StackTrace);
+                        Printer.WriteError($"Accept connection failed : {e.Message}\n{e.StackTrace}");
                     }
                 };
-            });
 
-            server.AddWebSocketService<Ping>("/Ping");
+                peer._OnMessage += packet => 
+                {
+                    if (ClientInstance.TryGetValue(peer.Context.UserEndPoint.ToString(), out Instance instance))
+                    {
+                        WSInstance client = (WSInstance)instance;
+                        client.PassData(packet);
+                    }
+                };
+
+                peer._OnClose += e => 
+                {
+                    DisConnect(peer.Context.UserEndPoint);
+                };
+
+                peer._OnError += e =>
+                {
+                    DisConnect(peer.Context.UserEndPoint);
+                };
+            });
         }
 
         public override async Task StartListen()
@@ -114,20 +99,11 @@ namespace FTServer.Network
             server.Start();
         }
 
-        public ClientNode GetClientNode(IPEndPoint iPEndPoint)
-        {
-            ClientNode result = null;
-            if (ClientInstance.TryGetValue(iPEndPoint.ToString(), out Instance instance))
-                result = instance._ClientNode;            
-            return result;
-        }
-
         public override async Task SendAsync(byte[] datagram, IPEndPoint endPoint)
         {
-            //Console.WriteLine("Send datagram length = " + datagram.Length);
-            if (clients.TryGetValue(endPoint.ToString(), out Client webClient))
+            if (ClientInstance.TryGetValue(endPoint.ToString(), out Instance instance))
             {
-                await webClient.Send(datagram);
+                await ((WSInstance)instance).Send(datagram);
             }
         }
 
@@ -135,22 +111,21 @@ namespace FTServer.Network
         {
             lock (ClientInstance)
             {
-                if (iPEndPoint != null)
+                string key = iPEndPoint.ToString();
+                if (ClientInstance.TryGetValue(key, out Instance instance))
                 {
-                    ClientInstance.Remove(iPEndPoint.ToString());
-                    if (clients.TryGetValue(iPEndPoint.ToString(), out Client client))
-                    {
-                        client.Close();
-                    }
+                    WSInstance wsInstance = (WSInstance)instance;
+                    wsInstance.Dispose();
+                    ClientInstance.Remove(key);
                 }
             }
         }
     }
-    public class WebSocketClient : WebSocketBehavior
+    public class WSPeer : WebSocketBehavior
     {
         public event Action _OnOpen;
         public event Action<byte[]> _OnMessage;
-        public event Action<CloseEventArgs> _OnClose;
+        public Action<CloseEventArgs> _OnClose;
         public event Action<ErrorEventArgs> _OnError;
 
         public void SendBytes(byte[] data)
@@ -171,25 +146,19 @@ namespace FTServer.Network
 
         protected override void OnClose(CloseEventArgs e)
         {
+            Console.WriteLine("WSPeer OnClose");
             _OnClose?.Invoke(e);
         }
 
         protected override void OnError(ErrorEventArgs e)
         {
+            Console.WriteLine("WSPeer OnError");
             _OnError?.Invoke(e);
         }
 
         public void CloseConnection()
         {            
             Close();
-        }
-    }
-
-    public class Ping : WebSocketBehavior
-    {
-        protected override void OnOpen()
-        {
-            Console.WriteLine("WebSocketSharp Call Ping");
         }
     }
 }

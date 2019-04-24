@@ -16,7 +16,7 @@ namespace Server
         static void Main(string[] args)
         {
             Program program = new Program();
-            program.StartListen(30100, Protocol.TCP);
+            program.StartListen(30100, Protocol.WebSocket);
             while (true) {
                 Console.ReadLine();
                 G g = new G();
