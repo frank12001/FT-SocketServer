@@ -53,7 +53,7 @@ public class NewBehaviourScript : MonoBehaviour {
         mConnect.Dispose();    
     }
 }
-public class MyCallBackHandler : CallBackHandler
+public class MyCallBackHandler : CallbackHandler
 {
     public const int OperatorCode = 20;
     public void Send(string packet)
