@@ -36,7 +36,7 @@ namespace FTServer.Example
             //_GroupCallBackHandler.BroadcastAction += o =>{ Debug.Log("receive broadcast msg : "+o); };
         }
     }
-    public class AccountCallBackHandler : CallBackHandler
+    public class AccountCallBackHandler : CallbackHandler
     {
         private const int HttpMaxLangth = 2000;
         private Queue<Action<string>> GetActions, SetActions;
@@ -72,7 +72,7 @@ namespace FTServer.Example
             });
             SetActions.Enqueue(callback);
         }
-        public override void ServerCallBack(Dictionary<byte, object> server_packet)
+        public override void ServerCallback(Dictionary<byte, object> server_packet)
         {
             string code = server_packet[0].ToString();
             string response = server_packet[1].ToString();
@@ -98,7 +98,7 @@ namespace FTServer.Example
             }
         }
     }
-    public class GroupCallBackHandler : CallBackHandler
+    public class GroupCallBackHandler : CallbackHandler
     {
         private Queue<Action<string[]>> GetListActions;
         public Action<string> BroadcastAction;
@@ -142,7 +142,7 @@ namespace FTServer.Example
         }
 
 
-        public override void ServerCallBack(Dictionary<byte, object> server_packet)
+        public override void ServerCallback(Dictionary<byte, object> server_packet)
         {
             string code = server_packet[0].ToString();
             switch (code)

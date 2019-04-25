@@ -15,7 +15,7 @@ namespace FTServer
         /// <summary>
         /// CallBackhandler
         /// </summary>
-        private Dictionary<byte, CallBackHandler> _CallBackhandler = new Dictionary<byte, CallBackHandler>();
+        private Dictionary<byte, CallbackHandler> _CallBackhandler = new Dictionary<byte, CallbackHandler>();
 
         //建構式
         public GameNetworkService(NetworkProtocol protocol) : base(protocol)
@@ -28,12 +28,12 @@ namespace FTServer
         /// <param name="eventData"></param>
         protected override void OnEvent(IPacket eventData)
         {
-            CallBackHandler networkBase = null;
+            CallbackHandler networkBase = null;
             if (_CallBackhandler.TryGetValue(eventData.OperationCode, out networkBase))
-                networkBase.ServerCallBack(eventData.Parameters);
+                networkBase.ServerCallback(eventData.Parameters);
         }
 
-        public void AddCallBackHandler(byte operatorCode, CallBackHandler netWorkBase)
+        public void AddCallBackHandler(byte operatorCode, CallbackHandler netWorkBase)
         {
             if (_CallBackhandler.ContainsKey(operatorCode))
             {

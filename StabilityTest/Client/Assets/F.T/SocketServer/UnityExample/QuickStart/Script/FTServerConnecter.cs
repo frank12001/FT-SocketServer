@@ -43,7 +43,7 @@ namespace FTServer.Example
         /// 加入自定義的回傳處理者
         /// </summary>
         /// <param name="base"></param>
-        public void AddCallBackHandler(byte operatorCode, CallBackHandler @base)
+        public void AddCallBackHandler(byte operatorCode, CallbackHandler @base)
         {
             mConnect?.AddCallBackHandler(operatorCode, @base);
         }

@@ -68,7 +68,7 @@ namespace GG
     }
 }
 
-public class StabilityTest : CallBackHandler
+public class StabilityTest : CallbackHandler
 {
     public const int OperatorCode = 21;
 
@@ -88,13 +88,13 @@ public class StabilityTest : CallBackHandler
         Debug.Log(" StabilityTest : DisconnectFromServer");
     }
 
-    public override void ServerCallBack(Dictionary<byte, object> server_packet)
+    public override void ServerCallback(Dictionary<byte, object> server_packet)
     {
         //throw new System.NotImplementedException();
     }
 }
 
-public class MyCallBackHandler : CallBackHandler
+public class MyCallBackHandler : CallbackHandler
 {
     public const int OperatorCode = 20;
     public void Send(string packet)
@@ -102,7 +102,7 @@ public class MyCallBackHandler : CallBackHandler
         //send packet to server
         gameService.Deliver(MyCallBackHandler.OperatorCode, new Dictionary<byte, object>() { { 0, Serialize.ToByteArray(new G() { s = packet }) } });
     }
-    public override void ServerCallBack(Dictionary<byte, object> server_packet)
+    public override void ServerCallback(Dictionary<byte, object> server_packet)
     {
         //get something from server
         //Debug.Log("Msg from server : " + server_packet[0].ToString());

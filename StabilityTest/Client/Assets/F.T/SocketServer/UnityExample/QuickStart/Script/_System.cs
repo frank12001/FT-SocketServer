@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace FTServer.Example
 {
-    public class _System : CallBackHandler
+    public class _System : CallbackHandler
     {
         public const byte OperatorCode = 255;
         private Timer timer = new Timer();
@@ -66,7 +66,7 @@ namespace FTServer.Example
         }
         #endregion
         #region Receive Server CallBack (被動呼叫)
-        public override void ServerCallBack(Dictionary<byte, object> server_packet)
+        public override void ServerCallback(Dictionary<byte, object> server_packet)
         {
             //throw new NotImplementedException();
         }
