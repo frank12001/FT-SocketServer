@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>FTServer</PackageId>
-    <Version>0.0.2.2</Version>
+    <Version>0.0.2.3</Version>
     <Authors>Frank Tang</Authors>
     <Product>FTServer</Product>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

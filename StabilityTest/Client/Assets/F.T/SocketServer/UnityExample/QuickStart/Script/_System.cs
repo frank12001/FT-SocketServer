@@ -9,7 +9,7 @@ namespace FTServer.Example
 {
     public class _System : CallbackHandler
     {
-        public const byte OperatorCode = 255;
+        public const byte OperatorCode = 254;
         private Timer timer = new Timer();
         private float time = 0.0f;
         private const float ConnectToServerLimit = 5;

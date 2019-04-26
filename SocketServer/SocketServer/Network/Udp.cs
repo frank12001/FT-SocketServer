@@ -63,6 +63,7 @@ namespace FTServer.Network
         }
         public async Task Send(byte[] datagram)
         {
+            Printer.WriteLine("Send Packet Length : " + datagram.Length);
             _UdpClient.SendAsync(datagram, datagram.Length,IPEndPoint);
         }
 

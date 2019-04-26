@@ -5,6 +5,7 @@ using FTServer.Log;
 using FTServer.Network;
 using FTServer.ClientInstance.Peer;
 using FTServer.ClientInstance.Packet;
+using MessagePack;
 
 namespace FTServer.ClientInstance
 {
@@ -56,7 +57,6 @@ namespace FTServer.ClientInstance
         public void Write(IPacket eventData)
         {
             byte[] buff = Math.Serialize.Compress(Math.Serialize.ToByteArray(eventData));
-            //Console.WriteLine("封包大小 : " + buff.Length);
             _Sender.SendAsync(buff, iPEndPoint);
         }
 
