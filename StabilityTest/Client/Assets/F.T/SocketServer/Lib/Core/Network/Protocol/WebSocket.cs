@@ -10,11 +10,14 @@ namespace FTServer
     {
         private WebSocket mWebSocket;
         private CancellationToken cancelToken;
+
+        private bool needFireDisconnect = false;
         public WebSocketLis() : base(NetworkProtocol.WebSocket)
         { }
 
         public override void Connect(Uri uri)
         {
+            SetFireDisconnectTrigger();
             IPAddress addr = IPAddress.Parse(uri.Host);
             if (Application.platform != RuntimePlatform.WebGLPlayer)
             {
@@ -30,9 +33,9 @@ namespace FTServer
             mWebSocket.StartPingThread = true;
             mWebSocket.OnOpen += webSocket =>
             {
-                Debug.Log("WebSocket isOpen= " + webSocket.IsOpen);
+                Debug.Log("WebSocket isOpen= " + webSocket.IsOpen);               
                 if (webSocket.IsOpen)
-                    onCompleteConnect(null);
+                    onCompleteConnect(null);           
             };
             mWebSocket.OnBinary += (webSocket, message) =>
             {
@@ -41,16 +44,14 @@ namespace FTServer
             mWebSocket.OnError += (WebSocket webSocket, Exception ex) =>
             {
                 Debug.Log("OnError");
-                if (webSocket.State == WebSocketStates.Open)
-                    webSocket.Close();
-                else
-                    fireCompleteDisconnect();
+                webSocket.Close();
+                CheckAndFireDisconnect();
                 //Debug.LogError(ex.Message);
             };
             mWebSocket.OnClosed += (webSocket, code, message) =>
             {
                 Debug.Log("OnClose");
-                fireCompleteDisconnect();
+                CheckAndFireDisconnect();
             };
             mWebSocket.Open();
         }
@@ -64,7 +65,21 @@ namespace FTServer
         public override void DisConnect()
         {           
             mWebSocket.Close();
-            //fireCompleteDisconnect();
+            CheckAndFireDisconnect();
+        }
+
+        private void SetFireDisconnectTrigger()
+        {
+            needFireDisconnect = true;
+        }
+
+        private void CheckAndFireDisconnect()
+        {
+            if (needFireDisconnect)
+            {
+                needFireDisconnect = false;
+                fireCompleteDisconnect();
+            }
         }
 
         protected override void onCompleteConnect(IAsyncResult iar)
