@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "SocketServer/0.0.2.3": {
+      "SocketServer/0.0.2.4": {
         "dependencies": {
           "LiteNetLib": "0.8.3.1",
           "MessagePack": "1.7.3.4",
@@ -462,7 +462,7 @@
     }
   },
   "libraries": {
-    "SocketServer/0.0.2.3": {
+    "SocketServer/0.0.2.4": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
