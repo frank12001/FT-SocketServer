@@ -8,7 +8,7 @@ We recommend use docker or k8s deploy server.
 
 ### [Release builds](https://github.com/frank12001/Socket-Server/releases) [![GitHub (pre-)release](https://img.shields.io/github/release/frank12001/Socket-Server/all.svg)](https://github.com/frank12001/Socket-Server/releases)
 ## Features
-* UDP, TCP(beta), RUDP(LitNetLib), Websocket(Websocketsharp,beta) support
+* UDP, RUDP(LitNetLib), TCP(rc1), Websocket(Websocketsharp,rc1) support
 * Ipv6 support
 * Unity support
   * Android
