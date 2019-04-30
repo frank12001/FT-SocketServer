@@ -1,216 +1,162 @@
 ﻿using FTServer.ClientInstance;
+using FTServer.Log;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace FTServer.Network
 {
     public class Tcp : Core
     {
+        private const string ErrorMsg1 = "Unable to read data from the transport connection";
         private const int BufferSize = 40960;
 
-        private TcpListener mTCPListener;
-        private Dictionary<string, TcpClient> clients;
+        private TcpListener listener;
         public Tcp(SocketServer socketServer, IPEndPoint iPEndPoint) : base(socketServer)
         {
-            clients = new Dictionary<string, TcpClient>();
-            //IPAddress.Any //ipaddr
-            mTCPListener = new TcpListener(IPAddress.IPv6Any, iPEndPoint.Port);
-            //mTCPListener = new TcpListener(iPEndPoint);
-            mTCPListener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
+            listener = new TcpListener(IPAddress.IPv6Any, iPEndPoint.Port);
+            listener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);      
+        }
 
-            mTCPListener.Start();
+        public override async Task StartListen()
+        {
+            listener.Start();
+            await Task.Run(async () =>
+             {
+                 while (true)
+                 {
+                     try
+                     {
+                         TcpClient tcpc = await listener.AcceptTcpClientAsync();
+                         //每個 client 都有一個 task 去等他的 StartReceiveAsync 
+                         Task.Run(async () =>
+                          {
+                              CreateInstance(tcpc);
+                              await StartReceiveAsync(tcpc);                             
+                          });
+                     }
+                     catch (Exception e)
+                     {
+                         Printer.WriteError($"Accept connection failed : {e.Message}\n{e.StackTrace}");
+                     }
+                 }
+             });
         }
 
         public override async Task SendAsync(byte[] datagram, IPEndPoint endPoint)
         {
-            if (clients.TryGetValue(endPoint.ToString(), out TcpClient tcpClient))
+            if (ClientInstance.TryGetValue(endPoint.ToString(), out Instance instance))
             {
-                if (tcpClient.Connected)
-                    await tcpClient.GetStream().WriteAsync(datagram, 0, datagram.Length);
-                else
-                    clients.Remove(endPoint.ToString());
+                await ((TCPInstance)instance).Send(datagram);
             }
-        }
-
-        public override async Task<ReceiveResult> ReceiveAsync()
-        {
-            //等待有人連接
-            TcpClient tcpc = await mTCPListener.AcceptTcpClientAsync();
-
-            IPEndPoint iPEndPoint = CreateIPEndPoint(tcpc.Client.RemoteEndPoint.ToString());
-
-            clients.Add(iPEndPoint.ToString(), tcpc);
-
-            BeginReadAsync(tcpc, iPEndPoint);
-
-            return new ReceiveResult(iPEndPoint);
         }
 
         public override void DisConnect(IPEndPoint iPEndPoint)
         {
-            base.DisConnect(iPEndPoint);
-            if (clients.TryGetValue(iPEndPoint.ToString(), out TcpClient tcpc))
+            lock (ClientInstance)
             {
-                tcpc.Dispose();
-                tcpc.Close();
+                string key = iPEndPoint.ToString();
+                if (ClientInstance.TryGetValue(key, out Instance instance))
+                {
+                    TCPInstance tcpInstance = (TCPInstance)instance;
+                    tcpInstance.Dispose();
+                    ClientInstance.Remove(key);
+                }
             }
         }
 
-        /// <summary>
-        /// 開始等待封包傳入
-        /// </summary>
-        private async Task BeginReadAsync(TcpClient tclient, IPEndPoint iPEndPoint)
+        private TCPInstance CreateInstance(TcpClient tcpc)
         {
-            NetworkStream stream = tclient.GetStream();
+            IPEndPoint ipendpoint = tcpc.Client.RemoteEndPoint as IPEndPoint;
+            string clientIp = ipendpoint.ToString();
+            if (ClientInstance.ContainsKey(clientIp))
+                ClientInstance.Remove(clientIp);
+            // 建立玩家peer實體
+            ClientNode cNode = _SocketServer.GetPeer(this, ipendpoint, _SocketServer);
+            //註冊到 mListener 中，讓他的 Receive 功能能被叫               
+            TCPInstance instance = new TCPInstance(this, cNode, tcpc);
+            //註冊到 mListener 中，讓他的 Receive 功能能被叫
+            ClientInstance.Add(clientIp, instance);
+            //成功加入後傳送 Connect 事件給 Client
+            byte[] packet = new byte[] { 1 };
+            tcpc.GetStream().Write(packet, 0, packet.Length);            
+            return instance;
+        }
 
-            while (true)
+        private async Task StartReceiveAsync(TcpClient tcpc)
+        {
+            IPEndPoint ipendpoint = tcpc.Client.RemoteEndPoint as IPEndPoint;
+
+            if (ClientInstance.TryGetValue(ipendpoint.ToString(), out Instance instance))
             {
-                byte[] buff = new byte[BufferSize];
-
-
-                try
+                TCPInstance tcpInstance = (TCPInstance)instance;
+              
+                NetworkStream stream = tcpc.GetStream();
+                await Task.Run(async () =>
                 {
-                    int bufferCount = await Task.Run(() =>
+                    try
                     {
-                        Task<int> i = null;
-                        try
+                        while (true &&  tcpc.Client.Connected)
                         {
-                            i = stream.ReadAsync(buff, 0, buff.Length);
+                            byte[] buff = new byte[BufferSize];
+                            int count = await stream.ReadAsync(buff, 0, buff.Length);
+                            Array.Resize(ref buff, count);
+                            if (count.Equals(0))
+                            {
+                                DisConnect(ipendpoint);
+                                break;
+                            }
+                            // 將接收到的buff data送入client佇列等候處理
+                            tcpInstance.PassData(buff);
                         }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("Tcp.cs Line73");
-                        }
-                        return i;
                     }
-                    );
-                    Array.Resize(ref buff, bufferCount);
-                    if (bufferCount.Equals(0))
-                        continue;
-
-                    // 將接收到的buff data送入client佇列等候處理
-                    if (ClientInstance.TryGetValue(iPEndPoint.ToString(), out Instance instance))
+                    catch (IOException e)
                     {
-                        instance._ClientNode.Rx.Enqueue(buff);
+                        if (!e.Message.Contains(ErrorMsg1))
+                            Console.WriteLine(e.Message + "," + e.HResult);
+                        else
+                        {
+                            DisConnect(ipendpoint);
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Tcp.cs Line91");
-                    clients.Remove(iPEndPoint.ToString());
-                    break;
-                }
+                });
             }
         }
-
-        private IPEndPoint CreateIPEndPoint(string endPoint)
+    }
+    public class TCPInstance : Instance, IDisposable
+    {
+        private TcpClient _TcpClient;
+        private Tcp Tcp;
+        public IPEndPoint IPEndPoint { get; private set; }
+        public TCPInstance(Tcp tcp, ClientNode clientNode, TcpClient tcpClient) : base(clientNode)
         {
-            //string[] ep = endPoint.Split(':');
-            //if (ep.Length != 2) throw new FormatException("Invalid endpoint format");
-            //IPAddress ip;
-            //if (!IPAddress.TryParse(ep[0], out ip))
-            //{
-            //    throw new FormatException("Invalid ip-adress");
-            //}
-            //int port;
-            //if (!int.TryParse(ep[1], System.Globalization.NumberStyles.None, System.Globalization.NumberFormatInfo.CurrentInfo, out port))
-            //{
-            //    throw new FormatException("Invalid port");
-            //}
-            //return new IPEndPoint(ip, port);
-            return Parse(endPoint);
+            Tcp = tcp;
+            _TcpClient = tcpClient;
+            IPEndPoint = tcpClient.Client.RemoteEndPoint as IPEndPoint;
         }
 
-        public IPEndPoint Parse(string endpointstring)
+        public async Task Send(byte[] datagram)
         {
-            return Parse(endpointstring, -1);
+            if (_TcpClient.Client.Connected)
+                await _TcpClient.GetStream().WriteAsync(datagram, 0, datagram.Length);
         }
 
-        public IPEndPoint Parse(string endpointstring, int defaultport)
+        public void PassData(byte[] datagram)
         {
-            if (string.IsNullOrEmpty(endpointstring)
-                || endpointstring.Trim().Length == 0)
-            {
-                throw new ArgumentException("Endpoint descriptor may not be empty.");
-            }
-
-            if (defaultport != -1 &&
-                (defaultport < IPEndPoint.MinPort
-                || defaultport > IPEndPoint.MaxPort))
-            {
-                throw new ArgumentException(string.Format("Invalid default port '{0}'", defaultport));
-            }
-
-            string[] values = endpointstring.Split(new char[] { ':' });
-            IPAddress ipaddy;
-            int port = -1;
-
-            //check if we have an IPv6 or ports
-            if (values.Length <= 2) // ipv4 or hostname
-            {
-                if (values.Length == 1)
-                    //no port is specified, default
-                    port = defaultport;
-                else
-                    port = getPort(values[1]);
-
-                //try to use the address as IPv4, otherwise get hostname
-                if (!IPAddress.TryParse(values[0], out ipaddy))
-                    ipaddy = getIPfromHost(values[0]);
-            }
-            else if (values.Length > 2) //ipv6
-            {
-                //could [a:b:c]:d
-                if (values[0].StartsWith("[") && values[values.Length - 2].EndsWith("]"))
-                {
-                    string ipaddressstring = string.Join(":", values.Take(values.Length - 1).ToArray());
-                    ipaddy = IPAddress.Parse(ipaddressstring);
-                    port = getPort(values[values.Length - 1]);
-                }
-                else //[a:b:c] or a:b:c
-                {
-                    ipaddy = IPAddress.Parse(endpointstring);
-                    port = defaultport;
-                }
-            }
-            else
-            {
-                throw new FormatException(string.Format("Invalid endpoint ipaddress '{0}'", endpointstring));
-            }
-
-            if (port == -1)
-                throw new ArgumentException(string.Format("No port specified: '{0}'", endpointstring));
-
-            return new IPEndPoint(ipaddy, port);
+            _ClientNode.Rx.Enqueue(datagram);
         }
 
-        private int getPort(string p)
+        public void Dispose()
         {
-            int port;
-
-            if (!int.TryParse(p, out port)
-             || port < IPEndPoint.MinPort
-             || port > IPEndPoint.MaxPort)
-            {
-                throw new FormatException(string.Format("Invalid end point port '{0}'", p));
-            }
-
-            return port;
-        }
-
-        private IPAddress getIPfromHost(string p)
-        {
-            var hosts = Dns.GetHostAddresses(p);
-
-            if (hosts == null || hosts.Length == 0)
-                throw new ArgumentException(string.Format("Host not found: {0}", p));
-
-            return hosts[0];
+            if (_TcpClient.Client.Connected)
+                _TcpClient.Close();
+            _ClientNode.OnDisconnect();
         }
     }
 }
