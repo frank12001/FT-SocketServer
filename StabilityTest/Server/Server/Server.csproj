@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SocketServer\SocketServer\SocketServer.csproj" />
+    <PackageReference Include="FTServer" Version="0.0.2.5" />
   </ItemGroup>
 
 </Project>
