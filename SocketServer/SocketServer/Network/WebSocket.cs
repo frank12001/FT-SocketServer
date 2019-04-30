@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using FTServer.ClientInstance;
@@ -8,35 +9,6 @@ using FTServer.Log;
 
 namespace FTServer.Network
 {
-    public class WSInstance : Instance , IDisposable
-    {
-        private WSPeer WSPeer;
-        private WebSocket WebSocket;
-        public IPEndPoint IPEndPoint { get; private set; }
-        public WSInstance(WebSocket webSocket, ClientNode clientNode, WSPeer wsPeer) : base(clientNode)
-        {
-            WSPeer = wsPeer;
-            WebSocket = webSocket;
-            IPEndPoint = WSPeer.Context.UserEndPoint;      
-        }
-
-        public async Task Send(byte[] datagram)
-        {
-            WSPeer.SendBytes(datagram);        
-        }
-
-        public void PassData(byte[] datagram)
-        {
-            _ClientNode.Rx.Enqueue(datagram);
-        }
-
-        public void Dispose()
-        {
-            WSPeer.CloseConnection();
-            _ClientNode.OnDisconnect();
-        }
-    }
-
     public class WebSocket : Core
     {
         private WebSocketServer server;
@@ -44,8 +16,13 @@ namespace FTServer.Network
         {
             server = new WebSocketServer(port)
             {
-                WaitTime = TimeSpan.FromMilliseconds(5000)
-            };           
+                WaitTime = TimeSpan.FromSeconds(1)
+            };
+            server.Log.KnownFatal = new List<string>()
+                {
+                    "The header of a frame cannot be read from the stream.",
+                    "Object name: 'System.Net.Sockets.NetworkStream'."
+                };
             server.WebSocketServices.AddService<WSPeer>("/WebSocket", peer =>
             {
                 peer._OnOpen += () =>
@@ -73,7 +50,7 @@ namespace FTServer.Network
                     }
                 };
 
-                peer._OnMessage += packet => 
+                peer._OnMessage += packet =>
                 {
                     if (ClientInstance.TryGetValue(peer.Context.UserEndPoint.ToString(), out Instance instance))
                     {
@@ -82,7 +59,7 @@ namespace FTServer.Network
                     }
                 };
 
-                peer._OnClose += e => 
+                peer._OnClose += e =>
                 {
                     DisConnect(peer.Context.UserEndPoint);
                 };
@@ -121,6 +98,35 @@ namespace FTServer.Network
             }
         }
     }
+    public class WSInstance : Instance, IDisposable
+    {
+        private WSPeer WSPeer;
+        private WebSocket WebSocket;
+        public IPEndPoint IPEndPoint { get; private set; }
+        public WSInstance(WebSocket webSocket, ClientNode clientNode, WSPeer wsPeer) : base(clientNode)
+        {
+            WSPeer = wsPeer;
+            WebSocket = webSocket;
+            IPEndPoint = WSPeer.Context.UserEndPoint;
+        }
+
+        public async Task Send(byte[] datagram)
+        {
+            WSPeer.SendBytes(datagram);
+        }
+
+        public void PassData(byte[] datagram)
+        {
+            _ClientNode.Rx.Enqueue(datagram);
+        }
+
+        public void Dispose()
+        {
+            WSPeer.CloseConnection();
+            _ClientNode.OnDisconnect();
+        }
+    }
+    //WebSocketSharp 需要定義的使用者
     public class WSPeer : WebSocketBehavior
     {
         public event Action _OnOpen;
@@ -146,13 +152,11 @@ namespace FTServer.Network
 
         protected override void OnClose(CloseEventArgs e)
         {
-            Console.WriteLine("WSPeer OnClose");
             _OnClose?.Invoke(e);
         }
 
         protected override void OnError(ErrorEventArgs e)
         {
-            Console.WriteLine("WSPeer OnError");
             _OnError?.Invoke(e);
         }
 

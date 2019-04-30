@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "972a4127d0a2a375a302d2a07e7f6aedb0e51646"
+    "signature": "cab292c48f7a10481f4b0331e87d7d28b2a3189e"
   },
   "compilationOptions": {},
   "targets": {
@@ -453,10 +453,7 @@
       },
       "websocketsharp-supportipv6/0.0.1": {
         "runtime": {
-          "lib/netstandard2.0/websocketsharp.dll": {
-            "assemblyVersion": "0.0.1.0",
-            "fileVersion": "0.0.1.0"
-          }
+          "websocketsharp.dll": {}
         }
       }
     }
@@ -762,11 +759,9 @@
       "hashPath": "system.valuetuple.4.3.0.nupkg.sha512"
     },
     "websocketsharp-supportipv6/0.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-GBRusfzVdAvOIiCMfgV2w3un5QowkwlsZEWKiTFQrhKnxXPWyYXM7LO2tnH/MYyHovJmC5i6LziabXBd0CJVlA==",
-      "path": "websocketsharp-supportipv6/0.0.1",
-      "hashPath": "websocketsharp-supportipv6.0.0.1.nupkg.sha512"
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
