@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{6E54BA99-4048-48B3-AA88-4B3017F8A738}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{6E54BA99-4048-48B3-AA88-4B3017F8A738}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocketServer", "..\..\SocketServer\SocketServer\SocketServer.csproj", "{C2DF2F86-58BD-4E9F-A281-368F2979FC1C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "websocketsharp", "..\..\SocketServer\websocketsharp\websocketsharp.csproj", "{C4710BBC-3FD7-4F20-826B-C7DE2E3C1217}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C2DF2F86-58BD-4E9F-A281-368F2979FC1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2DF2F86-58BD-4E9F-A281-368F2979FC1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2DF2F86-58BD-4E9F-A281-368F2979FC1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4710BBC-3FD7-4F20-826B-C7DE2E3C1217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4710BBC-3FD7-4F20-826B-C7DE2E3C1217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4710BBC-3FD7-4F20-826B-C7DE2E3C1217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4710BBC-3FD7-4F20-826B-C7DE2E3C1217}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
