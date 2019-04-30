@@ -4,7 +4,7 @@
 namespace FTServer.Operator
 {
     //基底 class
-    public abstract class CallBackHandler : IServerCallBack
+    public abstract class CallbackHandler : IServerCallback
     {
         protected GameNetworkService gameService;
 
@@ -20,12 +20,12 @@ namespace FTServer.Operator
         protected virtual void AfterAddService()
         { }
 
-        public abstract void ServerCallBack(Dictionary<byte, object> server_packet);
+        public abstract void ServerCallback(Dictionary<byte, object> server_packet);
     }
 
-    interface IServerCallBack
+    interface IServerCallback
     {
-        void ServerCallBack(Dictionary<byte, object> server_packet);
+        void ServerCallback(Dictionary<byte, object> server_packet);
     }
 
   

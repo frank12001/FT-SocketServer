@@ -34,7 +34,7 @@ namespace FTServer
         /// </summary>
         /// <param name="operatorCode">每個處理者的唯一編號，對應到 Server 的傳出編號</param>
         /// <param name="base"></param>
-        public void AddCallBackHandler(byte operatorCode,CallBackHandler @base)
+        public void AddCallBackHandler(byte operatorCode,CallbackHandler @base)
         {
             @base.AddService(gameService);
             gameService.AddCallBackHandler(operatorCode, @base);

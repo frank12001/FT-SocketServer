@@ -127,6 +127,7 @@ namespace FTServer
                 //取得這次傳入資料的長度
                 IPEndPoint iPEndPoint = null;
                 byte[] receiveBytes = tcpc.EndReceive(iar, ref iPEndPoint);
+
                 udpMaintainConnecting = true;
                 fireCompleteReadFromServerStream(receiveBytes);
             }
