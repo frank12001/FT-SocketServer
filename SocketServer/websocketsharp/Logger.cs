@@ -27,6 +27,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -183,6 +184,8 @@ namespace WebSocketSharp
       }
     }
 
+    public List<string> KnownFatal;
+
     #endregion
 
     #region Private Methods
@@ -256,9 +259,7 @@ namespace WebSocketSharp
     {
       if (_level > LogLevel.Error)
         return;
-      //每次用 TcpClient Ping 都會有這個 Log 所以拿掉
-      if(message != "An exception has occurred while reading an HTTP request/response.")
-         output (message, LogLevel.Error);
+      output (message, LogLevel.Error);
     }
 
     /// <summary>
@@ -269,6 +270,14 @@ namespace WebSocketSharp
     /// </param>
     public void Fatal (string message)
     {
+      if (KnownFatal != null)
+      {
+           foreach (string msg in KnownFatal)
+          {
+              if (message.Contains(msg))
+                  return;
+          }
+      }
       output (message, LogLevel.Fatal);
     }
 
