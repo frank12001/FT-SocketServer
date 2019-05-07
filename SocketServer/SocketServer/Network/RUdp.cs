@@ -116,7 +116,7 @@ namespace FTServer.Network
         /// <summary>
         /// 斷線之time out時間長度
         /// </summary>
-        private readonly ushort TimeLimit_Disconnect = 5000;
+        private readonly ushort TimeLimit_Disconnect = 10000;
         /// <summary>
         /// 接收封包及維持連線之Timer
         /// </summary>
