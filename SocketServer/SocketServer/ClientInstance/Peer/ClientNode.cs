@@ -6,6 +6,7 @@ using FTServer.Network;
 using FTServer.ClientInstance.Peer;
 using FTServer.ClientInstance.Packet;
 using MessagePack;
+using System.Net.Sockets;
 
 namespace FTServer.ClientInstance
 {
@@ -57,6 +58,13 @@ namespace FTServer.ClientInstance
         public void Write(IPacket eventData)
         {
             byte[] buff = Math.Serialize.Compress(Math.Serialize.ToByteArray(eventData));
+            if (_Sender is Udp)
+            {
+                if (buff.Length > Udp.PacketLengthLimit)
+                {
+                    throw new SocketException((int)SocketError.MessageSize);
+                }
+            }
             _Sender.SendAsync(buff, iPEndPoint);
         }
 

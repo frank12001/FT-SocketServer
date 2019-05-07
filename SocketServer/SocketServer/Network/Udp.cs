@@ -62,7 +62,7 @@ namespace FTServer.Network
             }
         }
         public async Task Send(byte[] datagram)
-        {
+        {             
             _UdpClient.SendAsync(datagram, datagram.Length,IPEndPoint);
         }
 
@@ -82,6 +82,8 @@ namespace FTServer.Network
     {
         private readonly byte[] ReqConnect = new byte[] { 67, 111, 105, 110 };
         private readonly byte[] ReqDisconnect = new byte[] { 87, 241, 34, 124, 2 };
+        public const int PacketLengthLimit = 1300;
+        public const string ExceptionMsg1 = "packet length can't bigger than 1300.";
         public const int SIO_UDP_CONNRESET = -1744830452;
         private UdpClient _UdpClient;
  
