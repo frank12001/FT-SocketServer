@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Collections.Generic;
 using FTServer.Network;
 using FTServer.ClientInstance.Packet;
@@ -11,18 +10,13 @@ namespace FTServer.ClientInstance
     /// </summary>
     public class PeerBase : ClientNode
     {
-        public PeerBase(ISender _tclient, IPEndPoint iPEndPoint, SocketServer applicationInterface) : base(_tclient, iPEndPoint, applicationInterface)
+        public PeerBase(ISender sender, IPEndPoint iPEndPoint, SocketServer applicationInterface) : base(sender, iPEndPoint, applicationInterface)
         {}
 
         #region myFunction
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="eventCode"></param>
-        /// <param name="packet"></param>
         public void SendBytes(byte[] buff)
         {
-            base.Write(buff);
+            Write(buff);
         }
         /// <summary>
         /// 立即回傳事件資料
@@ -31,8 +25,8 @@ namespace FTServer.ClientInstance
         /// <param name="packet"></param>
         public void SendEvent(byte eventCode, Dictionary<byte, object> packet)
         {
-            IPacket eventData = new IPacket((byte)eventCode, packet);
-            base.Write(eventData);
+            IPacket eventData = new IPacket(eventCode, packet);
+            Write(eventData);
         }
         #endregion
     }

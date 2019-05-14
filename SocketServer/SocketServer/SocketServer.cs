@@ -11,15 +11,14 @@ namespace FTServer
     {
         private const float TickConsoleClear = 60 * 1000;//5 * 60 * 1000; // 30 minute
 
-        protected Core networkCore;
-        private int Port;
-        private Protocol _Protocol;
-        private Timer consoleClear;
+        protected Core NetworkCore;
+        private int _port;
+        private Timer _consoleClear;
 
         protected void StartListen(int port, Protocol protocol)
         {
             // CompositeResolver is singleton helper for use custom resolver.
-            // Ofcourse you can also make custom resolver.
+            // Of course you can also make custom resolver.
             MessagePack.Resolvers.CompositeResolver.RegisterAndSetAsDefault(
                 // use generated resolver first, and combine many other generated/custom resolvers
                 MessagePack.Resolvers.GeneratedResolver.Instance,
@@ -30,12 +29,11 @@ namespace FTServer
                 MessagePack.Resolvers.PrimitiveObjectResolver.Instance
             );
 
-            Port = port;
-            _Protocol = protocol;
+            _port = port;
             Listen(protocol);
 
-            string serverInfo = string.Format("Socket Server Start. Base Info => {0}     Listen Port :  {1}{2}     Network Protocol : {3}"
-                , "\n" ,port,"\n",protocol.ToString());
+            string serverInfo =
+                $"Socket Server Start. Base Info => \n     Listen Port :  {port}\n     Network Protocol : {protocol.ToString()}";
             Printer.WriteLine(serverInfo);
 
             //定時把 console clear 掉，嘗試解決GamingServer 過一段時間後會死在 Printer.WriteLine 的問題
@@ -47,12 +45,12 @@ namespace FTServer
         /// </summary>
         private void BeginConsoleClearAsync()
         {
-            consoleClear = new Timer(TickConsoleClear);
-            consoleClear.Elapsed += (sender, eventArg) =>
+            _consoleClear = new Timer(TickConsoleClear);
+            _consoleClear.Elapsed += (sender, eventArg) =>
             {
                 Console.Clear();
             };
-            consoleClear.Start();
+            _consoleClear.Start();
         }
 
         private async void Listen(Protocol protocol)
@@ -60,28 +58,28 @@ namespace FTServer
             switch (protocol)
             {
                 case Protocol.TCP:
-                    networkCore = new Tcp(this, new IPEndPoint(IPAddress.Any, Port));
+                    NetworkCore = new Tcp(this, new IPEndPoint(IPAddress.Any, _port));
                     break;
                 case Protocol.UDP:
-                    networkCore = new Udp(this, new IPEndPoint(IPAddress.Any, Port));
+                    NetworkCore = new Udp(this, new IPEndPoint(IPAddress.Any, _port));
                     break;
                 case Protocol.WebSocket:
-                    networkCore = new WebSocket(this, Port);
+                    NetworkCore = new WebSocket(this, _port);
                     break;
-                case Protocol.RUDP:
-                    networkCore = new RUdp(this, new IPEndPoint(IPAddress.Any, Port));
+                case Protocol.RUdp:
+                    NetworkCore = new RUdp(this, new IPEndPoint(IPAddress.Any, _port));
                     break;
                 default:
                     Printer.WriteLine("Not Support this Protocol.");
                     break;
             }
 
-            await networkCore.StartListen();
+            await NetworkCore.StartListen();
         }
 
         public void CloseClient(IPEndPoint iPEndPoint)
         {
-            networkCore.DisConnect(iPEndPoint);
+            NetworkCore.DisConnect(iPEndPoint);
         }
 
         public abstract ClientNode GetPeer(Core core, IPEndPoint iPEndPoint, SocketServer application);

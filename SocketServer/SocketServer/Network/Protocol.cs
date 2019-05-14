@@ -8,6 +8,6 @@ namespace FTServer.Network
 {
     public enum Protocol : byte
     {
-        TCP , UDP , WebSocket, RUDP
+        TCP , UDP , WebSocket, RUdp
     }
 }

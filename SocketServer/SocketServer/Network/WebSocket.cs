@@ -11,19 +11,19 @@ namespace FTServer.Network
 {
     public class WebSocket : Core
     {
-        private WebSocketServer server;
+        private readonly WebSocketServer _server;
         public WebSocket(SocketServer socketServer, int port) : base(socketServer)
         {
-            server = new WebSocketServer(port)
+            _server = new WebSocketServer(port)
             {
                 WaitTime = TimeSpan.FromSeconds(1)
             };
-            server.Log.KnownFatal = new List<string>()
+            _server.Log.KnownFatal = new List<string>()
                 {
                     "The header of a frame cannot be read from the stream.",
                     "Object name: 'System.Net.Sockets.NetworkStream'."
                 };
-            server.WebSocketServices.AddService<WSPeer>("/WebSocket", peer =>
+            _server.WebSocketServices.AddService<WSPeer>("/WebSocket", peer =>
             {
                 peer._OnOpen += () =>
                 {
@@ -38,7 +38,7 @@ namespace FTServer.Network
                     try
                     {
                         //註冊到 mListener 中，讓他的 Receive 功能能被叫               
-                        WSInstance instance = new WSInstance(this, cNode, peer);
+                        WSInstance instance = new WSInstance(cNode, peer);
                         //註冊到 mListener 中，讓他的 Receive 功能能被叫
                         ClientInstance.Add(clientIp, instance);
                         //成功加入後傳送 Connect 事件給 Client
@@ -73,14 +73,14 @@ namespace FTServer.Network
 
         public override async Task StartListen()
         {
-            server.Start();
+            _server.Start();
         }
 
-        public override async Task SendAsync(byte[] datagram, IPEndPoint endPoint)
+        public override async Task SendAsync(byte[] data, IPEndPoint endPoint)
         {
             if (ClientInstance.TryGetValue(endPoint.ToString(), out Instance instance))
             {
-                await ((WSInstance)instance).Send(datagram);
+                await ((WSInstance)instance).Send(data);
             }
         }
 
@@ -100,29 +100,27 @@ namespace FTServer.Network
     }
     public class WSInstance : Instance, IDisposable
     {
-        private WSPeer WSPeer;
-        private WebSocket WebSocket;
-        public IPEndPoint IPEndPoint { get; private set; }
-        public WSInstance(WebSocket webSocket, ClientNode clientNode, WSPeer wsPeer) : base(clientNode)
+        private readonly WSPeer _wsPeer;
+        public readonly IPEndPoint IpEndPoint;
+        public WSInstance( ClientNode clientNode, WSPeer wsPeer) : base(clientNode)
         {
-            WSPeer = wsPeer;
-            WebSocket = webSocket;
-            IPEndPoint = WSPeer.Context.UserEndPoint;
+            _wsPeer = wsPeer;
+            IpEndPoint = _wsPeer.Context.UserEndPoint;
         }
 
-        public async Task Send(byte[] datagram)
+        public async Task Send(byte[] data)
         {
-            WSPeer.SendBytes(datagram);
+            _wsPeer.SendBytes(data);
         }
 
-        public void PassData(byte[] datagram)
+        public void PassData(byte[] data)
         {
-            _ClientNode.Rx.Enqueue(datagram);
+            _ClientNode.Rx.Enqueue(data);
         }
 
         public void Dispose()
         {
-            WSPeer.CloseConnection();
+            _wsPeer.CloseConnection();
             _ClientNode.OnDisconnect();
         }
     }
@@ -136,8 +134,8 @@ namespace FTServer.Network
 
         public void SendBytes(byte[] data)
         {
-            if (this.ConnectionState == WebSocketState.Open)
-                this.Send(data);
+            if (ConnectionState == WebSocketState.Open)
+                Send(data);
         }
 
         protected override void OnOpen()

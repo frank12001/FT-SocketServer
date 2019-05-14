@@ -11,22 +11,12 @@ namespace FTServer.Log
     {
         #region Fields
         private static Printer _instance;
-        private static Printer instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new Printer();
-                }
-                return _instance;
-            }
-        }
+        private static Printer Instance => _instance ?? (_instance = new Printer());
 
         /// <summary>
         /// String builder for cache
         /// </summary>
-        private StringBuilder builder;
+        private readonly StringBuilder _builder;
         /// <summary>
         /// Timer that print strings automatically
         /// </summary>
@@ -34,11 +24,11 @@ namespace FTServer.Log
         /// <summary>
         /// Show date time
         /// </summary>
-        private bool showTime;
+        private bool _showTime;
         /// <summary>
         /// Date time format
         /// </summary>
-        private string timeFormat;
+        private string _timeFormat;
         #endregion
 
         #region Printer Format
@@ -54,13 +44,13 @@ namespace FTServer.Log
         #region Constructor
         private Printer()
         {
-            builder = new StringBuilder();
+            _builder = new StringBuilder();
             printTimer = new Timer(100);
             printTimer.Elapsed += Print;
             printTimer.Start();
 
-            showTime = false;
-            timeFormat = "yyyy-MM-dd HH:mm:ss";
+            _showTime = false;
+            _timeFormat = "yyyy-MM-dd HH:mm:ss";
         }
         #endregion
 
@@ -71,9 +61,9 @@ namespace FTServer.Log
         /// <param name="str">string</param>
         public static void Write(object str)
         {
-            lock (instance.builder)
+            lock (Instance._builder)
             {
-                instance.builder.Append(str);
+                Instance._builder.Append(str);
             }
         }
 
@@ -83,33 +73,33 @@ namespace FTServer.Log
         /// <param name="str">string</param>
         public static void WriteLine(object str)
         {
-            lock (instance.builder)
+            lock (Instance._builder)
             {
-                if (instance.showTime)
+                if (Instance._showTime)
                 {
-                    instance.builder.Append("[" + DateTime.Now.ToString(instance.timeFormat) + "] ");
-                    instance.builder.Append(str);
-                    instance.builder.Append("\n");
+                    Instance._builder.Append("[" + DateTime.Now.ToString(Instance._timeFormat) + "] ");
+                    Instance._builder.Append(str);
+                    Instance._builder.Append("\n");
                 }
                 else
                 {
-                    instance.builder.Append(str + "\n");
+                    Instance._builder.Append(str + "\n");
                 }
             }
         }
 
         public static void WriteWarning(object str)
         {
-            lock (instance.builder)
+            lock (Instance._builder)
             {
-                if (instance.builder.Length > 0)
+                if (Instance._builder.Length > 0)
                 {
-                    string temp = instance.builder.ToString();
+                    string temp = Instance._builder.ToString();
                     Console.Write(temp);
-                    instance.builder.Clear();
+                    Instance._builder.Clear();
                 }
 
-                Console.Write("[" + DateTime.Now.ToString(instance.timeFormat) + "] ");
+                Console.Write("[" + DateTime.Now.ToString(Instance._timeFormat) + "] ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(str);
                 Console.ResetColor();
@@ -118,16 +108,16 @@ namespace FTServer.Log
 
         public static void WriteError(object str)
         {
-            lock (instance.builder)
+            lock (Instance._builder)
             {
-                if (instance.builder.Length > 0)
+                if (Instance._builder.Length > 0)
                 {
-                    string temp = instance.builder.ToString();
+                    string temp = Instance._builder.ToString();
                     Console.Write(temp);
-                    instance.builder.Clear();
+                    Instance._builder.Clear();
                 }
 
-                Console.Write("[" + DateTime.Now.ToString(instance.timeFormat) + "] ");
+                Console.Write("[" + DateTime.Now.ToString(Instance._timeFormat) + "] ");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(str);
                 Console.ResetColor();
@@ -141,8 +131,8 @@ namespace FTServer.Log
         /// <param name="format">time format</param>
         public static void ShowTime(bool show, string format = "yyyy-MM-dd HH:mm:ss")
         {
-            instance.showTime = show;
-            instance.timeFormat = format;
+            Instance._showTime = show;
+            Instance._timeFormat = format;
         }
         #endregion
 
@@ -152,13 +142,13 @@ namespace FTServer.Log
         /// </summary>
         private void Print(object obj, ElapsedEventArgs args)
         {
-            lock (builder)
+            lock (_builder)
             {
-                if (builder.Length > 0)
+                if (_builder.Length > 0)
                 {
-                    string str = builder.ToString();
+                    string str = _builder.ToString();
                     Console.Write(str);
-                    builder.Clear();
+                    _builder.Clear();
                 }
             }
         }

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Collections.Generic;
-using FTServer.Log;
 using FTServer.Network;
 using FTServer.ClientInstance.Peer;
 using FTServer.ClientInstance.Packet;
-using MessagePack;
 using System.Net.Sockets;
 
 namespace FTServer.ClientInstance
@@ -15,15 +12,11 @@ namespace FTServer.ClientInstance
     /// </summary>
     public class ClientNode
     {
-        /// <summary>
-        /// 多久從序列中寫出或讀入一包
-        /// </summary>
-        private const byte Tick_Read = 10, Tick_Write = 10, Tick_MainConnecting = 10;
-        public readonly ISender _Sender;
+        public readonly ISender Sender;
         public readonly Queue<byte[]> Rx;
-        public readonly IPEndPoint iPEndPoint;
-        public readonly SocketServer socketServer;
-        private readonly ClientNodeListener listener;
+        public readonly IPEndPoint IpEndPoint;
+        public readonly SocketServer SocketServer;
+        private readonly ClientNodeListener _listener;
 
         /// <summary>
         /// 客戶端節點建構子
@@ -31,7 +24,6 @@ namespace FTServer.ClientInstance
         /// <param name="sender">外部發送者</param>
         /// <param name="iPEndPoint"></param>
         /// <param name="socketServer"></param>
-        /// <param name="timeout"></param>
         /// <remarks>
         /// 用於處理與客戶端溝通，並觸發接收封包事件
         /// </remarks>
@@ -39,16 +31,11 @@ namespace FTServer.ClientInstance
                           SocketServer socketServer)
         {           
             Rx = new Queue<byte[]>();                       // 初始化接收佇列
-            this.iPEndPoint = iPEndPoint;
-            this.socketServer = socketServer;
-            this._Sender = sender;
+            IpEndPoint = iPEndPoint;
+            SocketServer = socketServer;
+            Sender = sender;
             // 建立客戶端節點並開始接受封包傳入
-            listener = new ClientNodeListener(this);            
-        }      
-
-        ~ClientNode()
-        {
-            //Printer.WriteLine("Trigger ClientNode Deconstructor.");
+            _listener = new ClientNodeListener(this);            
         }
 
         /// <summary>
@@ -58,24 +45,24 @@ namespace FTServer.ClientInstance
         public void Write(IPacket eventData)
         {
             byte[] buff = Math.Serialize.Compress(Math.Serialize.ToByteArray(eventData));
-            if (_Sender is Udp)
+            if (Sender is Udp)
             {
                 if (buff.Length > Udp.PacketLengthLimit)
                 {
                     throw new SocketException((int)SocketError.MessageSize);
                 }
             }
-            _Sender.SendAsync(buff, iPEndPoint);
+            Sender.SendAsync(buff, IpEndPoint);
         }
 
         /// <summary>
         /// 將資料寫出
         /// </summary>
-        /// <param name="eventData"></param>
+        /// <param name="buff">要傳送的 byte array </param>
         public void Write(byte[] buff)
         {
             //Console.WriteLine("封包大小 : " + buff.Length);
-            _Sender.SendAsync(buff, iPEndPoint);
+            Sender.SendAsync(buff, IpEndPoint);
         }
 
         /// <summary>
@@ -87,7 +74,7 @@ namespace FTServer.ClientInstance
 
         public virtual void OnDisconnect()
         {
-            listener.Dispose();
+            _listener.Dispose();
         }
 
         /// <summary>
@@ -95,12 +82,12 @@ namespace FTServer.ClientInstance
         /// </summary>
         public void Disconnect()
         {
-            socketServer.CloseClient(iPEndPoint);
+            SocketServer.CloseClient(IpEndPoint);
         }
 
         public override string ToString()
         {
-            return iPEndPoint.ToString();
+            return IpEndPoint.ToString();
         }
     }
 }

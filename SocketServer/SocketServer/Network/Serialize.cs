@@ -14,8 +14,8 @@ namespace FTServer.Math
         {
             //IPacket packet = (IPacket)source;
             //return MessagePackSerializer.Serialize(packet);
-            var Formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            using (var stream = new System.IO.MemoryStream())
+            var Formatter = new BinaryFormatter();
+            using (var stream = new MemoryStream())
             {
                 Formatter.Serialize(stream, source);
                 return stream.ToArray();
@@ -24,7 +24,7 @@ namespace FTServer.Math
         public static object ToObject(byte[] source)
         {
             //return MessagePackSerializer.Deserialize<IPacket>(source);
-            var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            var formatter = new BinaryFormatter();
             using (var stream = new MemoryStream(source))
             {
                 formatter.Binder = new CurrentAssemblyDeserializationBinder();
@@ -73,7 +73,7 @@ namespace FTServer.Math
     {
         public override Type BindToType(string assemblyName, string typeName)
         {
-            return Type.GetType(String.Format("{0}, {1}", typeName, Assembly.GetExecutingAssembly().FullName));
+            return Type.GetType($"{typeName}, {Assembly.GetExecutingAssembly().FullName}");
         }
     }
 }

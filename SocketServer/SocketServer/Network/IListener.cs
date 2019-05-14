@@ -10,12 +10,12 @@ namespace FTServer.Network
 
     public struct ReceiveResult
     {
-        public bool isOk;
+        public bool IsOk;
         public IPEndPoint RemoteEndPoint;
         public ReceiveResult(IPEndPoint iPEndPoint)
         {
-            isOk = true;
-            this.RemoteEndPoint = iPEndPoint;
+            IsOk = true;
+            RemoteEndPoint = iPEndPoint;
         }
     }
 }

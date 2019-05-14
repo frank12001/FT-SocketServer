@@ -12,16 +12,16 @@ namespace FTServer.ClientInstance.Peer
         /// <summary>
         /// 多久從序列中寫出或讀入一包
         /// </summary>
-        private const byte Tick_Read = 5;
+        private const byte TickRead = 5;
         /// <summary>
         /// 客戶端節點
         /// </summary>
-        private ClientNode clientNode;
+        private readonly ClientNode _clientNode;
 
         /// <summary>
         /// 接收封包及維持連線之Timer
         /// </summary>
-        private Timer receiver;
+        private Timer _receiver;
 
         /// <summary>
         /// 客戶端節點封包接收器
@@ -29,7 +29,7 @@ namespace FTServer.ClientInstance.Peer
         /// <param name="clientNode"></param>
         public ClientNodeListener(ClientNode clientNode)
         {
-            this.clientNode = clientNode;
+            _clientNode = clientNode;
             BeginReadAsync();                 // 開始接收封包
         }
 
@@ -38,9 +38,9 @@ namespace FTServer.ClientInstance.Peer
         /// </summary>
         private void BeginReadAsync()
         {
-            receiver = new Timer(Tick_Read);
-            receiver.Elapsed += Handler_Read;
-            receiver.Start();
+            _receiver = new Timer(TickRead);
+            _receiver.Elapsed += Handler_Read;
+            _receiver.Start();
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace FTServer.ClientInstance.Peer
         private void Handler_Read(object o, ElapsedEventArgs e)
         {
             //clientNode.Rx.Clear();
-            if (!clientNode.Rx.Count.Equals(0))
+            if (!_clientNode.Rx.Count.Equals(0))
             {
-                byte[] buff = clientNode.Rx.Dequeue();
+                byte[] buff = _clientNode.Rx.Dequeue();
                 if (buff != null)
                 {
                     // 如果是維持連線的訊號封包，則不予處理
@@ -61,7 +61,7 @@ namespace FTServer.ClientInstance.Peer
                     {
                         buff = Math.Serialize.Decompress(buff);
                         IPacket packet = (IPacket)Math.Serialize.ToObject(buff);
-                        clientNode.OnOperationRequest(packet); // 客戶端節點執行接收事件
+                        _clientNode.OnOperationRequest(packet); // 客戶端節點執行接收事件
                     }
                 }
             }
@@ -70,8 +70,8 @@ namespace FTServer.ClientInstance.Peer
         public void Dispose()
         {
             //停止所有的 Timer 運作
-            receiver.Stop();
-            receiver.Close();
+            _receiver.Stop();
+            _receiver.Close();
         }
     }
 }
