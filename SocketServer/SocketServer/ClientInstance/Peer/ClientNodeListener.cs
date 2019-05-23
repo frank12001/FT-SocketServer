@@ -19,13 +19,13 @@ namespace FTServer.ClientInstance.Peer
         private readonly ClientNode _clientNode;
 
         /// <summary>
-        /// 接收封包及維持連線之Timer
+        /// 將封包從暫存區讀出
         /// </summary>
         private Timer _receiver;
 
         /// <summary>
         /// 客戶端節點封包接收器
-        /// </summary>
+        /// </summary> 
         /// <param name="clientNode"></param>
         public ClientNodeListener(ClientNode clientNode)
         {
@@ -50,18 +50,21 @@ namespace FTServer.ClientInstance.Peer
         /// <param name="e"></param>
         private void Handler_Read(object o, ElapsedEventArgs e)
         {
-            //clientNode.Rx.Clear();
-            if (!_clientNode.Rx.Count.Equals(0))
+            lock (_clientNode.Rx)
             {
-                byte[] buff = _clientNode.Rx.Dequeue();
-                if (buff != null)
+                if (!_clientNode.Rx.Count.Equals(0))
                 {
-                    // 如果是維持連線的訊號封包，則不予處理
-                    if (!buff.Length.Equals(1))
+                    byte[] buff = _clientNode.Rx.Dequeue();
+                    if (buff != null)
                     {
-                        buff = Math.Serialize.Decompress(buff);
-                        IPacket packet = (IPacket)Math.Serialize.ToObject(buff);
-                        _clientNode.OnOperationRequest(packet); // 客戶端節點執行接收事件
+                        // 如果是維持連線的訊號封包，則不予處理
+                        if (!buff.Length.Equals(1))
+                        {
+                            buff = Math.Serialize.Decompress(buff);
+                            IPacket packet = (IPacket) Math.Serialize.ToObject(buff);
+
+                            _clientNode.OnOperationRequest(packet); // 客戶端節點執行接收事件
+                        }
                     }
                 }
             }

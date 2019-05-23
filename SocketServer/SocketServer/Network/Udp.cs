@@ -58,7 +58,7 @@ namespace FTServer.Network
                 // 對客戶端發送維持連線之訊號
                 byte[] buff = new byte[] { 0 };
                 Send(buff);
-            }
+            } 
         }
         public async Task Send(byte[] data)
         {             
@@ -68,7 +68,10 @@ namespace FTServer.Network
         public void PassData(byte[] data)
         {
             _timerReadPacket = 0;
-            _ClientNode.Rx.Enqueue(data);
+            lock (_ClientNode.Rx)
+            {
+                _ClientNode.Rx.Enqueue(data);
+            }
         }
 
         public void Dispose()
