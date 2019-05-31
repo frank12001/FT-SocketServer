@@ -13,11 +13,10 @@ namespace FTServer.Network
         private readonly EventBasedNetListener _listener;
         private readonly NetManager _server;
         private readonly IPEndPoint _mIpEndPoint;
-        int i = 0;
         public RUdp(SocketServer socketServer, IPEndPoint iPEndPoint) : base(socketServer)
         {
             _listener = new EventBasedNetListener();
-            _server = new NetManager(_listener);
+            _server = new NetManager(_listener){ DisconnectTimeout = 60 * 1000};
             _mIpEndPoint = iPEndPoint;
 
             _listener.ConnectionRequestEvent += request =>
@@ -27,8 +26,6 @@ namespace FTServer.Network
 
             _listener.PeerConnectedEvent += peer =>
             {
-                i++;
-                Console.WriteLine("Count : " + i);
                 //Console.WriteLine("We got connection: {0}", peer.EndPoint); // Show peer ip
                 string clientIp = peer.EndPoint.ToString();
 
@@ -69,8 +66,6 @@ namespace FTServer.Network
 
             _listener.PeerDisconnectedEvent += (peer, disconnectInfo) =>
             {
-                i--;
-                Console.WriteLine("Count : " + i);
             };
 
             Task.Run(async () =>
@@ -121,7 +116,7 @@ namespace FTServer.Network
         /// <summary>
         /// 斷線之time out時間長度
         /// </summary>
-        private readonly ushort TimeLimit_Disconnect = 10000;
+        private readonly ushort TimeLimit_Disconnect = 20 * 000;
         /// <summary>
         /// 接收封包及維持連線之Timer
         /// </summary>

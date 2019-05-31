@@ -14,7 +14,7 @@ namespace FTServer.Network
         private const byte TickMainConnecting = 100;
         /// <summary>
         /// 斷線之time out時間長度
-        /// </summary>
+        /// </summary> 
         private readonly ushort _timeLimitDisconnect = 5000;
         /// <summary>
         /// 接收封包及維持連線之Timer
