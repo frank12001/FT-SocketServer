@@ -17,7 +17,7 @@ namespace FTServer
         public RUdp() : base(NetworkProtocol.RUDP)
         {
             listener = new EventBasedNetListener();
-            client = new NetManager(listener);
+            client = new NetManager(listener) { DisconnectTimeout = 20 * 1000 };
             client.UpdateTime = 15;
 
             listener.PeerConnectedEvent += (NetPeer peer) =>
@@ -41,14 +41,11 @@ namespace FTServer
                 fireCompleteReadFromServerStream(packet);
                 dataReader.Recycle();
             };
-
-
         }
 
         public override void Service()
         {
-            if(client != null)
-                client.PollEvents();
+            client?.PollEvents();
         }
 
         public override void Connect(IPAddress addr, int port)
@@ -59,7 +56,7 @@ namespace FTServer
 
         public override void BeginSend(byte[] datagram, int bytes)
         {
-            peer.Send(datagram, DeliveryMethod.ReliableOrdered);
+            peer?.Send(datagram, DeliveryMethod.ReliableOrdered);
             fireCompleteSend();
         }
 
