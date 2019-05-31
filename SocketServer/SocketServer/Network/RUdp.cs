@@ -74,11 +74,6 @@ namespace FTServer.Network
                 {
                     _server.PollEvents();
                     await Task.Delay(15);
-
-                    if (_server.IsRunning)
-                    {
-                        return;
-                    }
                 }
             });
         }
@@ -116,7 +111,7 @@ namespace FTServer.Network
         /// <summary>
         /// 斷線之time out時間長度
         /// </summary>
-        private readonly ushort TimeLimit_Disconnect = 20 * 000;
+        private readonly ushort TimeLimit_Disconnect = 20 * 1000;
         /// <summary>
         /// 接收封包及維持連線之Timer
         /// </summary>
