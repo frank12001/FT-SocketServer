@@ -72,8 +72,15 @@ namespace FTServer.Network
             {
                 while (true)
                 {
-                    _server.PollEvents();
-                    await Task.Delay(15);
+                    try
+                    {
+                        _server.PollEvents();
+                        await Task.Delay(15);
+                    }
+                    catch (Exception e)
+                    {
+                        Printer.WriteLine(e);
+                    }
                 }
             });
         }
