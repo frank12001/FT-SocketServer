@@ -94,6 +94,7 @@ namespace FTServer.Monitor
                     {
                         UnityEngine.Debug.Log(string.Format("Error in MetricPusher: {0}", ex));
                     }
+
                     // We stop only after pushing metrics, to ensure that the latest state is flushed when told to stop.
                     if (cancel.IsCancellationRequested)
                         break;
