@@ -61,7 +61,7 @@ public class MyCallBackHandler : CallbackHandler
         //send packet to server
         gameService.Deliver(MyCallBackHandler.OperatorCode, new Dictionary<byte, object>(){ {0,packet }});
     }
-    public override void ServerCallBack(Dictionary<byte, object> server_packet)
+    public override void ServerCallback(Dictionary<byte, object> server_packet)
     {
         //get something from server
         Debug.Log("Msg from server : " + server_packet[0].ToString());     
