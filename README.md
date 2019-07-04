@@ -76,7 +76,7 @@ public class MyCallBackHandler : CallbackHandler
         static void Main(string[] args)
         {
             Program program = new Program();
-            program.StartListen(30100, Protocol.RUDP);
+            program.StartListen(30100, Protocol.RUdp);
             while (true){Thread.Sleep(500);}
         }
         public override ClientNode GetPeer(Core core, IPEndPoint iPEndPoint, SocketServer socketServer)
