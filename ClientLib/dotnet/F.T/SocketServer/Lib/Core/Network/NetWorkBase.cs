@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Collections.Generic;
-using UnityEngine;
 using FTServer.ClientInstance.Packet;
 
 namespace FTServer
@@ -34,21 +33,11 @@ namespace FTServer
 
         public NetworkBase(NetworkProtocol protocol)
         {
-            // CompositeResolver is singleton helper for use custom resolver.
-            // Ofcourse you can also make custom resolver.
-            MessagePack.Resolvers.CompositeResolver.RegisterAndSetAsDefault(
-                // use generated resolver first, and combine many other generated/custom resolvers
-                MessagePack.Resolvers.GeneratedResolver.Instance,
-                MessagePack.Resolvers.BuiltinResolver.Instance,
-                MessagePack.Resolvers.AttributeFormatterResolver.Instance,
-                MessagePack.Resolvers.PrimitiveObjectResolver.Instance
-            );
-
             switch (protocol)
             {
-                case NetworkProtocol.WebSocket:
-                    Network = new WebSocketLis();
-                    break;
+//                case NetworkProtocol.WebSocket:
+//                    Network = new WebSocketLis();
+//                    break;
                 case NetworkProtocol.UDP:
                     Network = new Udp();
                     break;

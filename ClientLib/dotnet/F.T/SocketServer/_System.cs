@@ -1,9 +1,7 @@
 ﻿using FTServer.Operator;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
-using UnityEngine;
 
 namespace FTServer.Example
 {
@@ -47,7 +45,7 @@ namespace FTServer.Example
             this.timer.Start();
             if (!IsConnect)
             {
-                Debug.Log("ConnectToServer");
+                LogProxy.WriteLine("ConnectToServer");
                 gameService.ConnectToServer();
             }
         }

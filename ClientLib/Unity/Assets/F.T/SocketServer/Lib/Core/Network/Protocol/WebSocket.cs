@@ -33,7 +33,7 @@ namespace FTServer
             mWebSocket.StartPingThread = true;
             mWebSocket.OnOpen += webSocket =>
             {
-                Debug.Log("WebSocket isOpen= " + webSocket.IsOpen);               
+                LogProxy.WriteLine("WebSocket isOpen= " + webSocket.IsOpen);               
                 if (webSocket.IsOpen)
                     onCompleteConnect(null);           
             };
@@ -43,14 +43,14 @@ namespace FTServer
             };
             mWebSocket.OnError += (WebSocket webSocket, Exception ex) =>
             {
-                Debug.Log("OnError");
+                LogProxy.WriteLine("OnError");
                 webSocket.Close();
                 CheckAndFireDisconnect();
                 //Debug.LogError(ex.Message);
             };
             mWebSocket.OnClosed += (webSocket, code, message) =>
             {
-                Debug.Log("OnClose");
+                LogProxy.WriteLine("OnClose");
                 CheckAndFireDisconnect();
             };
             mWebSocket.Open();
