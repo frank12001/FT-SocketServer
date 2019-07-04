@@ -1,0 +1,4 @@
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Release\netstandard2.0\dotnet.csprojAssemblyReference.cache
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Release\netstandard2.0\dotnet.csproj.CoreCompileInputs.cache
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Release\netstandard2.0\dotnet.AssemblyInfoInputs.cache
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Release\netstandard2.0\dotnet.AssemblyInfo.cs

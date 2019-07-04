@@ -1,0 +1,1273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="295aa166-a2c2-4ea0-928a-c332d3faf732" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/FileServer/Script/File.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/ChildBase.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/Collector.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/CollectorRegistry.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/Counter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/CounterConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/CounterExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/DotNetStats.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/Gauge.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/GaugeConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/GaugeExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/Histogram.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/HistogramConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/ICounter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/IGauge.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/IHistogram.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/IMetricServer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/IMetricsSerializer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/IObserver.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/ISummary.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/ITimer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/Labels.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/MetricConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/MetricFactory.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/MetricHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/MetricPusher.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/MetricServer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/MetricType.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/Metrics.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/Prometheus.NetStandard.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/PrometheusConstants.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/QuantileEpsilonPair.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/ScrapeFailedException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/Summary.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/SummaryConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/SummaryImpl/QuantileStream.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/SummaryImpl/Sample.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/SummaryImpl/SampleBuffer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/SummaryImpl/SampleStream.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/TextSerializer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/ThreadSafeDouble.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/ThreadSafeLong.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/prometheus/TimerExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/Monitor/readme.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/BaseChannel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/ConnectionRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/INetEventListener.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NatPunchModule.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetConstants.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetDebug.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetExceptions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetPacket.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetPacketPool.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetPeer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetSocket.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetStatistics.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetUtils.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/Ntp/NtpPacket.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/Ntp/NtpRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/ReliableChannel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/SequencedChannel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/SimpleChannel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/Utils/FastBitConverter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/Utils/INetSerializable.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/Utils/NetDataReader.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/Utils/NetDataWriter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/Utils/NetPacketProcessor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/Utils/NetSerializer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/Utils/NetSerializerExceptions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Dependencies/readme.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/GameNetWorkService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/IPacket.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/NetWorkBase.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/NetworkTempLine.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Protocol/INetwork.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Protocol/NetworkProtocol.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Protocol/RUdp.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Protocol/Tcp.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Network/Protocol/Udp.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Tool/IPTool.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/Core/Tool/Serialize.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/CoreProxy/Connect.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/CoreProxy/LogProxy.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/SocketServer/Lib/CoreProxy/Operator/CallBackHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../dotnet/F.T/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/F.T/FileServer/Script/File.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/F.T/FileServer/Script/File.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/Demo/NewBehaviourScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/Demo/NewBehaviourScript.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/MetricPusher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/MetricPusher.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/NetWorkBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/NetWorkBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/RUdp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/RUdp.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Tcp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Tcp.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Udp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Udp.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/WebSocket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/WebSocket.cs" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetDebug.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="35" column="44" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="44" />
+              <folding>
+                <marker date="1561718037758" expanded="false" signature="6:39" ph="..." />
+                <marker date="1561718037758" expanded="true" signature="61:2204" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="91:163" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="169:252" ph="/// Interface to implement for your own logger ... " />
+                <marker date="1561718037758" expanded="true" signature="284:372" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="378:549" ph="/// Static class for defining your own LiteNetLib logger instead of Console.WriteLine ... " />
+                <marker date="1561718037758" expanded="true" signature="582:2202" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="799:1243" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="891:1104" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="1125:1219" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="1353:1427" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="1556:1618" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="1755:1829" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="1985:2047" ph="{...}" />
+                <marker date="1561718037758" expanded="true" signature="2122:2196" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/RUdp.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="48" column="9" selection-start-line="48" selection-start-column="9" selection-end-line="48" selection-end-column="9" />
+              <folding>
+                <marker date="1562223139893" expanded="false" signature="6:158" ph="..." />
+                <marker date="1562223139893" expanded="true" signature="178:1948" ph="{...}" />
+                <marker date="1562223139893" expanded="true" signature="213:1946" ph="{...}" />
+                <marker date="1562223139893" expanded="true" signature="360:1370" ph="{...}" />
+                <marker date="1562223139893" expanded="true" signature="614:776" ph="{...}" />
+                <marker date="1562223139893" expanded="true" signature="886:1006" ph="{...}" />
+                <marker date="1562223139893" expanded="true" signature="1107:1359" ph="{...}" />
+                <marker date="1562223139893" expanded="true" signature="1410:1464" ph="{...}" />
+                <marker date="1562223139893" expanded="true" signature="1528:1653" ph="{...}" />
+                <marker date="1562223139893" expanded="true" signature="1721:1839" ph="{...}" />
+                <marker date="1562223139893" expanded="true" signature="1882:1940" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Tcp.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="83" column="130" selection-start-line="83" selection-start-column="130" selection-end-line="83" selection-end-column="130" />
+              <folding>
+                <marker date="1562224145365" expanded="false" signature="6:106" ph="..." />
+                <marker date="1562224145365" expanded="true" signature="126:3381" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="157:3379" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="365:371" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="432:1343" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="670:985" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="775:904" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="1023:1333" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="1074:1307" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="1411:1909" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="1458:1899" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="1492:1637" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="1673:1885" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="1971:3119" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="2015:3107" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="2045:3093" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="2087:2739" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="2367:2569" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="2779:3075" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="3162:3376" ph="{...}" />
+                <marker date="1562224145365" expanded="true" signature="3203:3328" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Udp.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="279">
+              <caret line="107" column="17" lean-forward="true" selection-start-line="107" selection-start-column="17" selection-end-line="107" selection-end-column="17" />
+              <folding>
+                <marker date="1562224199757" expanded="false" signature="6:157" ph="..." />
+                <marker date="1562224199757" expanded="true" signature="177:5987" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="211:5985" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="287:349" ph="/// 多久從序列中寫出或讀入一包 ... " />
+                <marker date="1562224199757" expanded="true" signature="1002:1014" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="1078:1891" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="1274:1881" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="1959:2962" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="2004:2952" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="2117:2925" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="2146:2351" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="2415:2859" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="2526:2694" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="2727:2833" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="3005:3417" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="3050:3330" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="3112:3316" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="3486:4281" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="3580:4077" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="3814:3979" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="4109:4271" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="4362:5187" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="4416:4757" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="4791:4975" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="4995:5177" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="5271:5449" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="5498:5745" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="5801:5979" ph="{...}" />
+                <marker date="1562224199757" expanded="true" signature="5855:5969" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/WebSocket.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="720">
+              <caret line="52" column="34" selection-start-line="52" selection-start-column="34" selection-end-line="52" selection-end-column="34" />
+              <folding>
+                <marker date="1562223203757" expanded="false" signature="6:100" ph="..." />
+                <marker date="1562223203757" expanded="true" signature="120:2840" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="163:2838" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="368:380" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="427:1880" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="602:882" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="669:868" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="1035:1236" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="1309:1383" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="1470:1655" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="1734:1838" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="1948:2039" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="2082:2183" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="2232:2291" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="2338:2508" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="2384:2498" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="2577:2832" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="2603:2670" ph="{...}" />
+                <marker date="1562223203757" expanded="true" signature="2704:2822" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/NetWorkBase.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="253">
+              <caret line="171" column="9" lean-forward="true" selection-start-line="171" selection-start-column="9" selection-end-line="171" selection-end-column="9" />
+              <folding>
+                <marker date="1562224085720" expanded="false" signature="6:122" ph="..." />
+                <marker date="1562224085720" expanded="true" signature="142:7716" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="183:7714" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="264:327" ph="/// 伺服器的 ip : port ... " />
+                <marker date="1562224085720" expanded="true" signature="436:492" ph="/// 接收封包暫存區 ... " />
+                <marker date="1562224085720" expanded="true" signature="591:647" ph="/// 發送封包暫存區 ... " />
+                <marker date="1562224085720" expanded="true" signature="753:865" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="874:933" ph="/// 是否可以開始寫出封包 ... " />
+                <marker date="1562224085720" expanded="true" signature="1024:3589" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="1047:1171" ph="/* CompositeResolver is singleton helper for use custom resolver. ... */" />
+                <marker date="1562224085720" expanded="true" signature="1669:2154" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="2225:2293" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="2355:2426" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="2483:2530" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="2606:3578" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="2705:3364" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="2898:3023" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="3063:3184" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="3237:3346" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="3385:3564" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="3424:3486" ph="/* Debug.Log(&quot;小包到達&quot;); ... */" />
+                <marker date="1562224085720" expanded="true" signature="3613:3688" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="3698:3767" ph="/// 需要放在 Update 中一直執行的功能 ... " />
+                <marker date="1562224085720" expanded="true" signature="3797:4484" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="4009:4218" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="4069:4204" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="4291:4442" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="4494:4638" ph="/// 傳送 ... " />
+                <marker date="1562224085720" expanded="true" signature="4707:4814" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="4824:5069" ph="/// 傳送一個 Dictionary 給 Server ，目前 Dictionary.Value 不支援不能序列化的物件，例如 Dictionary 。不能使用多層 Dictionary ... " />
+                <marker date="1562224085720" expanded="true" signature="5139:5719" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="5379:5597" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="5631:5709" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="5729:5849" ph="/// 連線到伺服器。連線到伺服器時， isConnect == true ... " />
+                <marker date="1562224085720" expanded="true" signature="5887:7180" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="5913:7028" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="6001:6838" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="6474:6632" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="6688:6771" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="6859:6985" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="7062:7170" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="7190:7243" ph="/// 強制斷線 ... " />
+                <marker date="1562224085720" expanded="true" signature="7276:7330" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="7339:7444" ph="/// 當連線狀態改變時呼叫 ... " />
+                <marker date="1562224085720" expanded="true" signature="7514:7525" ph="{...}" />
+                <marker date="1562224085720" expanded="true" signature="7535:7639" ph="/// 在主執行續執行的處理 ... " />
+                <marker date="1562224085720" expanded="true" signature="7697:7708" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/CoreProxy/LogProxy.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="73" selection-start-line="7" selection-start-column="73" selection-end-line="7" selection-end-column="73" />
+              <folding>
+                <marker date="1562223695903" expanded="true" signature="23:442" ph="{...}" />
+                <marker date="1562223695903" expanded="true" signature="68:266" ph="{...}" />
+                <marker date="1562223695903" expanded="true" signature="311:440" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/F.T/Http/Scripts/Http.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+              <folding>
+                <marker date="1561718035992" expanded="true" signature="6:115" ph="..." />
+                <marker date="1561718035992" expanded="true" signature="137:2911" ph="{...}" />
+                <marker date="1561718035992" expanded="true" signature="168:2909" ph="{...}" />
+                <marker date="1561718035992" expanded="true" signature="428:856" ph="{...}" />
+                <marker date="1561718035992" expanded="true" signature="866:1126" ph="///  ... " />
+                <marker date="1561718035992" expanded="true" signature="1252:2222" ph="{...}" />
+                <marker date="1561718035992" expanded="true" signature="1739:1947" ph="{...}" />
+                <marker date="1561718035992" expanded="true" signature="2282:2903" ph="{...}" />
+                <marker date="1561718035992" expanded="true" signature="2442:2777" ph="/* if (request.isNetworkError) ... */" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/Demo/NewBehaviourScript.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+              <folding>
+                <marker date="1562223033254" expanded="true" signature="6:116" ph="..." />
+                <marker date="1562223033254" expanded="true" signature="132:1326" ph="{...}" />
+                <marker date="1562223033254" expanded="true" signature="186:1324" ph="{...}" />
+                <marker date="1562223033254" expanded="true" signature="358:1022" ph="{...}" />
+                <marker date="1562223033254" expanded="true" signature="805:960" ph="{...}" />
+                <marker date="1562223033254" expanded="true" signature="1088:1318" ph="{...}" />
+                <marker date="1562223033254" expanded="true" signature="1132:1308" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/NetWorkBase.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetPeer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/Http/Scripts/Http.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/UnityExample/QuickStart/Script/Main.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/UnityExample/QuickStart/Script/FTServerConnecter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Tool/Serialize.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/UnityExample/QuickStart/Script/_System.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Dependencies/Best HTTP (Pro)/BestHTTP/Logger/DefaultLogger.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/Demo/NewBehaviourScript.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetDebug.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/Metrics.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/WebSocket.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Udp.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/RUdp.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/DotNetStats.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/CoreProxy/Connect.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/CoreProxy/LogProxy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Tcp.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/CoreProxy/Operator/CallBackHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/MetricPusher.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/F.T/FileServer/Script/File.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Tool/Serialize.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/prom/SummaryImpl/SampleStream.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/prom/DotNetStats.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/Monitor/Demo/NewBehaviourScript.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/FileServer/Script/File.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/Demo/NewBehaviourScript.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/MetricPusher.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Dependencies/Best HTTP (Pro)/BestHTTP/Logger/DefaultLogger.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/RUdp.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/WebSocket.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/CoreProxy/LogProxy.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/NetWorkBase.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Tcp.cs" />
+        <option value="$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Udp.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/.idea.Unity/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/.idea.Unity/.idea/indexLayout.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
+    <option name="y" value="88" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="UnityExplorer" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="UnityExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="8711f2a6:AssetsRoot" />
+            </path>
+            <path>
+              <item name="" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="8711f2a6:AssetsRoot" />
+              <item name="F.T" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="8711f2a6:AssetsRoot" />
+              <item name="F.T" type="1045f7f1:UnityExplorerNode" />
+              <item name="SocketServer" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="8711f2a6:AssetsRoot" />
+              <item name="F.T" type="1045f7f1:UnityExplorerNode" />
+              <item name="SocketServer" type="1045f7f1:UnityExplorerNode" />
+              <item name="Lib" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="8711f2a6:AssetsRoot" />
+              <item name="F.T" type="1045f7f1:UnityExplorerNode" />
+              <item name="SocketServer" type="1045f7f1:UnityExplorerNode" />
+              <item name="Lib" type="1045f7f1:UnityExplorerNode" />
+              <item name="Core" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="8711f2a6:AssetsRoot" />
+              <item name="F.T" type="1045f7f1:UnityExplorerNode" />
+              <item name="SocketServer" type="1045f7f1:UnityExplorerNode" />
+              <item name="Lib" type="1045f7f1:UnityExplorerNode" />
+              <item name="Core" type="1045f7f1:UnityExplorerNode" />
+              <item name="Network" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="8711f2a6:AssetsRoot" />
+              <item name="F.T" type="1045f7f1:UnityExplorerNode" />
+              <item name="SocketServer" type="1045f7f1:UnityExplorerNode" />
+              <item name="Lib" type="1045f7f1:UnityExplorerNode" />
+              <item name="Core" type="1045f7f1:UnityExplorerNode" />
+              <item name="Network" type="1045f7f1:UnityExplorerNode" />
+              <item name="Dependencies" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="8711f2a6:AssetsRoot" />
+              <item name="F.T" type="1045f7f1:UnityExplorerNode" />
+              <item name="SocketServer" type="1045f7f1:UnityExplorerNode" />
+              <item name="Lib" type="1045f7f1:UnityExplorerNode" />
+              <item name="Core" type="1045f7f1:UnityExplorerNode" />
+              <item name="Network" type="1045f7f1:UnityExplorerNode" />
+              <item name="Dependencies" type="1045f7f1:UnityExplorerNode" />
+              <item name="LiteNetLib" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="8711f2a6:AssetsRoot" />
+              <item name="F.T" type="1045f7f1:UnityExplorerNode" />
+              <item name="SocketServer" type="1045f7f1:UnityExplorerNode" />
+              <item name="Lib" type="1045f7f1:UnityExplorerNode" />
+              <item name="CoreProxy" type="1045f7f1:UnityExplorerNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-hidden-items" value="false" />
+        <option name="show-project-names" value="true" />
+      </pane>
+      <pane id="FileSystemExplorer" />
+      <pane id="AssemblyExplorer" />
+      <pane id="SolutionExplorer">
+        <option name="show-all-files" value="false" />
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Discover.Launch.Via.Unity" value="true" />
+    <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="userSelectedPid" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="userSelectedPid" value="false" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="295aa166-a2c2-4ea0-928a-c332d3faf732" name="Default Changelist" comment="" />
+      <created>1561718679398</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1561718679398</updated>
+      <workItem from="1561718680811" duration="552000" />
+      <workItem from="1561719370174" duration="407000" />
+      <workItem from="1562136443784" duration="25000" />
+      <workItem from="1562219818014" duration="616000" />
+      <workItem from="1562222285170" duration="2486000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="4086000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26066098" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.32942432" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="NuGet" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Unity" order="10" />
+      <window_info anchor="bottom" id="Database Changes" order="11" />
+      <window_info anchor="bottom" id="Unit Tests" order="12" />
+      <window_info anchor="bottom" id="Terminal" order="13" />
+      <window_info anchor="bottom" id="Event Log" order="14" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Errors In Solution" order="3" />
+      <window_info anchor="right" id="Key Promoter X" order="4" />
+      <window_info anchor="right" id="Database" order="5" />
+      <window_info anchor="right" id="Unit Tests Coverage" order="6" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Assets/Script/prom/SummaryImpl/QuantileStream.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Tool/Serialize.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+          <folding>
+            <marker date="1561718037933" expanded="true" signature="6:208" ph="..." />
+            <marker date="1561718037933" expanded="true" signature="233:2852" ph="{...}" />
+            <marker date="1561718037933" expanded="true" signature="262:2544" ph="{...}" />
+            <marker date="1561718037933" expanded="true" signature="324:626" ph="{...}" />
+            <marker date="1561718037933" expanded="true" signature="507:616" ph="{...}" />
+            <marker date="1561718037933" expanded="true" signature="679:1130" ph="{...}" />
+            <marker date="1561718037933" expanded="true" signature="858:1120" ph="{...}" />
+            <marker date="1561718037933" expanded="false" signature="1139:2538" ph="byte array 壓縮" />
+            <marker date="1561718037933" expanded="true" signature="1213:2008" ph="{...}" />
+            <marker date="1561718037933" expanded="true" signature="2066:2519" ph="{...}" />
+            <marker date="1561718037933" expanded="true" signature="2628:2850" ph="{...}" />
+            <marker date="1561718037933" expanded="true" signature="2712:2844" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Script/prom/DotNetStats.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/Script/prom/SummaryImpl/SampleStream.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/Monitor/Demo/NewBehaviourScript.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/DotNetStats.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="10" column="35" lean-forward="true" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
+          <folding>
+            <marker date="1561719091103" expanded="false" signature="6:73" ph="..." />
+            <marker date="1561719091103" expanded="true" signature="101:4304" ph="{...}" />
+            <marker date="1561719091103" expanded="true" signature="108:362" ph="/// Collects basic .NET metrics about the current process. This is not meant to be an especially serious collecto ... " />
+            <marker date="1561719091103" expanded="true" signature="398:4302" ph="{...}" />
+            <marker date="1561719091103" expanded="true" signature="413:515" ph="/// Registers the .NET metrics in the specified registry. ... " />
+            <marker date="1561719091103" expanded="true" signature="579:765" ph="{...}" />
+            <marker date="1561719091103" expanded="true" signature="1227:1299" ph="{...}" />
+            <marker date="1561719091103" expanded="true" signature="1365:3360" ph="{...}" />
+            <marker date="1561719091103" expanded="true" signature="1647:1761" ph="{...}" />
+            <marker date="1561719091103" expanded="true" signature="1775:2243" ph="/* Metrics that make sense to compare between all operating systems ... */" />
+            <marker date="1561719091103" expanded="true" signature="3398:4296" ph="{...}" />
+            <marker date="1561719091103" expanded="true" signature="3424:4228" ph="{...}" />
+            <marker date="1561719091103" expanded="true" signature="3541:3733" ph="{...}" />
+            <marker date="1561719091103" expanded="true" signature="4258:4286" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/Metrics.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <marker date="1561718606000" expanded="true" signature="33:508" ph="/// Static class for easy creation of metrics. Acts as the entry point to the prometheus-net metrics recording AP ... " />
+            <marker date="1561718606000" expanded="true" signature="540:4592" ph="{...}" />
+            <marker date="1561718606000" expanded="true" signature="555:669" ph="/// The default registry where all metrics are registered by default. ... " />
+            <marker date="1561718606000" expanded="true" signature="812:1034" ph="/// Creates a new registry. You may want to use multiple registries if you want to ... " />
+            <marker date="1561718606000" expanded="true" signature="1132:1291" ph="/// Returns an instance of &lt;see cref=&quot;MetricFactory&quot; /&gt; that you can use to register metrics in a custom registry ... " />
+            <marker date="1561718606000" expanded="true" signature="1428:1553" ph="/// Counters only increase in value and reset to zero when the process restarts. ... " />
+            <marker date="1561718606000" expanded="true" signature="1749:1855" ph="/// Gauges can have any numeric value and change arbitrarily. ... " />
+            <marker date="1561718606000" expanded="true" signature="2043:2163" ph="/// Summaries track the trends in events over time (10 minutes by default). ... " />
+            <marker date="1561718606000" expanded="true" signature="2359:2466" ph="/// Histograms track the size and number of events in buckets. ... " />
+            <marker date="1561718606000" expanded="true" signature="2670:2795" ph="/// Counters only increase in value and reset to zero when the process restarts. ... " />
+            <marker date="1561718606000" expanded="true" signature="2973:3079" ph="/// Gauges can have any numeric value and change arbitrarily. ... " />
+            <marker date="1561718606000" expanded="true" signature="3251:3371" ph="/// Summaries track the trends in events over time (10 minutes by default). ... " />
+            <marker date="1561718606000" expanded="true" signature="3549:3656" ph="/// Histograms track the size and number of events in buckets. ... " />
+            <marker date="1561718606000" expanded="true" signature="3856:3964" ph="{...}" />
+            <marker date="1561718606000" expanded="true" signature="3974:4196" ph="/// Replaces the default registry with a completely empty registry. ... " />
+            <marker date="1561718606000" expanded="true" signature="4248:4395" ph="{...}" />
+            <marker date="1561718606000" expanded="true" signature="4445:4586" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/CoreProxy/Connect.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="55" column="9" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="9" />
+          <folding>
+            <marker date="1561718037935" expanded="true" signature="6:56" ph="..." />
+            <marker date="1561718037935" expanded="true" signature="76:1918" ph="{...}" />
+            <marker date="1561718037935" expanded="true" signature="117:1916" ph="{...}" />
+            <marker date="1561718037935" expanded="true" signature="310:977" ph="{...}" />
+            <marker date="1561718037935" expanded="true" signature="405:527" ph="{...}" />
+            <marker date="1561718037935" expanded="true" signature="987:1162" ph="/// 加入自定義的回傳處理者 ... " />
+            <marker date="1561718037935" expanded="true" signature="1242:1370" ph="{...}" />
+            <marker date="1561718037935" expanded="true" signature="1379:1453" ph="/// 清除所有自訂義的 callback handler ... " />
+            <marker date="1561718037935" expanded="true" signature="1505:1577" ph="{...}" />
+            <marker date="1561718037935" expanded="true" signature="1587:1662" ph="/// 釋放時，需呼叫。建議搭配 using(xxx) 使用 ... " />
+            <marker date="1561718037935" expanded="true" signature="1692:1750" ph="{...}" />
+            <marker date="1561718037935" expanded="true" signature="1760:1825" ph="/// 需要放在主執行續，不斷直行的功能 ... " />
+            <marker date="1561718037935" expanded="true" signature="1855:1910" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/CoreProxy/Operator/CallBackHandler.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding>
+            <marker date="1561718037937" expanded="true" signature="63:744" ph="{...}" />
+            <marker date="1561718037937" expanded="true" signature="140:626" ph="{...}" />
+            <marker date="1561718037937" expanded="true" signature="261:393" ph="{...}" />
+            <marker date="1561718037937" expanded="true" signature="402:473" ph="/// 在確定有 gameService 物件後觸發 ... " />
+            <marker date="1561718037937" expanded="true" signature="522:534" ph="{...}" />
+            <marker date="1561718037937" expanded="true" signature="657:738" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/UnityExample/QuickStart/Script/_System.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+          <folding>
+            <marker date="1561718037944" expanded="false" signature="6:138" ph="..." />
+            <marker date="1561718037944" expanded="true" signature="166:3424" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="211:3422" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="661:888" ph="{...}" />
+            <marker date="1561718037944" expanded="false" signature="897:1815" ph="傳送遊戲封包 (主動)" />
+            <marker date="1561718037944" expanded="true" signature="925:980" ph="/// 連線到伺服器 ... " />
+            <marker date="1561718037944" expanded="true" signature="1018:1519" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="1064:1328" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="1167:1277" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="1388:1509" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="1555:1796" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="1601:1695" ph="{...}" />
+            <marker date="1561718037944" expanded="false" signature="1824:2603" ph="Receive Server CallBack (被動呼叫)" />
+            <marker date="1561718037944" expanded="true" signature="1946:2017" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="2026:2082" ph="/// 當剛連線時呼叫 ... " />
+            <marker date="1561718037944" expanded="true" signature="2113:2223" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="2232:2303" ph="/// 掛勾給 gameService 當斷線時呼叫 ... " />
+            <marker date="1561718037944" expanded="true" signature="2337:2584" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="2414:2508" ph="{...}" />
+            <marker date="1561718037944" expanded="false" signature="2612:3416" ph="私有方法 縮排用" />
+            <marker date="1561718037944" expanded="true" signature="2637:2777" ph="/// 初始化計時器 ... " />
+            <marker date="1561718037944" expanded="true" signature="2841:3105" ph="{...}" />
+            <marker date="1561718037944" expanded="true" signature="3114:3251" ph="/// 用來計算時間的功能 ... " />
+            <marker date="1561718037944" expanded="true" signature="3329:3397" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/UnityExample/QuickStart/Script/Main.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+          <folding>
+            <marker date="1561718037943" expanded="false" signature="6:109" ph="..." />
+            <marker date="1561718037943" expanded="true" signature="137:6187" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="177:1500" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="396:1494" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="765:950" ph="/* _AccountCallBack.GetAction += res =&gt; { Debug.Log(&quot;Get Account Response: &quot; + res); }; ... */" />
+            <marker date="1561718037943" expanded="true" signature="1099:1484" ph="/* _GroupCallBackHandler.GetListAction += o =&gt; { ... */" />
+            <marker date="1561718037943" expanded="true" signature="1558:3799" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="1766:1940" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="2001:2344" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="2224:2290" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="2419:2858" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="2710:2804" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="2942:3793" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="3092:3783" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="3180:3340" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="3441:3601" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="3855:6185" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="4054:4180" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="4218:4397" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="4318:4385" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="4424:4578" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="4524:4566" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="4633:4836" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="4733:4778" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="4878:5063" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="4978:5051" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="5149:6179" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="5240:6169" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="5336:5798" ph="{...}" />
+            <marker date="1561718037943" expanded="true" signature="5550:5651" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/UnityExample/QuickStart/Script/FTServerConnecter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="23" column="9" lean-forward="true" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
+          <folding>
+            <marker date="1561718037941" expanded="false" signature="6:75" ph="..." />
+            <marker date="1561718037941" expanded="true" signature="103:1576" ph="{...}" />
+            <marker date="1561718037941" expanded="true" signature="156:1574" ph="{...}" />
+            <marker date="1561718037941" expanded="true" signature="171:226" ph="/// 主要傳輸物件 ... " />
+            <marker date="1561718037941" expanded="true" signature="435:713" ph="{...}" />
+            <marker date="1561718037941" expanded="true" signature="739:792" ph="{...}" />
+            <marker date="1561718037941" expanded="true" signature="868:1101" ph="{...}" />
+            <marker date="1561718037941" expanded="true" signature="912:1091" ph="{...}" />
+            <marker date="1561718037941" expanded="true" signature="1111:1211" ph="/// 加入自定義的回傳處理者 ... " />
+            <marker date="1561718037941" expanded="true" signature="1292:1375" ph="{...}" />
+            <marker date="1561718037941" expanded="true" signature="1384:1446" ph="/// 清除所有自訂義的回傳處理者 ... " />
+            <marker date="1561718037941" expanded="true" signature="1498:1568" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/FileServer/Script/File.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="36" column="17" lean-forward="true" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
+          <folding>
+            <marker date="1562222986130" expanded="true" signature="6:48" ph="..." />
+            <marker date="1562222986130" expanded="true" signature="79:1477" ph="{...}" />
+            <marker date="1562222986130" expanded="true" signature="110:1475" ph="{...}" />
+            <marker date="1562222986130" expanded="true" signature="125:292" ph="/* private const string DevServerIP = @&quot;http://35.229.191.68:5000/fileupload&quot;; ... */" />
+            <marker date="1562222986130" expanded="true" signature="498:647" ph="{...}" />
+            <marker date="1562222986130" expanded="true" signature="657:852" ph="/// ... " />
+            <marker date="1562222986130" expanded="true" signature="931:1469" ph="{...}" />
+            <marker date="1562222986130" expanded="true" signature="1197:1459" ph="{...}" />
+            <marker date="1562222986130" expanded="true" signature="1286:1445" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/MetricPusher.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
+          <folding>
+            <marker date="1562223068474" expanded="true" signature="6:186" ph="..." />
+            <marker date="1562223068474" expanded="true" signature="214:5118" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="221:336" ph="/// A metric server that regularly pushes metrics to a Prometheus PushGateway. ... " />
+            <marker date="1562223068474" expanded="true" signature="382:5116" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="706:2179" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="764:853" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="896:980" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="1023:1158" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="1316:1404" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="1447:1892" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="1516:1878" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="1974:2091" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="2326:5110" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="2529:5084" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="2568:2796" ph="/* We schedule approximately at the configured interval. There may be some small accumulation for the ... */" />
+            <marker date="1562223068474" expanded="true" signature="2877:3734" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="2988:3712" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="3787:3936" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="4020:4157" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="4581:5066" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="4631:4748" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="4807:5044" ph="{...}" />
+            <marker date="1562223068474" expanded="true" signature="4862:4980" ph="/* The task was cancelled. ... */" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Dependencies/Best HTTP (Pro)/BestHTTP/Logger/DefaultLogger.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="40" column="13" lean-forward="true" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+          <folding>
+            <marker date="1562223104120" expanded="false" signature="6:85" ph="..." />
+            <marker date="1562223104120" expanded="true" signature="112:4183" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="119:284" ph="/// A basic logger implementation to be able to log intelligently additional informations about the plugin's inte ... " />
+            <marker date="1562223104120" expanded="true" signature="341:4181" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="659:1055" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="1114:1409" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="1164:1399" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="1198:1343" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="1472:1772" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="1530:1762" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="1564:1706" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="1831:2134" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="1885:2124" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="1919:2068" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="2190:2487" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="2242:2477" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="2276:2421" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="2561:4062" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="2617:4052" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="2651:3996" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="2841:3494" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="3069:3413" ph="{...}" />
+            <marker date="1562223104120" expanded="true" signature="4105:4175" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/RUdp.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="48" column="9" selection-start-line="48" selection-start-column="9" selection-end-line="48" selection-end-column="9" />
+          <folding>
+            <marker date="1562223139893" expanded="false" signature="6:158" ph="..." />
+            <marker date="1562223139893" expanded="true" signature="178:1948" ph="{...}" />
+            <marker date="1562223139893" expanded="true" signature="213:1946" ph="{...}" />
+            <marker date="1562223139893" expanded="true" signature="360:1370" ph="{...}" />
+            <marker date="1562223139893" expanded="true" signature="614:776" ph="{...}" />
+            <marker date="1562223139893" expanded="true" signature="886:1006" ph="{...}" />
+            <marker date="1562223139893" expanded="true" signature="1107:1359" ph="{...}" />
+            <marker date="1562223139893" expanded="true" signature="1410:1464" ph="{...}" />
+            <marker date="1562223139893" expanded="true" signature="1528:1653" ph="{...}" />
+            <marker date="1562223139893" expanded="true" signature="1721:1839" ph="{...}" />
+            <marker date="1562223139893" expanded="true" signature="1882:1940" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/Monitor/prometheus/Demo/NewBehaviourScript.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding>
+            <marker date="1562223033254" expanded="true" signature="6:116" ph="..." />
+            <marker date="1562223033254" expanded="true" signature="132:1326" ph="{...}" />
+            <marker date="1562223033254" expanded="true" signature="186:1324" ph="{...}" />
+            <marker date="1562223033254" expanded="true" signature="358:1022" ph="{...}" />
+            <marker date="1562223033254" expanded="true" signature="805:960" ph="{...}" />
+            <marker date="1562223033254" expanded="true" signature="1088:1318" ph="{...}" />
+            <marker date="1562223033254" expanded="true" signature="1132:1308" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetPeer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="38" column="5" lean-forward="true" selection-start-line="38" selection-start-column="5" selection-end-line="38" selection-end-column="5" />
+          <folding>
+            <marker date="1561718037765" expanded="false" signature="45:154" ph="..." />
+            <marker date="1561718037765" expanded="true" signature="176:38658" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="183:245" ph="/// Peer connection state ... " />
+            <marker date="1561718037765" expanded="true" signature="296:555" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="595:768" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="804:865" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="871:976" ph="/// Network peer. Main purpose is sending messages to specific peer. ... " />
+            <marker date="1561718037765" expanded="true" signature="1008:38656" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="1790:2100" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="1864:2090" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="2869:3003" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="3802:3875" ph="/// Current connection state ... " />
+            <marker date="1561718037765" expanded="true" signature="3969:4055" ph="/// Connection time for internal purposes ... " />
+            <marker date="1561718037765" expanded="true" signature="4132:4235" ph="/// Peer id can be used as key in your dictionary of peers ... " />
+            <marker date="1561718037765" expanded="true" signature="4277:4350" ph="/// Peer ip address and port ... " />
+            <marker date="1561718037765" expanded="true" signature="4431:4508" ph="/// Current ping in milliseconds ... " />
+            <marker date="1561718037765" expanded="true" signature="4572:4706" ph="/// Current MTU - Maximum Transfer Unit ( maximum udp packet size without fragmentation ) ... " />
+            <marker date="1561718037765" expanded="true" signature="4764:4905" ph="/// Delta with remote time in ticks (not accurate) ... " />
+            <marker date="1561718037765" expanded="true" signature="4941:5002" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="5012:5091" ph="/// Remote UTC time (not accurate) ... " />
+            <marker date="1561718037765" expanded="true" signature="5129:5228" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="5238:5355" ph="/// Time since last packet received (including internal library packets) ... " />
+            <marker date="1561718037765" expanded="true" signature="5445:5516" ph="/// Peer parent NetManager ... " />
+            <marker date="1561718037765" expanded="true" signature="5888:5988" ph="/// Application defined object containing data about the connection ... " />
+            <marker date="1561718037765" expanded="true" signature="6025:6103" ph="/// Statistics of peer connection ... " />
+            <marker date="1561718037765" expanded="true" signature="6279:7238" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="7453:8029" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="8132:8596" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="8671:9315" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="8862:9016" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="9400:10000" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="9439:9990" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="10010:10236" ph="/// Gets maximum size of packet that will be not fragmented. ... " />
+            <marker date="1561718037765" expanded="true" signature="10302:10405" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="10415:10865" ph="/// Send data to peer ... " />
+            <marker date="1561718037765" expanded="true" signature="10927:10996" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="11006:11478" ph="/// Send data to peer ... " />
+            <marker date="1561718037765" expanded="true" signature="11553:11639" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="11649:12209" ph="/// Send data to peer ... " />
+            <marker date="1561718037765" expanded="true" signature="12294:16794" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="12709:13517" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="13726:16627" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="13925:14094" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="15048:15223" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="15421:15917" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="15961:16536" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="16839:16911" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="16965:17039" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="17106:17192" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="17226:17292" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="17363:17902" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="17656:17850" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="18010:18165" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="18245:19801" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="18498:18568" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="18634:18772" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="19192:19373" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="19426:19549" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="19862:20051" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="20105:23034" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="20147:22893" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="20529:20815" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="20630:20721" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="21025:21201" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="22111:22678" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="22931:23024" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="23091:24641" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="23541:23723" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="23784:24053" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="24116:24631" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="24693:25810" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="24993:25080" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="25908:27644" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="25993:27588" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="26264:26489" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="26837:27009" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="27123:27233" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="27436:27547" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="27733:32605" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="27835:27932" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="28060:28226" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="28374:32595" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="28533:29092" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="28836:28980" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="29305:29657" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="29903:30471" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="32659:33656" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="32897:33381" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="33666:33739" ph="/// Flush all queued packets ... " />
+            <marker date="1561718037765" expanded="true" signature="33767:35289" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="34269:35265" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="34328:34763" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="34788:35175" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="35334:38517" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="35429:37518" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="35569:35966" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="36128:36245" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="36270:36611" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="36406:36589" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="36804:37349" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="36992:37191" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="37644:38149" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="38291:38418" ph="{...}" />
+            <marker date="1561718037765" expanded="true" signature="38589:38650" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Dependencies/LiteNetLib/NetDebug.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="35" column="44" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="44" />
+          <folding>
+            <marker date="1561718037758" expanded="false" signature="6:39" ph="..." />
+            <marker date="1561718037758" expanded="true" signature="61:2204" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="91:163" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="169:252" ph="/// Interface to implement for your own logger ... " />
+            <marker date="1561718037758" expanded="true" signature="284:372" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="378:549" ph="/// Static class for defining your own LiteNetLib logger instead of Console.WriteLine ... " />
+            <marker date="1561718037758" expanded="true" signature="582:2202" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="799:1243" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="891:1104" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="1125:1219" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="1353:1427" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="1556:1618" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="1755:1829" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="1985:2047" ph="{...}" />
+            <marker date="1561718037758" expanded="true" signature="2122:2196" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/CoreProxy/LogProxy.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="73" selection-start-line="7" selection-start-column="73" selection-end-line="7" selection-end-column="73" />
+          <folding>
+            <marker date="1562223695903" expanded="true" signature="23:442" ph="{...}" />
+            <marker date="1562223695903" expanded="true" signature="68:266" ph="{...}" />
+            <marker date="1562223695903" expanded="true" signature="311:440" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/Http/Scripts/Http.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding>
+            <marker date="1561718035992" expanded="true" signature="6:115" ph="..." />
+            <marker date="1561718035992" expanded="true" signature="137:2911" ph="{...}" />
+            <marker date="1561718035992" expanded="true" signature="168:2909" ph="{...}" />
+            <marker date="1561718035992" expanded="true" signature="428:856" ph="{...}" />
+            <marker date="1561718035992" expanded="true" signature="866:1126" ph="///  ... " />
+            <marker date="1561718035992" expanded="true" signature="1252:2222" ph="{...}" />
+            <marker date="1561718035992" expanded="true" signature="1739:1947" ph="{...}" />
+            <marker date="1561718035992" expanded="true" signature="2282:2903" ph="{...}" />
+            <marker date="1561718035992" expanded="true" signature="2442:2777" ph="/* if (request.isNetworkError) ... */" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/WebSocket.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="52" column="34" selection-start-line="52" selection-start-column="34" selection-end-line="52" selection-end-column="34" />
+          <folding>
+            <marker date="1562223203757" expanded="false" signature="6:100" ph="..." />
+            <marker date="1562223203757" expanded="true" signature="120:2840" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="163:2838" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="368:380" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="427:1880" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="602:882" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="669:868" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="1035:1236" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="1309:1383" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="1470:1655" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="1734:1838" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="1948:2039" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="2082:2183" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="2232:2291" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="2338:2508" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="2384:2498" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="2577:2832" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="2603:2670" ph="{...}" />
+            <marker date="1562223203757" expanded="true" signature="2704:2822" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/NetWorkBase.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="171" column="9" lean-forward="true" selection-start-line="171" selection-start-column="9" selection-end-line="171" selection-end-column="9" />
+          <folding>
+            <marker date="1562224085720" expanded="false" signature="6:122" ph="..." />
+            <marker date="1562224085720" expanded="true" signature="142:7716" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="183:7714" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="264:327" ph="/// 伺服器的 ip : port ... " />
+            <marker date="1562224085720" expanded="true" signature="436:492" ph="/// 接收封包暫存區 ... " />
+            <marker date="1562224085720" expanded="true" signature="591:647" ph="/// 發送封包暫存區 ... " />
+            <marker date="1562224085720" expanded="true" signature="753:865" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="874:933" ph="/// 是否可以開始寫出封包 ... " />
+            <marker date="1562224085720" expanded="true" signature="1024:3589" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="1047:1171" ph="/* CompositeResolver is singleton helper for use custom resolver. ... */" />
+            <marker date="1562224085720" expanded="true" signature="1669:2154" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="2225:2293" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="2355:2426" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="2483:2530" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="2606:3578" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="2705:3364" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="2898:3023" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="3063:3184" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="3237:3346" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="3385:3564" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="3424:3486" ph="/* Debug.Log(&quot;小包到達&quot;); ... */" />
+            <marker date="1562224085720" expanded="true" signature="3613:3688" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="3698:3767" ph="/// 需要放在 Update 中一直執行的功能 ... " />
+            <marker date="1562224085720" expanded="true" signature="3797:4484" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="4009:4218" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="4069:4204" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="4291:4442" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="4494:4638" ph="/// 傳送 ... " />
+            <marker date="1562224085720" expanded="true" signature="4707:4814" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="4824:5069" ph="/// 傳送一個 Dictionary 給 Server ，目前 Dictionary.Value 不支援不能序列化的物件，例如 Dictionary 。不能使用多層 Dictionary ... " />
+            <marker date="1562224085720" expanded="true" signature="5139:5719" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="5379:5597" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="5631:5709" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="5729:5849" ph="/// 連線到伺服器。連線到伺服器時， isConnect == true ... " />
+            <marker date="1562224085720" expanded="true" signature="5887:7180" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="5913:7028" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="6001:6838" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="6474:6632" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="6688:6771" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="6859:6985" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="7062:7170" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="7190:7243" ph="/// 強制斷線 ... " />
+            <marker date="1562224085720" expanded="true" signature="7276:7330" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="7339:7444" ph="/// 當連線狀態改變時呼叫 ... " />
+            <marker date="1562224085720" expanded="true" signature="7514:7525" ph="{...}" />
+            <marker date="1562224085720" expanded="true" signature="7535:7639" ph="/// 在主執行續執行的處理 ... " />
+            <marker date="1562224085720" expanded="true" signature="7697:7708" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Tcp.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="83" column="130" selection-start-line="83" selection-start-column="130" selection-end-line="83" selection-end-column="130" />
+          <folding>
+            <marker date="1562224145365" expanded="false" signature="6:106" ph="..." />
+            <marker date="1562224145365" expanded="true" signature="126:3381" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="157:3379" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="365:371" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="432:1343" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="670:985" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="775:904" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="1023:1333" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="1074:1307" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="1411:1909" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="1458:1899" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="1492:1637" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="1673:1885" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="1971:3119" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="2015:3107" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="2045:3093" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="2087:2739" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="2367:2569" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="2779:3075" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="3162:3376" ph="{...}" />
+            <marker date="1562224145365" expanded="true" signature="3203:3328" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/F.T/SocketServer/Lib/Core/Network/Protocol/Udp.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="107" column="17" lean-forward="true" selection-start-line="107" selection-start-column="17" selection-end-line="107" selection-end-column="17" />
+          <folding>
+            <marker date="1562224199757" expanded="false" signature="6:157" ph="..." />
+            <marker date="1562224199757" expanded="true" signature="177:5987" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="211:5985" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="287:349" ph="/// 多久從序列中寫出或讀入一包 ... " />
+            <marker date="1562224199757" expanded="true" signature="1002:1014" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="1078:1891" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="1274:1881" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="1959:2962" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="2004:2952" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="2117:2925" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="2146:2351" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="2415:2859" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="2526:2694" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="2727:2833" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="3005:3417" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="3050:3330" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="3112:3316" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="3486:4281" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="3580:4077" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="3814:3979" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="4109:4271" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="4362:5187" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="4416:4757" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="4791:4975" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="4995:5177" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="5271:5449" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="5498:5745" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="5801:5979" ph="{...}" />
+            <marker date="1562224199757" expanded="true" signature="5855:5969" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

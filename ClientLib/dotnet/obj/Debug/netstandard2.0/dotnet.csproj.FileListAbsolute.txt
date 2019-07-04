@@ -1,0 +1,9 @@
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Debug\netstandard2.0\dotnet.csprojAssemblyReference.cache
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Debug\netstandard2.0\dotnet.csproj.CoreCompileInputs.cache
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Debug\netstandard2.0\dotnet.AssemblyInfoInputs.cache
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Debug\netstandard2.0\dotnet.AssemblyInfo.cs
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\bin\Debug\netstandard2.0\dotnet.deps.json
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\bin\Debug\netstandard2.0\dotnet.dll
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\bin\Debug\netstandard2.0\dotnet.pdb
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Debug\netstandard2.0\dotnet.dll
+C:\Users\Frank\Desktop\gg\FTServer\FT-SocketServer\ClientLib\dotnet\obj\Debug\netstandard2.0\dotnet.pdb
