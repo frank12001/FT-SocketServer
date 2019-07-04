@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet", "dotnet.csproj", "{08FA90E5-BC1D-4A03-BE54-81CEDADA339D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "..\..\..\..\ConsoleApp2\ConsoleApp2.csproj", "{1C53B929-7181-4155-91C6-F7DF9B8E61B8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,9 +12,5 @@ Global
 		{08FA90E5-BC1D-4A03-BE54-81CEDADA339D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08FA90E5-BC1D-4A03-BE54-81CEDADA339D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08FA90E5-BC1D-4A03-BE54-81CEDADA339D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C53B929-7181-4155-91C6-F7DF9B8E61B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C53B929-7181-4155-91C6-F7DF9B8E61B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C53B929-7181-4155-91C6-F7DF9B8E61B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C53B929-7181-4155-91C6-F7DF9B8E61B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\Frank\\Desktop\\gg\\FTServer\\FT-SocketServer\\ClientLib\\dotnet\\dotnet.csproj",
+    "projectUniqueName": "C:\\Users\\Frank\\Desktop\\gggg\\FT-SocketServer\\ClientLib\\dotnet\\dotnet.csproj",
     "projectName": "dotnet",
-    "projectPath": "C:\\Users\\Frank\\Desktop\\gg\\FTServer\\FT-SocketServer\\ClientLib\\dotnet\\dotnet.csproj",
-    "outputPath": "C:\\Users\\Frank\\Desktop\\gg\\FTServer\\FT-SocketServer\\ClientLib\\dotnet\\obj\\",
+    "projectPath": "C:\\Users\\Frank\\Desktop\\gggg\\FT-SocketServer\\ClientLib\\dotnet\\dotnet.csproj",
+    "outputPath": "C:\\Users\\Frank\\Desktop\\gggg\\FT-SocketServer\\ClientLib\\dotnet\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
