@@ -84,7 +84,7 @@ namespace FTServer.Math
 
             if (result ==null)
             {
-                Console.WriteLine("null");
+                Console.WriteLine($"Serialize Error : can't find {typeName} in all assembly");
             }
             return result;
         }
