@@ -6,8 +6,8 @@ namespace FTServer
     {
         private const byte LineCount = 2;
 
-        private static byte CurrectLine = 0;
-        private static List<T>[] Lines;
+        private byte CurrectLine = 0;
+        private List<T>[] Lines;
 
         public NetworkTempLine()
         {
