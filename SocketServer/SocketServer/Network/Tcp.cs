@@ -53,6 +53,10 @@ namespace FTServer.Network
             {
                 await ((TCPInstance)instance).Send(data);
             }
+            else
+            {
+                Console.WriteLine("GG");
+            }
         }
 
         public override void DisConnect(IPEndPoint iPEndPoint)
@@ -90,6 +94,7 @@ namespace FTServer.Network
                 //成功加入後傳送 Connect 事件給 Client
                 byte[] packet = new byte[] { 1 };
                 tcp.GetStream().Write(packet, 0, packet.Length);
+                cNode.Initialize();
             }
             catch (Exception e)
             {

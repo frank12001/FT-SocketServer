@@ -164,6 +164,7 @@ namespace FTServer.Network
                 ClientInstance.Add(clientIp, instance);
                 //成功加入後傳送 Connect 事件給 Client
                 await SendAsync(new byte[] { 1 }, cNode.IpEndPoint);
+                cNode.Initialize();
             }
 
             return result;

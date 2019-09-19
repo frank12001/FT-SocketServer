@@ -66,6 +66,11 @@ namespace FTServer.ClientInstance
         }
 
         /// <summary>
+        /// 初始化完成後呼叫
+        /// </summary>
+        public virtual void Initialize()
+        {}
+        /// <summary>
         /// 接收封包時的處理函式
         /// </summary>
         /// <param name="packet"></param>

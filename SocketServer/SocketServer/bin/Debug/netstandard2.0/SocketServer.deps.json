@@ -1,19 +1,19 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "cab292c48f7a10481f4b0331e87d7d28b2a3189e"
+    "signature": ""
   },
   "compilationOptions": {},
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "SocketServer/0.0.2.4": {
+      "SocketServer/0.0.2.9-alpha": {
         "dependencies": {
           "LiteNetLib": "0.8.3.1",
           "MessagePack": "1.7.3.4",
           "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "12.0.1",
-          "websocketsharp-supportipv6": "0.0.1"
+          "websocketsharp-supportipv6": "0.0.1.2"
         },
         "runtime": {
           "SocketServer.dll": {}
@@ -451,15 +451,18 @@
           }
         }
       },
-      "websocketsharp-supportipv6/0.0.1": {
+      "websocketsharp-supportipv6/0.0.1.2": {
         "runtime": {
-          "websocketsharp.dll": {}
+          "lib/netstandard2.0/websocketsharp.dll": {
+            "assemblyVersion": "0.0.1.2",
+            "fileVersion": "0.0.1.2"
+          }
         }
       }
     }
   },
   "libraries": {
-    "SocketServer/0.0.2.4": {
+    "SocketServer/0.0.2.9-alpha": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -474,14 +477,14 @@
     "MessagePack/1.7.3.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-R0XRDHs6xJffxVpW1/p6YmYQ9NDd1xWtFZ7QsGoGU0lxTrXc+PqMYvEfhxTRuU1CPg1fdIs01EBPJg6qcYosqQ==",
+      "sha512": "sha512-QSKZVq6BmNaz/B4n0bAM/moQnc4E6XZ7uXRbJcEXxUzZufJiDYDE6awYqDtNz6acupYoPt2QupGV4rpyPCRRtg==",
       "path": "messagepack/1.7.3.4",
       "hashPath": "messagepack.1.7.3.4.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-a/iSwnRZb+LHFk49hQOyThh/ZNC3vsbZsF65XwQIb863qF6msmhdQtxGXFL28Ob2NsCz/drEj28BJd/YPpLRBg==",
+      "sha512": "sha512-kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
       "path": "microsoft.netcore.platforms/1.1.0",
       "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
     },
@@ -758,10 +761,12 @@
       "path": "system.valuetuple/4.3.0",
       "hashPath": "system.valuetuple.4.3.0.nupkg.sha512"
     },
-    "websocketsharp-supportipv6/0.0.1": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
+    "websocketsharp-supportipv6/0.0.1.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-myoHCDbhH1ngCgQ5lICvPp5ViUfC+l6voS/nDagMzPGBCRvQ5x2vymhGTHk2ISwIIde6WsoQAg+MtKlWUTnYOw==",
+      "path": "websocketsharp-supportipv6/0.0.1.2",
+      "hashPath": "websocketsharp-supportipv6.0.0.1.2.nupkg.sha512"
     }
   }
 }

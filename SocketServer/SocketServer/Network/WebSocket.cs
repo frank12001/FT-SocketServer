@@ -43,6 +43,7 @@ namespace FTServer.Network
                         ClientInstance.Add(clientIp, instance);
                         //成功加入後傳送 Connect 事件給 Client
                         peer.SendBytes(new byte[] { 1 });
+                        cNode.Initialize();
                     }
                     catch (Exception e)
                     {
