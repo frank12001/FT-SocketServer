@@ -1,19 +1,15 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO.Compression;
 
 namespace FTServer.Math
 {
-    internal class Serialize
+    public class Serialize
     {
         public static byte[] ToByteArray(object source)
         {
-            //IPacket packet = (IPacket)source;
-            //return MessagePackSerializer.Serialize(packet);
             var Formatter = new BinaryFormatter();
             using (var stream = new MemoryStream())
             {
@@ -23,7 +19,6 @@ namespace FTServer.Math
         }
         public static object ToObject(byte[] source)
         {
-            //return MessagePackSerializer.Deserialize<IPacket>(source);
             var formatter = new BinaryFormatter();
             using (var stream = new MemoryStream(source))
             {
@@ -35,6 +30,7 @@ namespace FTServer.Math
         #region byte array 壓縮
         public static byte[] Compress(byte[] buffer)
         {
+            //return buffer;
             MemoryStream ms = new MemoryStream();
             GZipStream zip = new GZipStream(ms, CompressionMode.Compress, true);
             zip.Write(buffer, 0, buffer.Length);                // 寫入要被壓縮的資料
@@ -54,6 +50,7 @@ namespace FTServer.Math
 
         public static byte[] Decompress(byte[] gzBuffer)
         {
+            //return gzBuffer;
             MemoryStream ms = new MemoryStream();
             int msgLength = BitConverter.ToInt32(gzBuffer, 0);
             ms.Write(gzBuffer, 4, gzBuffer.Length - 4);
@@ -73,7 +70,23 @@ namespace FTServer.Math
     {
         public override Type BindToType(string assemblyName, string typeName)
         {
-            return Type.GetType($"{typeName}, {Assembly.GetExecutingAssembly().FullName}");
+            Type result = null;
+            _ = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var typeIndex = $"{typeName}, {assembly.FullName}";
+                result = Type.GetType(typeIndex);
+                if (result != null)
+                {
+                    break;
+                }
+            }
+
+            if (result == null)
+            {
+                Console.WriteLine($"Serialize Error : can't find {typeName} in all assembly");
+            }
+            return result;
         }
     }
 }
