@@ -45,13 +45,6 @@ namespace FTServer.ClientInstance
         public void Write(IPacket eventData)
         {
             byte[] buff = Math.Serialize.Compress(Math.Serialize.ToByteArray(eventData));
-            //if (Sender is Udp)
-            //{
-            //    if (buff.Length > Udp.PacketLengthLimit)
-            //    {
-            //        throw new SocketException((int)SocketError.MessageSize);
-            //    }
-            //}
             Sender.SendAsync(buff, IpEndPoint);
         }
 

@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using FTServer.ClientInstance;
 using System;
@@ -24,7 +23,6 @@ namespace FTServer.Network
         /// 接收封包之時間間隔
         /// </summary>
         private ushort _timerReadPacket = 0;
-        //private Udp 
         private readonly Udp _udp;
         private readonly UdpClient _udpClient;
         public readonly IPEndPoint IpEndPoint;
@@ -88,10 +86,6 @@ namespace FTServer.Network
         public const string ExceptionMsg1 = "packet length can't bigger than 1300.";
         public const int SioUdpConnectReset = -1744830452;
         private readonly UdpClient _udpClient;
- 
-        private Dictionary<string, ClientNode> ClientInstanceClone;
-        private IPEndPoint M_IPEndPoint;
-        private Queue<UdpReceiveResult> receiveResults;
 
         public Udp(SocketServer socketServer, IPEndPoint iPEndPoint) : base(socketServer)
         {
@@ -115,9 +109,32 @@ namespace FTServer.Network
             {
                 await ((UDPInstance)instance).Send(data);
             }
+        }       
+        public override async Task StartListen()
+        {
+            await Task.Run(async () =>
+             {
+                 while (true)
+                 {
+                     await receiveAsync();
+                 }
+             });
         }
 
-        public override async Task<ReceiveResult> ReceiveAsync()
+        public override void DisConnect(IPEndPoint iPEndPoint)
+        {
+            lock (ClientInstance)
+            {
+                string key = iPEndPoint.ToString();
+                if (ClientInstance.TryGetValue(key, out Instance instance))
+                {
+                    UDPInstance udpInstance = (UDPInstance)instance;
+                    udpInstance.Dispose();
+                    ClientInstance.Remove(key);
+                }
+            }
+        }
+        private async Task<ReceiveResult> receiveAsync()
         {
             UdpReceiveResult receiveResult;
             receiveResult = await _udpClient.ReceiveAsync();
@@ -168,31 +185,6 @@ namespace FTServer.Network
             }
 
             return result;
-        }
-
-        public override async Task StartListen()
-        {
-            await Task.Run(async () =>
-             {
-                 while (true)
-                 {
-                     await ReceiveAsync();
-                 }
-             });
-        }
-
-        public override void DisConnect(IPEndPoint iPEndPoint)
-        {
-            lock (ClientInstance)
-            {
-                string key = iPEndPoint.ToString();
-                if (ClientInstance.TryGetValue(key, out Instance instance))
-                {
-                    UDPInstance udpInstance = (UDPInstance)instance;
-                    udpInstance.Dispose();
-                    ClientInstance.Remove(key);
-                }
-            }
         }
     }
 }

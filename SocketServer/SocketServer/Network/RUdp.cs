@@ -99,6 +99,14 @@ namespace FTServer.Network
             }
         }
 
+        public override async Task RudpSendAsync(byte[] data, IPEndPoint endPoint, int type)
+        {
+            if (ClientInstance.TryGetValue(endPoint.ToString(), out Instance instance))
+            {
+                await ((RUdpInstance)instance).Send(data);
+            }
+        }
+
         public override void DisConnect(IPEndPoint iPEndPoint)
         {
             lock (ClientInstance)
@@ -164,10 +172,10 @@ namespace FTServer.Network
                 Send(buff);
             }
         }
-        public async Task Send(byte[] data)
+        public async Task Send(byte[] data,int type=(int)DeliveryMethod.ReliableOrdered)
         {
-            _netPeer.Send(data, DeliveryMethod.ReliableOrdered);
-        }
+            _netPeer.Send(data, (DeliveryMethod)type);
+        }        
 
         public void PassData(byte[] data)
         {

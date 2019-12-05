@@ -3,11 +3,6 @@ using System.Threading.Tasks;
 
 namespace FTServer.Network
 {
-    public interface IListener
-    {
-        Task<ReceiveResult> ReceiveAsync();
-    }
-
     public struct ReceiveResult
     {
         public bool IsOk;
