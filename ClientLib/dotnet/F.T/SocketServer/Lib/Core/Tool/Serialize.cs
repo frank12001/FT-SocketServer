@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.IO.Compression;
 
 namespace FTServer.Math
 {
@@ -70,19 +70,19 @@ namespace FTServer.Math
     {
         public override Type BindToType(string assemblyName, string typeName)
         {
-            Type result=null;
-            var v = AppDomain.CurrentDomain.GetAssemblies();
+            Type result = null;
+            _ = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 var typeIndex = $"{typeName}, {assembly.FullName}";
                 result = Type.GetType(typeIndex);
-                if (result!=null)
+                if (result != null)
                 {
                     break;
                 }
             }
 
-            if (result ==null)
+            if (result == null)
             {
                 Console.WriteLine($"Serialize Error : can't find {typeName} in all assembly");
             }

@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 public class LogProxy
 {
     public static void WriteLine(object o)
@@ -8,7 +10,7 @@ public class LogProxy
         // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
         UnityEngine.Debug.Log(o);
 #else
-                    System.Console.WriteLine(o);
+                    Console.WriteLine(o);
 #endif
     }
 
@@ -17,7 +19,7 @@ public class LogProxy
 #if UNITY_5_3_OR_NEWER
         UnityEngine.Debug.LogError(o);
 #else
-        System.Console.WriteLine(o);
+                    Console.WriteLine(o);
 #endif
     }
 }

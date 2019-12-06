@@ -33,11 +33,12 @@ namespace FTServer
 
         public NetworkBase(NetworkProtocol protocol)
         {
+
             switch (protocol)
             {
-//                case NetworkProtocol.WebSocket:
-//                    Network = new WebSocketLis();
-//                    break;
+                case NetworkProtocol.WebSocket:
+                    Network = new WebSocketLis();
+                    break;
                 case NetworkProtocol.UDP:
                     Network = new Udp();
                     break;

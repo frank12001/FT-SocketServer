@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net;
+using System.Linq;
+using System.Net.Sockets;
 using FTServer.Operator;
 
 namespace FTServer
@@ -10,13 +12,9 @@ namespace FTServer
 
         public NetworkProtocol NetworkProtocol { get; private set; }
 
-        public Connect(string ip,int port,NetworkProtocol protocol)
+        public Connect(string ip, int port, NetworkProtocol protocol)
         {
-            IPAddress address;
-            if (!IPAddress.TryParse(ip, out address))
-            {
-                throw new InvalidCastException("IP 格式錯誤，請輸入正確的 IPV4 IP ex : 35.123.123.123");
-            }
+            IPAddress address = tryParseIP(ip);
             string ServerIP = address.ToString() + ":" + port;
 
             NetworkProtocol = protocol;
@@ -27,6 +25,27 @@ namespace FTServer
                 gameService.Address = string.Format("ws://{0}/WebSocket", ServerIP);
             else
                 gameService.Address = ServerIP;
+
+            IPAddress tryParseIP(string checkTarget)
+            {
+                try
+                {
+                    IPAddress result;
+                    if (!IPAddress.TryParse(checkTarget, out result))
+                    {
+                        IPAddress[] addressArray = Dns.GetHostAddresses(ip);
+                        result = addressArray.First();
+                    }
+                    if (result == null || result.AddressFamily != AddressFamily.InterNetwork)
+                        throw new InvalidCastException("IP 格式錯誤，請輸入正確的 IPV4 IP ex : 35.123.123.123");
+                    else
+                        return result;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
         }
 
         /// <summary>
