@@ -4,15 +4,15 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>FTServer</PackageId>
-    <Version>0.0.2.9-alpha</Version>
+    <Version>0.0.2.10-alpha-3</Version>
     <Authors>Frank Tang</Authors>
     <Product>FTServer</Product>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl />
     <RepositoryUrl>https://github.com/frank12001/FT-SocketServer</RepositoryUrl>
-    <PackageReleaseNotes>udp canel 1300bytes limit &amp; try fix error when passing data</PackageReleaseNotes>
-    <Description>increate rudp timeout
-PeerBase.cs ipEndPoint rename to IpEndPoint</Description>
+    <PackageReleaseNotes>fix RUDP can't disconnect after client call</PackageReleaseNotes>
+    <Description></Description>
+    <Copyright>MIT</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

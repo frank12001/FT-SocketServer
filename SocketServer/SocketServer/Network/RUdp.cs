@@ -67,6 +67,7 @@ namespace FTServer.Network
 
             _listener.PeerDisconnectedEvent += (peer, disconnectInfo) =>
             {
+                DisConnect(peer.EndPoint);
             };
 
             Task.Run(async () =>
@@ -76,7 +77,7 @@ namespace FTServer.Network
                     try
                     {
                         _server.PollEvents();
-                        await Task.Delay(15);
+                        await Task.Delay(1);
                     }
                     catch (Exception e)
                     {
@@ -127,7 +128,7 @@ namespace FTServer.Network
         /// <summary>
         /// 斷線之time out時間長度
         /// </summary>
-        private readonly ushort TimeLimit_Disconnect = 20 * 1000;
+        private readonly ushort TimeLimit_Disconnect = 5 * 1000;
         /// <summary>
         /// 接收封包及維持連線之Timer
         /// </summary>

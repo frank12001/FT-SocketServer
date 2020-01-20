@@ -12,7 +12,7 @@ namespace FTServer.ClientInstance.Peer
         /// <summary>
         /// 多久從序列中寫出或讀入一包
         /// </summary>
-        private const byte TickRead = 5;
+        private const byte TickRead = 1;
         /// <summary>
         /// 客戶端節點
         /// </summary>
