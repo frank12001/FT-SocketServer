@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Collections.Generic;
-using UnityEngine;
 using FTServer.ClientInstance.Packet;
 
 namespace FTServer
@@ -120,14 +119,14 @@ namespace FTServer
             if (packetsList != null)
             {
                 while (packetsList.Count > 0)
-                {         
+                {
                     OnEvent(packetsList[0]);
                     packetsList.RemoveAt(0);
                 }
             }
 
-            //每偵只送一包
-            if (SocketSender.Count > 0 && CanSend)
+            //每包算一次發送，送完為止
+            while (SocketSender.Count > 0 && CanSend)
             {
                 deliver(SocketSender[0].code, SocketSender[0].PacketDictionary);
                 SocketSender.RemoveAt(0);

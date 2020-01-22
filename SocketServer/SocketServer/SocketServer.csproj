@@ -4,13 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>FTServer</PackageId>
-    <Version>0.0.2.10-alpha-3</Version>
+    <Version>0.0.2.10-alpha-4</Version>
     <Authors>Frank Tang</Authors>
     <Product>FTServer</Product>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl />
     <RepositoryUrl>https://github.com/frank12001/FT-SocketServer</RepositoryUrl>
-    <PackageReleaseNotes>fix RUDP can't disconnect after client call</PackageReleaseNotes>
+    <PackageReleaseNotes>canel read packet limit</PackageReleaseNotes>
     <Description></Description>
     <Copyright>MIT</Copyright>
   </PropertyGroup>

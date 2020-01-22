@@ -62,7 +62,8 @@ namespace FTServer
 
         public override void DisConnect()
         {
-            client.Stop();           
+            client.Stop();
+            fireCompleteDisconnect();
         }
     }
 }
