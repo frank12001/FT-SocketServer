@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using FTServer.Network;
 
 namespace GumihoDemo
 {
@@ -6,7 +8,11 @@ namespace GumihoDemo
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var myServer = new MyServer();
+            myServer.Start(5000, Protocol.TCP);
+
+            while(true)
+                Thread.Sleep(1000);
         }
     }
 }
