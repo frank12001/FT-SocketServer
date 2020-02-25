@@ -15,12 +15,8 @@
     <Copyright>MIT</Copyright>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>..\Output\Bin\Debug\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>..\Output\Bin\Release\</OutputPath>
+  <PropertyGroup>
+    <OutputPath>..\Output\Gumiho\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

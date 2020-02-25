@@ -54,8 +54,20 @@
         </e>
         <e p="SocketServer.cs" t="Include" />
       </e>
+      <e p="GumihoDemo" t="IncludeRecursive">
+        <e p="GumihoDemo.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="GumihoDemo.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+      </e>
       <e p="GumihoDemo.sln" t="IncludeFlat" />
-      <e p="Output\bin" t="ExcludeRecursive" />
+      <e p="Output\Gumiho\Debug\netstandard2.0" t="ExcludeRecursive" />
+      <e p="Output\GumihoDemo\Debug\netcoreapp2.2" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />
     </e>
   </component>

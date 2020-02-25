@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gumiho", "Gumiho\Gumiho.csproj", "{8EB3BD6A-6282-4D77-A69F-8F2B97E0544E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GumihoDemo", "GumihoDemo\GumihoDemo.csproj", "{08E9AC20-B3C8-4755-B3E7-1A8CF81ADF38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{32C0C795-9559-4D5B-ACD9-AC76C273AB96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32C0C795-9559-4D5B-ACD9-AC76C273AB96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32C0C795-9559-4D5B-ACD9-AC76C273AB96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08E9AC20-B3C8-4755-B3E7-1A8CF81ADF38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08E9AC20-B3C8-4755-B3E7-1A8CF81ADF38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08E9AC20-B3C8-4755-B3E7-1A8CF81ADF38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08E9AC20-B3C8-4755-B3E7-1A8CF81ADF38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
