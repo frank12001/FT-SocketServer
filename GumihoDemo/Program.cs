@@ -9,7 +9,7 @@ namespace GumihoDemo
         static void Main(string[] args)
         {
             var myServer = new MyServer();
-            myServer.Start(5000, Protocol.TCP);
+            myServer.Start(5000, Protocol.RUdp);
 
             while(true)
                 Thread.Sleep(1000);

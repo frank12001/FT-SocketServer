@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Timers;
-using FTServer.Log;
 using FTServer.Network;
 using FTServer.ClientInstance;
+using NLog;
 
 namespace FTServer
 {
@@ -14,6 +14,8 @@ namespace FTServer
         protected Core NetworkCore;
         private int _port;
         private Timer _consoleClear;
+
+        private readonly Logger mLogger = LogManager.GetCurrentClassLogger();
 
         protected void StartListen(int port, Protocol protocol)
         {
@@ -32,9 +34,7 @@ namespace FTServer
             _port = port;
             Listen(protocol);
 
-            string serverInfo =
-                $"Socket Server Start. Base Info => \n     Listen Port :  {port}\n     Network Protocol : {protocol.ToString()}";
-            Printer.WriteLine(serverInfo);
+            mLogger.Info($"Socket Server Start. Base Info => \n     Listen Port :  {port}\n     Network Protocol : {protocol.ToString()}");
 
             //定時把 console clear 掉，嘗試解決GamingServer 過一段時間後會死在 Printer.WriteLine 的問題
             //BeginConsoleClearAsync();
@@ -70,7 +70,7 @@ namespace FTServer
                     NetworkCore = new RUdp(this, new IPEndPoint(IPAddress.Any, _port));
                     break;
                 default:
-                    Printer.WriteLine("Not Support this Protocol.");
+                    mLogger.Error($"The Protocol({protocol}) doesn't support");
                     break;
             }
 

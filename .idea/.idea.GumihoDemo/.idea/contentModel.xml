@@ -20,9 +20,7 @@
           <e p="RudpSend.cs" t="Include" />
         </e>
         <e p="Gumiho.csproj" t="IncludeRecursive" />
-        <e p="Log" t="Include">
-          <e p="Printer.cs" t="Include" />
-        </e>
+        <e p="Log" t="Include" />
         <e p="MessagePackGenerated.cs" t="Include" />
         <e p="modify.md" t="Include" />
         <e p="Network" t="Include">
@@ -40,6 +38,7 @@
           <e p="Udp.cs" t="Include" />
           <e p="WebSocket.cs" t="Include" />
         </e>
+        <e p="nlog.config" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netstandard2.0" t="Include">

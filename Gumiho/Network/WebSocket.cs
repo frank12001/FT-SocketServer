@@ -5,13 +5,16 @@ using System.Collections.Generic;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using FTServer.ClientInstance;
-using FTServer.Log;
+using NLog;
 
 namespace FTServer.Network
 {
     public class WebSocket : Core
     {
         private readonly WebSocketServer _server;
+
+        private NLog.Logger mlogger = LogManager.GetCurrentClassLogger();
+
         public WebSocket(SocketServer socketServer, int port) : base(socketServer)
         {
             _server = new WebSocketServer(port)
@@ -47,7 +50,7 @@ namespace FTServer.Network
                     }
                     catch (Exception e)
                     {
-                        Printer.WriteError($"Accept connection failed : {e.Message}\n{e.StackTrace}");
+                        mlogger.Error($"Accept connection failed : {e.Message}\n{e.StackTrace}");
                     }
                 };
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using FTServer.Log;
 using FTServer.ClientInstance;
 using LiteNetLib;
 using System.Timers;
+using NLog;
 
 namespace FTServer.Network
 {
@@ -13,6 +13,9 @@ namespace FTServer.Network
         private readonly EventBasedNetListener _listener;
         private readonly NetManager _server;
         private readonly IPEndPoint _mIpEndPoint;
+
+        private Logger mlogger = LogManager.GetCurrentClassLogger();
+
         public RUdp(SocketServer socketServer, IPEndPoint iPEndPoint) : base(socketServer)
         {
             _listener = new EventBasedNetListener();
@@ -47,7 +50,7 @@ namespace FTServer.Network
                 }
                 catch (Exception e)
                 {
-                    Printer.WriteError($"Accept connection failed : {e.Message}\n{e.StackTrace}");
+                    mlogger.Error($"Accept connection failed : {e.Message}\n{e.StackTrace}");
                 }
             };
 
@@ -81,7 +84,7 @@ namespace FTServer.Network
                     }
                     catch (Exception e)
                     {
-                        Printer.WriteLine(e);
+                        mlogger.Error(e);
                     }
                 }
             });

@@ -1,10 +1,10 @@
 ﻿using FTServer.ClientInstance;
-using FTServer.Log;
 using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using NLog;
 
 namespace FTServer.Network
 {
@@ -14,6 +14,9 @@ namespace FTServer.Network
         private const int BufferSize = 40960;
 
         private readonly TcpListener _listener;
+
+        private Logger mlogger = LogManager.GetCurrentClassLogger();
+
         public Tcp(SocketServer socketServer, IPEndPoint iPEndPoint) : base(socketServer)
         {
             _listener = new TcpListener(IPAddress.IPv6Any, iPEndPoint.Port);
@@ -41,7 +44,7 @@ namespace FTServer.Network
                      }
                      catch (Exception e)
                      {
-                         Printer.WriteError($"Accept connection failed : {e.Message}\n{e.StackTrace}");
+                         mlogger.Error($"Accept connection failed : {e.Message}\n{e.StackTrace}");
                      }
                  }
              });
