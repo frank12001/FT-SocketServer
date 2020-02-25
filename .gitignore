@@ -28,3 +28,5 @@
 /StabilityTest/Server/.vs
 /StabilityTest/Server/Server/obj
 /StabilityTest/Server/Server/bin
+/Output
+obj
