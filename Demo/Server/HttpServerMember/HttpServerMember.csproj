@@ -15,7 +15,7 @@
     <PackageReference Include="CSRedisCore" Version="3.0.48" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-    <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
